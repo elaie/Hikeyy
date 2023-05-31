@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:hikeyy/screens/login_signup/signup.dart';
 
@@ -14,6 +15,33 @@ class LoginPage extends StatefulWidget {
 class _LoginPageState extends State<LoginPage> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
+  Future signIN() async{
+    await FirebaseAuth.instance
+        .signInWithEmailAndPassword(
+        email: _emailController.text.trim(),
+        password: _passwordController.text.trim())
+        .then((value) {
+      Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => const Dashboard()),
+      );
+    })
+        .onError((error, stackTrace) async {
+      showDialog<String>(
+          context: context,
+          builder: (BuildContext context) => AlertDialog(
+            title: const Text('Error'),
+            content:Text(error.toString()),
+            actions: <Widget>[
+              TextButton(
+                onPressed: () => Navigator.pop(context, 'OK'),
+                child: const Text('OK'),
+              ),
+            ],
+          )
+      );
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -80,13 +108,8 @@ class _LoginPageState extends State<LoginPage> {
                     width: 400,
                     height: 50,
                     child: ElevatedButton(
-                      onPressed: () async {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => Dashboard(),
-                          ),
-                        );
+                      onPressed: (){
+                        signIN();
                       },
                       style: ButtonStyle(
                         backgroundColor:

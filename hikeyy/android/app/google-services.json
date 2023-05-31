@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "653189846783",
+    "project_id": "hikeyyy",
+    "storage_bucket": "hikeyyy.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:653189846783:android:e572e8b42d5e2e434c1eca",
+        "android_client_info": {
+          "package_name": "com.example.hikeyy"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC_qh0TxNX0RXDuPfB5tfOO86GnAx3dY6Q"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
