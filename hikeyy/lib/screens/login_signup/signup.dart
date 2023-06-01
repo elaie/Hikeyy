@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:hikeyy/screens/login_signup/VerifyMail.dart';
 
 import '../../widgets/app_texts.dart';
 import '../dashboard/dashboard.dart';
@@ -140,7 +141,7 @@ class _SignupState extends State<Signup> {
                                     context,
                                     MaterialPageRoute(
                                         builder: (context) =>
-                                        const Dashboard()),
+                                        const VerifyMailPage()),
                                   );
                                 }).onError((error, stackTrace){
                                   showDialog<String>(

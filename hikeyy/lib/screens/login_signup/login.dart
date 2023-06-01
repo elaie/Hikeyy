@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:hikeyy/screens/login_signup/VerifyMail.dart';
 import 'package:hikeyy/screens/login_signup/signup.dart';
 
 import '../../widgets/app_texts.dart';
@@ -23,7 +24,7 @@ class _LoginPageState extends State<LoginPage> {
         .then((value) {
       Navigator.push(
         context,
-        MaterialPageRoute(builder: (context) => const Dashboard()),
+        MaterialPageRoute(builder: (context) => const VerifyMailPage()),
       );
     })
         .onError((error, stackTrace) async {
