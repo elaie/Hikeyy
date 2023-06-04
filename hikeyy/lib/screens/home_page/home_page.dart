@@ -12,82 +12,124 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  final _scaffoldkey = GlobalKey<ScaffoldState>();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        body: Container(
-      alignment: Alignment.topCenter,
-      decoration: BoxDecoration(
-        image: DecorationImage(
-          image: AssetImage('assets/images/green_background.png'),
-        ),
+      key: _scaffoldkey,
+      drawer: Drawer(
+        child: Icon(Icons.add),
       ),
-      child: Padding(
-        padding: const EdgeInsets.only(top: 250.0),
-        child: Container(
-          alignment: Alignment.bottomCenter,
-          decoration: const BoxDecoration(
-            borderRadius: BorderRadius.only(
-                topLeft: Radius.circular(35), topRight: Radius.circular(35)),
-            color: Colors.white,
+      //extendBodyBehindAppBar: true,
+        body: SafeArea(
+      child: Container(
+        alignment: Alignment.topCenter,
+        decoration: const BoxDecoration(
+          image: DecorationImage(
+            image: AssetImage('assets/images/green_background.png'),
           ),
-          child: Padding(
-            padding: EdgeInsets.only(
-              top: 25.0,
-            ),
-            child: SingleChildScrollView(
-              child: Column(
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.only(left: 25.0, right: 25),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        ),
+        child: SingleChildScrollView(
+          child: Column(
+            children: [
+              Padding(
+                padding: const EdgeInsets.only(top: 20.0,left: 20,right: 20),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Row(
                       children: [
-                        Text(
-                          'Recommended',
-                          style: TextStyle(
-                              fontWeight: FontWeight.w800, fontSize: 17),
+                        GestureDetector(child: Container(child: const Icon(Icons.add)),onTap:()=> _scaffoldkey.currentState!.openDrawer()),
+                        Padding(
+                          padding: const EdgeInsets.only(left: 20.0),
+                          child: Text('WELCOME UserName!!',style: TextStyle(fontSize: 20),),
                         ),
-                        Text('See all')
                       ],
                     ),
-                  ),
-                  SingleChildScrollView(
-                    scrollDirection: Axis.horizontal,
-                    child: Row(
-                      children: [
-                        VenuCard(
-                          venue: 'Mt. Everest',
-                          location: 'Nepal',
-                          date: 'July',
-                        ),
-                        VenuCard(
-                          venue: 'ABC Babyy',
-                          location: 'Nepal',
-                          date: 'July',
-                        )
-                      ],
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(left: 25.0, right: 25),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(
-                          'My Schedule',
-                          style: TextStyle(
-                              fontWeight: FontWeight.w800, fontSize: 17),
-                        ),
-                        Text('See all')
-                      ],
-                    ),
-                  ),
-                  MyScheduleCard(),
-                  MyScheduleCard(),
-                ],
+
+                    Icon(Icons.notifications),
+                  ],
+                ),
               ),
-            ),
+              Padding(
+                padding: const EdgeInsets.only(top: 250.0),
+                child: Container(
+                  //height: double.infinity,
+                  alignment: Alignment.center,
+                  decoration:  BoxDecoration(
+                    borderRadius: const BorderRadius.only(
+                        topLeft: Radius.circular(35), topRight: Radius.circular(35)),
+                     color: Colors.grey.shade200.withOpacity(0.5)
+                  ),
+                  child: const Padding(
+                    padding: EdgeInsets.only(
+                      top: 25.0,
+                    ),
+                    child: SingleChildScrollView(
+                    //  scrollDirection: Axis.vertical,
+                      child: Column(
+                        children: [
+                          Padding(
+                            padding: EdgeInsets.only(left: 25.0, right: 25),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text(
+                                  'Recommended',
+                                  style: TextStyle(
+                                      fontWeight: FontWeight.w800, fontSize: 17),
+                                ),
+                                Text('See all')
+                              ],
+                            ),
+                          ),
+                          SingleChildScrollView(
+                            scrollDirection: Axis.horizontal,
+                            child: Row(
+                              children: [
+                                VenuCard(
+                                  venue: 'Mt. Everest',
+                                  location: 'Nepal',
+                                  date: 'July',
+                                ),
+                                VenuCard(
+                                  venue: 'ABC Babyy',
+                                  location: 'Nepal',
+                                  date: 'July',
+                                ),
+                                VenuCard(
+                                  venue: 'ABC Babyy',
+                                  location: 'Nepal',
+                                  date: 'July',
+                                )
+                              ],
+                            ),
+                          ),
+                          Padding(
+                            padding: EdgeInsets.only(left: 25.0, right: 25),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text(
+                                  'My Schedule',
+                                  style: TextStyle(
+                                      fontWeight: FontWeight.w800, fontSize: 17),
+                                ),
+                                Text('See all')
+                              ],
+                            ),
+                          ),
+                          MyScheduleCard(),
+                          MyScheduleCard(),
+                          MyScheduleCard(),
+                          MyScheduleCard(),
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+            ],
           ),
         ),
       ),
