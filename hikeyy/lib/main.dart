@@ -21,7 +21,6 @@ class MyApp extends StatelessWidget {
       title: 'Flutter Demo',
       theme: ThemeData(primarySwatch: Colors.blue, fontFamily: "Poppins"),
       home: const Dashboard(),
-      main
     );
   }
 }
