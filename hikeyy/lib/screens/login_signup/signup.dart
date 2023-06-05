@@ -1,4 +1,6 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:hikeyy/screens/login_signup/VerifyMail.dart';
 
@@ -19,6 +21,8 @@ class _SignupState extends State<Signup> {
   final TextEditingController _passwordController = TextEditingController();
   final TextEditingController _confirmpasswordController =
       TextEditingController();
+  CollectionReference Users = FirebaseFirestore.instance.collection('Users');
+
   final ValueNotifier<bool> _iAgreeCheckboxValue = ValueNotifier<bool>(false);
 
   @override
@@ -137,12 +141,20 @@ class _SignupState extends State<Signup> {
                                         email: _emailController.text.trim(),
                                         password:
                                             _passwordController.text.trim()).then((value) {
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) =>
-                                        const VerifyMailPage()),
-                                  );
+                                              Users.doc(value.user!.uid).set({
+                                                'Bio' : '',
+                                                'pfpUrl': '',
+                                                'UserName':_nameController.text.trim(),
+                                                'Email': _emailController.text.trim(),
+                                              }).then((value) {
+                                                Navigator.push(
+                                                  context,
+                                                  MaterialPageRoute(
+                                                      builder: (context) =>
+                                                      const VerifyMailPage()),
+                                                );
+                                              });
+
                                 }).onError((error, stackTrace){
                                   showDialog<String>(
                                       context: context,
