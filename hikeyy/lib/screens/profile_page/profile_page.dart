@@ -23,7 +23,7 @@ class _ProfilePageState extends State<ProfilePage> {
       body: FutureBuilder<DocumentSnapshot<Map<String, dynamic>>>(
         future: FirebaseFirestore.instance
             .collection('Users')
-            .doc(auth.currentUser?.uid)
+            .doc(auth.currentUser!.uid)
             .get(),
          builder: (_, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {

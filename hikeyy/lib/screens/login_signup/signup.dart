@@ -142,6 +142,8 @@ class _SignupState extends State<Signup> {
                                         password:
                                             _passwordController.text.trim()).then((value) {
                                               Users.doc(value.user!.uid).set({
+                                                'Bio' : '',
+                                                'pfpUrl': '',
                                                 'UserName':_nameController.text.trim(),
                                                 'Email': _emailController.text.trim(),
                                               }).then((value) {
