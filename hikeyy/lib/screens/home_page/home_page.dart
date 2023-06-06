@@ -4,6 +4,7 @@ import 'package:hikeyy/screens/home_page/widget/my_schedule_card.dart';
 import 'package:hikeyy/screens/home_page/widget/venu_card.dart';
 import 'package:hikeyy/screens/login_signup/login.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:hikeyy/screens/profile_page/MyFriendRequest.dart';
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
 
@@ -49,7 +50,10 @@ class _HomePageState extends State<HomePage> {
                       ],
                     ),
 
-                    Icon(Icons.notifications),
+                    GestureDetector(child: Icon(Icons.notifications),
+                    onTap: (){
+                      Navigator.push(context, MaterialPageRoute(builder:(context)=> MyFriendRequest()));
+                    }),
                   ],
                 ),
               ),
@@ -100,7 +104,7 @@ class _HomePageState extends State<HomePage> {
                                   mainAxisSize: MainAxisSize.min,
                                   children: [
                                     SizedBox(
-                                      height: 200.0,
+                                      height: 250.0,
                                       child: ListView.builder(
                                           physics: ClampingScrollPhysics(),
                                           shrinkWrap: true,
