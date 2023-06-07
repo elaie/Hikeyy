@@ -4,6 +4,7 @@ import 'package:hikeyy/screens/home_page/widget/my_schedule_card.dart';
 import 'package:hikeyy/screens/home_page/widget/venu_card.dart';
 import 'package:hikeyy/screens/login_signup/login.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:hikeyy/screens/profile_page/MyFriendRequest.dart';
 import 'package:hikeyy/screens/See all/see_all_recommended.dart';
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -53,6 +54,10 @@ class _HomePageState extends State<HomePage> {
                         style: TextStyle(fontSize: 20),
                       ),
                     ),
+                    GestureDetector(child: Icon(Icons.notifications),
+                    onTap: (){
+                      Navigator.push(context, MaterialPageRoute(builder:(context)=> MyFriendRequest()));
+                    }),
                   ],
                 ),
                 Icon(Icons.notifications),
@@ -89,6 +94,44 @@ class _HomePageState extends State<HomePage> {
                                 fontWeight: FontWeight.w800,
                                 fontSize: 17),
                           ),
+                          StreamBuilder<QuerySnapshot>(
+                            stream: FirebaseFirestore.instance.collection('Destination').snapshots(),
+                            builder: (context, snapshots) {
+                              if (snapshots.hasError) {
+                                return Text('Error: ${snapshots.error}');
+                              }
+                              if (!snapshots.hasData) {
+                                return Text('No data available');
+                              }
+                              return SingleChildScrollView(
+                                child: Column(
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    SizedBox(
+                                      height: 250.0,
+                                      child: ListView.builder(
+                                          physics: ClampingScrollPhysics(),
+                                          shrinkWrap: true,
+                                          scrollDirection: Axis.horizontal,
+                                          padding: const EdgeInsets.all(10),
+                                          itemCount: snapshots.data!.docs.length,
+                                          itemBuilder: (context, index) {
+                                            var data = snapshots.data!.docs[index]
+                                                .data() as Map<String, dynamic>;
+                                                 return Row(
+                                              children: [
+                                                 VenuCard(
+                                                         venue: data['Name'].toString(),
+                                                         location: 'Nepal',
+                                                         date: 'July',
+                                                       ),
+                                              ],
+                                            );
+
+                                          }),
+                                    ),
+                                  ],
+                                ),
                           GestureDetector(
                             onTap: () {
                               // Handle click event here
