@@ -15,17 +15,28 @@ class _SearchPageState extends State<SearchPage> {
   String name = '';
 
   //
-  Future<bool> reqsent(String uid) async {
-    final datas = await FirebaseFirestore.instance
+  Future<String?> reqsent(String uid) async {
+    final friend = await FirebaseFirestore.instance
         .collection('Users')
         .doc(auth.currentUser!.uid)
-        .collection('RequestSent')
+        .collection('Friends')
         .doc(uid)
         .get();
-    if (datas.exists) {
-      return false;
-    } else {
-      return true;
+    if(friend.exists){
+      return 'Friends';
+    }
+    else {
+      final datas = await FirebaseFirestore.instance
+          .collection('Users')
+          .doc(auth.currentUser!.uid)
+          .collection('Requests')
+          .doc(uid)
+          .get();
+      if (datas.exists) {
+        return datas.data()?['About'];
+      } else {
+        return null;
+      }
     }
   }
 
@@ -64,13 +75,22 @@ class _SearchPageState extends State<SearchPage> {
                   return Container();
                 }
                 if (name == '') {
-                  return FutureBuilder<bool>(
+                  return FutureBuilder<String?>(
                     future: reqsent(id),
                     builder: (context, snapshot) {
                       if (snapshot.connectionState == ConnectionState.waiting) {
-                        return Center(child: const CircularProgressIndicator());
+                        return Container();
                       }
-                      if (snapshot.hasData) {
+                       if (snapshot.connectionState== ConnectionState.done) {
+                      //   final datas = FirebaseFirestore.instance
+                      //       .collection('Users')
+                      //       .doc(auth.currentUser!.uid)
+                      //       .collection('Requests')
+                      //       .doc(uid)
+                      //       .get();
+                      //  String about=FirebaseFirestore.instance.collection('Users').doc(auth.currentUser!.uid).collection('Requests').doc(snapshots.data!.docs[index].id).snapshots().toString();
+                       // print(about);
+                        //print("1111111111111111111111111");
                         return ListTile(
                           title: Text(data['UserName']),
                           leading: CircleAvatar(
@@ -79,7 +99,7 @@ class _SearchPageState extends State<SearchPage> {
                                 : AssetImage('assets/images/profile.png')
                             as ImageProvider,
                           ),
-                          trailing: snapshot.data!
+                          trailing: snapshot.data==null
                               ? GestureDetector(
                             child: Icon(Icons.add),
                             onTap: () {
@@ -90,24 +110,26 @@ class _SearchPageState extends State<SearchPage> {
                                   .doc(auth.currentUser!.uid)
                                   .set({
                                 'Sender': auth.currentUser!.uid,
-                                'Status': 'Pending'
+                                'Status': 'Pending',
+                                'About' : 'Received'
                               }).then((value) {
                                 FirebaseFirestore.instance
                                     .collection('Users')
                                     .doc(auth.currentUser!.uid)
-                                    .collection('RequestSent')
+                                    .collection('Requests')
                                     .doc(snapshots.data!.docs[index].id)
                                     .set({
                                   'Receiver':
                                   snapshots.data!.docs[index].id,
-                                  'Status': 'Pending'
+                                  'Status': 'Pending',
+                                  'About':'Sent'
                                 }).then((value) {
                                   setState(() {});
                                 });
                               });
                             },
                           )
-                              : Text("Request Sent"),
+                              :snapshot.data=='Received'?Text('Request Received'):snapshot.data=='Friends'?Text('Friends'):Text("Request Sent"),
                         );
                       }
                       return Text("Error");
@@ -119,7 +141,7 @@ class _SearchPageState extends State<SearchPage> {
                     .toString()
                     .toLowerCase()
                     .startsWith(name.toString().toLowerCase())) {
-                  return FutureBuilder<bool>(
+                  return FutureBuilder<String?>(
                     future: reqsent(id),
                     builder: (context, snapshot) {
                       if (snapshot.connectionState == ConnectionState.waiting) {
@@ -134,7 +156,7 @@ class _SearchPageState extends State<SearchPage> {
                                 : AssetImage('assets/images/profile.png')
                             as ImageProvider,
                           ),
-                          trailing: snapshot.data!
+                          trailing: snapshot.data==null
                               ? GestureDetector(
                             child: Icon(Icons.add),
                             onTap: () {
@@ -145,24 +167,26 @@ class _SearchPageState extends State<SearchPage> {
                                   .doc(auth.currentUser!.uid)
                                   .set({
                                 'Sender': auth.currentUser!.uid,
-                                'Status': 'Pending'
+                                'Status': 'Pending',
+                                'About' :'Received'
                               }).then((value) {
                                 FirebaseFirestore.instance
                                     .collection('Users')
                                     .doc(auth.currentUser!.uid)
-                                    .collection('RequestSent')
+                                    .collection('Requests')
                                     .doc(snapshots.data!.docs[index].id)
                                     .set({
                                   'Receiver':
                                   snapshots.data!.docs[index].id,
-                                  'Status': 'Pending'
+                                  'Status': 'Pending',
+                                  'About' :'Sent'
                                 }).then((value) {
                                   setState(() {});
                                 });
                               });
                             },
                           )
-                              : Text("Request Sent"),
+                              : snapshot.data=='Received'?Text('Request Received'):Text("Request Sent"),
                         );
                       }
                       return Text("Error");
