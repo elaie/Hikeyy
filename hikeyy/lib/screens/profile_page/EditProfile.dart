@@ -24,7 +24,7 @@ class _EditProfileState extends State<EditProfile> {
   TextEditingController _BioController = TextEditingController();
   TextEditingController _PhoneNoController = TextEditingController();
   String pfpUrl = " ";
-  String pdfUrl=" ";
+  String pdfUrl = " ";
   void picUploadImage(name) async {
     final image = await ImagePicker().pickImage(
         source: ImageSource.gallery,

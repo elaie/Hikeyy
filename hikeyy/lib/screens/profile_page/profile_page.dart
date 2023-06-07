@@ -27,12 +27,14 @@ class _ProfilePageState extends State<ProfilePage> {
             .get(),
          builder: (_, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
+            print("Connection waiting");
               return const Center(
                 child: CircularProgressIndicator(),
               );
              }
           if(snapshot.connectionState==ConnectionState.done)
             {
+              print("Connection Stable");
               var data = snapshot.data!.data();
               var name = data!['UserName'];
               var pfp=data['pfpUrl'];
