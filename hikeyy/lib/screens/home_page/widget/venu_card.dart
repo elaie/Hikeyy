@@ -27,8 +27,8 @@ class VenuCard extends StatelessWidget {
                 fit: BoxFit.cover),
             borderRadius: BorderRadius.all(Radius.circular(30))),
         child: Padding(
-          padding: const EdgeInsets.only(
-              top: 140.0, bottom: 10, left: 10, right: 10),
+          padding:
+              const EdgeInsets.only(top: 90.0, right: 10, left: 10, bottom: 10),
           child: Container(
             decoration: const BoxDecoration(
                 borderRadius: BorderRadius.all(
