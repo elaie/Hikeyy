@@ -4,12 +4,61 @@ import 'package:hikeyy/screens/home_page/widget/my_schedule_card.dart';
 import 'package:hikeyy/screens/home_page/widget/venu_card.dart';
 import 'package:hikeyy/screens/login_signup/login.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-
+import 'package:image_picker/image_picker.dart';
+import 'package:firebase_storage/firebase_storage.dart';
+import 'dart:io';
+import 'package:hikeyy/screens/See all/see_all_recommended.dart';
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
 
   @override
   State<HomePage> createState() => _HomePageState();
+}
+
+Future<List<File>> pickImages() async {
+  List<File> images = [];
+
+  final ImagePicker _picker = ImagePicker();
+
+  // Pick multiple images
+  final List<XFile>? pickedFiles =
+  await _picker.pickMultiImage(imageQuality: 80);
+
+  if (pickedFiles != null) {
+    for (var i = 0; i < pickedFiles.length; i++) {
+      File image = File(pickedFiles[i].path);
+      images.add(image);
+    }
+  }
+
+  return images;
+}
+
+void uploadImages(List<File> images) async {
+  FirebaseStorage storage = FirebaseStorage.instance;
+  List<String> imageUrls = [];
+
+  for (var i = 0; i < images.length; i++) {
+    File image = images[i];
+
+    // Create a unique filename for each image
+    String fileName = DateTime
+        .now()
+        .millisecondsSinceEpoch
+        .toString();
+
+    // Create a reference to the location you want to upload to in Firebase Storage
+    Reference ref = storage.ref().child('images/$fileName');
+
+    // Upload the file to Firebase Storage
+    UploadTask uploadTask = ref.putFile(image);
+
+    // Get the download URL once the upload is complete
+    TaskSnapshot taskSnapshot = await uploadTask;
+    String imageUrl = await taskSnapshot.ref.getDownloadURL();
+
+    imageUrls.add(imageUrl);
+  }
 }
 
 class _HomePageState extends State<HomePage> {
@@ -172,7 +221,28 @@ class _HomePageState extends State<HomePage> {
                                           fontWeight: FontWeight.w800,
                                           fontSize: 17),
                                     ),
-                                    Text('See all')
+                                    GestureDetector(
+                                      onTap: () async {
+                                        List<File> selectedImages = await pickImages();
+                                        uploadImages(selectedImages);
+                                        // Handle click event here
+                                        // print("SEE ALL TAPPED");
+                                        // Navigator.push(
+                                        //   context,
+                                        //   MaterialPageRoute(
+                                        //     builder: (context) => see_all_recommended(),
+                                        //   ),
+                                        // );
+                                        print('Text clicked');
+                                      },
+                                      child: Text(
+                                        'See all',
+                                        style: TextStyle(
+                                          color: Colors.blue,
+                                          decoration: TextDecoration.underline,
+                                        ),
+                                      ),
+                                    )
                                   ],
                                 ),
                               ),
