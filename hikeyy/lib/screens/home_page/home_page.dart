@@ -4,6 +4,7 @@ import 'package:hikeyy/screens/home_page/widget/my_schedule_card.dart';
 import 'package:hikeyy/screens/home_page/widget/venu_card.dart';
 import 'package:hikeyy/screens/login_signup/login.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:hikeyy/screens/profile_page/MyFriendRequest.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'dart:io';
@@ -103,6 +104,10 @@ class _HomePageState extends State<HomePage> {
                             ),
                           ],
                         ),
+                        GestureDetector(child: Icon(Icons.notifications),
+                        onTap: (){
+                          Navigator.push(context, MaterialPageRoute(builder: (context)=>MyFriendRequest()));
+                        },),
                         Icon(Icons.notifications),
                       ],
                     ),

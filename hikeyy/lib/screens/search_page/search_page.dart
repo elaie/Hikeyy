@@ -145,9 +145,9 @@ class _SearchPageState extends State<SearchPage> {
                     future: reqsent(id),
                     builder: (context, snapshot) {
                       if (snapshot.connectionState == ConnectionState.waiting) {
-                        return Center(child: const CircularProgressIndicator());
+                        return Center();
                       }
-                      if (snapshot.hasData) {
+                      if (snapshot.connectionState== ConnectionState.done) {
                         return ListTile(
                           title: Text(data['UserName']),
                           leading: CircleAvatar(
