@@ -108,6 +108,7 @@ class _HomePageState extends State<HomePage> {
                         onTap: (){
                           Navigator.push(context, MaterialPageRoute(builder: (context)=>MyFriendRequest()));
                         },),
+                        Icon(Icons.notifications),
                       ],
                     ),
                   ),
