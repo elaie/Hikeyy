@@ -1,6 +1,7 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:hikeyy/screens/dashboard/dashboard.dart';
+import 'package:hikeyy/screens/login_signup/IsLogged.dart';
 import 'package:hikeyy/screens/login_signup/login.dart';
 import 'package:hikeyy/screens/login_signup/signup.dart';
 import 'package:hikeyy/screens/profile_page/profile_page.dart';
@@ -20,7 +21,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Flutter Demo',
       theme: ThemeData(primarySwatch: Colors.blue, fontFamily: "Poppins"),
-      home: const LoginPage(),
+      home: const IsLogged(),
     );
   }
 }

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 import '../home_page/home_page.dart';
 import '../profile_page/profile_page.dart';
@@ -19,7 +20,28 @@ class _DashboardState extends State<Dashboard> {
     const SearchPage(),
     const ProfilePage(),
   ];
-
+  Future<bool> _onWillPop() async {
+    return (await showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: new Text('Are you sure?'),
+        content: new Text('Do you want to exit an App'),
+        actions: <Widget>[
+          TextButton(
+            onPressed: () => Navigator.of(context).pop(false), //<-- SEE HERE
+            child: new Text('No'),
+          ),
+          TextButton(
+            onPressed: () => SystemNavigator.pop().then((value) {
+              false;
+            }),
+            child: new Text('Yes'),
+          ),
+        ],
+      ),
+    )) ??
+        false;
+  }
   void _onItemTapped(int index) {
     setState(() {
       _selectedPageIndex = index;
@@ -28,58 +50,61 @@ class _DashboardState extends State<Dashboard> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Center(
-        child: _pages[_selectedPageIndex],
-      ),
-      bottomNavigationBar: Container(
-        decoration: const BoxDecoration(
-          borderRadius: BorderRadius.only(
-            topRight: Radius.circular(25),
-            topLeft: Radius.circular(25),
-          ),
-          boxShadow: [
-            BoxShadow(
-                color: Color.fromARGB(255, 215, 212, 212),
-                spreadRadius: 2,
-                blurRadius: 3),
-          ],
+    return WillPopScope(
+      onWillPop: _onWillPop,
+      child: Scaffold(
+        body: SafeArea(
+          child: _pages[_selectedPageIndex],
         ),
-        child: ClipRRect(
-          borderRadius: const BorderRadius.only(
-            topLeft: Radius.circular(25.0),
-            topRight: Radius.circular(25.0),
-          ),
-          child: BottomNavigationBar(
-            //type: BottomNavigationBarType.fixed,
-            showSelectedLabels: false,
-            showUnselectedLabels: false,
-            items: const <BottomNavigationBarItem>[
-              BottomNavigationBarItem(
-                icon: Image(
-                    height: 30,
-                    width: 30,
-                    image: AssetImage('assets/icons/home.png')),
-                label: 'Home',
-              ),
-              BottomNavigationBarItem(
-                icon: Image(
-                    height: 30,
-                    width: 20,
-                    image: AssetImage('assets/icons/search.png')),
-                label: 'Categories',
-              ),
-              BottomNavigationBarItem(
-                icon: Image(
-                    height: 30,
-                    width: 20,
-                    image: AssetImage('assets/icons/profile.png')),
-                label: 'Profile',
-              ),
+        bottomNavigationBar: Container(
+          decoration: const BoxDecoration(
+            borderRadius: BorderRadius.only(
+              topRight: Radius.circular(25),
+              topLeft: Radius.circular(25),
+            ),
+            boxShadow: [
+              BoxShadow(
+                  color: Color.fromARGB(255, 215, 212, 212),
+                  spreadRadius: 2,
+                  blurRadius: 3),
             ],
-            currentIndex: _selectedPageIndex,
-            selectedItemColor: Colors.black,
-            onTap: _onItemTapped,
+          ),
+          child: ClipRRect(
+            borderRadius: const BorderRadius.only(
+              topLeft: Radius.circular(25.0),
+              topRight: Radius.circular(25.0),
+            ),
+            child: BottomNavigationBar(
+              //type: BottomNavigationBarType.fixed,
+              showSelectedLabels: false,
+              showUnselectedLabels: false,
+              items: const <BottomNavigationBarItem>[
+                BottomNavigationBarItem(
+                  icon: Image(
+                      height: 30,
+                      width: 30,
+                      image: AssetImage('assets/icons/home.png')),
+                  label: 'Home',
+                ),
+                BottomNavigationBarItem(
+                  icon: Image(
+                      height: 30,
+                      width: 20,
+                      image: AssetImage('assets/icons/search.png')),
+                  label: 'Categories',
+                ),
+                BottomNavigationBarItem(
+                  icon: Image(
+                      height: 30,
+                      width: 20,
+                      image: AssetImage('assets/icons/profile.png')),
+                  label: 'Profile',
+                ),
+              ],
+              currentIndex: _selectedPageIndex,
+              selectedItemColor: Colors.black,
+              onTap: _onItemTapped,
+            ),
           ),
         ),
       ),
