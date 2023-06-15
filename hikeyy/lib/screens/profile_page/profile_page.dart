@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:hikeyy/screens/home_page/home_page.dart';
 import 'package:hikeyy/screens/home_page/widget/my_schedule_card.dart';
+import 'package:hikeyy/screens/profile_page/CreateGroup.dart';
 import 'package:hikeyy/screens/profile_page/EditProfile.dart';
 
 import '../login_signup/login.dart';
@@ -18,7 +19,7 @@ class _ProfilePageState extends State<ProfilePage> {
   Future<DocumentSnapshot?> getDocumentByUID(String uid) async {
     try {
       final snapshot =
-          await FirebaseFirestore.instance.collection('Users').doc(uid).get();
+      await FirebaseFirestore.instance.collection('Users').doc(uid).get();
 
       if (snapshot.exists) {
         // Document exists, return the snapshot
@@ -126,29 +127,29 @@ class _ProfilePageState extends State<ProfilePage> {
                               ),
                               child: pfp == ' '
                                   ? Container(
-                                      height: 150,
-                                      width: 150,
-                                      decoration: BoxDecoration(
-                                          color: Colors.blueAccent,
-                                          borderRadius:
-                                              BorderRadius.circular(200),
-                                          image: const DecorationImage(
-                                              fit: BoxFit.fill,
-                                              image: AssetImage(
-                                                  'assets/images/profile.png'))),
-                                    )
+                                height: 150,
+                                width: 150,
+                                decoration: BoxDecoration(
+                                    color: Colors.blueAccent,
+                                    borderRadius:
+                                    BorderRadius.circular(200),
+                                    image: const DecorationImage(
+                                        fit: BoxFit.fill,
+                                        image: AssetImage(
+                                            'assets/images/profile.png'))),
+                              )
                                   : Container(
-                                      height: 150,
-                                      width: 150,
-                                      decoration: BoxDecoration(
-                                          color: Colors.blueAccent,
-                                          borderRadius:
-                                              BorderRadius.circular(200),
-                                          image: DecorationImage(
-                                            fit: BoxFit.fill,
-                                            image: NetworkImage(pfp),
-                                          )),
-                                    ),
+                                height: 150,
+                                width: 150,
+                                decoration: BoxDecoration(
+                                    color: Colors.blueAccent,
+                                    borderRadius:
+                                    BorderRadius.circular(200),
+                                    image: DecorationImage(
+                                      fit: BoxFit.fill,
+                                      image: NetworkImage(pfp),
+                                    )),
+                              ),
                             )),
                       ),
                       //bio
@@ -222,17 +223,17 @@ class _ProfilePageState extends State<ProfilePage> {
                                     future: getDocumentByUID(data),
                                     builder: (BuildContext context,
                                         AsyncSnapshot<DocumentSnapshot?>
-                                            snapshot) {
+                                        snapshot) {
                                       if (snapshot.connectionState ==
                                           ConnectionState.waiting) {
                                         return Container();
                                       } else if (snapshot.hasError) {
                                         return Text('Error: ${snapshot.error}');
-                                      } else if (snapshot.hasData){
+                                      } else if (snapshot.hasData) {
                                         // Document exists, access the data
                                         Map<String, dynamic> data =
-                                            snapshot.data!.data()
-                                                as Map<String, dynamic>;
+                                        snapshot.data!.data()
+                                        as Map<String, dynamic>;
                                         String name = data['UserName'];
                                         //String email = data['email'];
 
@@ -240,11 +241,11 @@ class _ProfilePageState extends State<ProfilePage> {
                                           title: Text(name),
                                           leading: CircleAvatar(
                                             backgroundImage: data['pfpUrl'] !=
-                                                    ' '
+                                                ' '
                                                 ? NetworkImage(data['pfpUrl'])
                                                 : const AssetImage(
-                                                        'assets/images/profile.png')
-                                                    as ImageProvider,
+                                                'assets/images/profile.png')
+                                            as ImageProvider,
                                           ),
                                         );
                                       }
@@ -253,6 +254,42 @@ class _ProfilePageState extends State<ProfilePage> {
                                   );
                                 });
                           }),
+                      Positioned(
+                        top: 550,
+                        child: StreamBuilder<QuerySnapshot>(
+                            stream: FirebaseFirestore.instance
+                                .collection('Users')
+                                .doc(auth.currentUser!.uid)
+                                .collection('MyGroup')
+                                .snapshots(),
+                            builder: (context, snapshots) {
+                              if (snapshots.connectionState ==
+                                  ConnectionState.waiting) {
+                                return const Center(
+                                  child: CircularProgressIndicator(),
+                                );
+                              } else if (snapshots.hasError) {
+                                return Text('Error: ${snapshots.error}');
+                              } else if (snapshots.hasData) {
+                                // Document exists, access the data
+
+                                return Container(
+                                  height: 200,
+                                  width: 100,
+                                  child: ListView.builder(
+                                      scrollDirection: Axis.vertical,
+                                      shrinkWrap: true,
+                                      itemCount: snapshots.data!.docs.length,
+                                      itemBuilder: (context, index) {
+                                        var dataG =
+                                        snapshots.data!.docs[index].data() as Map<String, dynamic>;
+                                        return Text(dataG['GroupName']);
+                                      }),
+                                );
+                              }
+                              return Text('No Group');
+                            }),
+                      ),
                       //  Padding(
                       //    padding: EdgeInsets.only(top: 90), child: MyScheduleCard()),
 
@@ -286,6 +323,33 @@ class _ProfilePageState extends State<ProfilePage> {
                               ),
                             ),
                             child: Text('LogOut'),
+                          ),
+                        ),
+                      ),
+                      Positioned(
+                        top: 700,
+                        child: SizedBox(
+                          height: 50,
+                          width: 300,
+                          child: ElevatedButton(
+                            onPressed: () {
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => CreateGroup()));
+                            },
+                            style: ButtonStyle(
+                              backgroundColor: MaterialStateProperty.all(
+                                (Colors.green),
+                              ),
+                              shape: MaterialStateProperty.all<
+                                  RoundedRectangleBorder>(
+                                RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(25.0),
+                                ),
+                              ),
+                            ),
+                            child: Text('Create Group'),
                           ),
                         ),
                       ),
