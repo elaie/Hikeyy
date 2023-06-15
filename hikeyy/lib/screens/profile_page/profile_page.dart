@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:hikeyy/screens/home_page/home_page.dart';
 import 'package:hikeyy/screens/home_page/widget/my_schedule_card.dart';
+import 'package:hikeyy/screens/profile_page/CreateGroup.dart';
 import 'package:hikeyy/screens/profile_page/EditProfile.dart';
 
 import '../login_signup/login.dart';
@@ -286,6 +287,30 @@ class _ProfilePageState extends State<ProfilePage> {
                               ),
                             ),
                             child: Text('LogOut'),
+                          ),
+                        ),
+                      ),
+                      Positioned(
+                        top: 700,
+                        child: SizedBox(
+                          height: 50,
+                          width: 300,
+                          child: ElevatedButton(
+                            onPressed: () {
+                              Navigator.push(context, MaterialPageRoute(builder: (context)=> CreateGroup()));
+                            },
+                            style: ButtonStyle(
+                              backgroundColor: MaterialStateProperty.all(
+                                (Colors.green),
+                              ),
+                              shape: MaterialStateProperty.all<
+                                  RoundedRectangleBorder>(
+                                RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(25.0),
+                                ),
+                              ),
+                            ),
+                            child: Text('Create Group'),
                           ),
                         ),
                       ),
