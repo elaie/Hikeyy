@@ -5,8 +5,20 @@ import 'package:hikeyy/screens/home_page/home_page.dart';
 import 'package:hikeyy/screens/home_page/widget/my_schedule_card.dart';
 import 'package:hikeyy/screens/profile_page/CreateGroup.dart';
 import 'package:hikeyy/screens/profile_page/EditProfile.dart';
+import 'package:hikeyy/screens/profile_page/friends_list.dart';
+import 'package:hikeyy/screens/profile_page/widgets/bio.dart';
+import 'package:hikeyy/screens/profile_page/widgets/create_group_button.dart';
+import 'package:hikeyy/screens/profile_page/widgets/edit_button.dart';
+import 'package:hikeyy/screens/profile_page/widgets/friends_list_button.dart';
+import 'package:hikeyy/screens/profile_page/widgets/group_list.dart';
+import 'package:hikeyy/screens/profile_page/widgets/logout_button.dart';
+import 'package:hikeyy/screens/profile_page/widgets/profile_picture.dart';
+import 'package:hikeyy/screens/profile_page/widgets/user_name.dart';
+import 'package:hikeyy/screens/profile_page/widgets/white_container.dart';
+import 'package:hikeyy/widgets/app_texts.dart';
 
 import '../login_signup/login.dart';
+import 'group_list_page.dart';
 
 class ProfilePage extends StatefulWidget {
   const ProfilePage({super.key});
@@ -19,7 +31,7 @@ class _ProfilePageState extends State<ProfilePage> {
   Future<DocumentSnapshot?> getDocumentByUID(String uid) async {
     try {
       final snapshot =
-      await FirebaseFirestore.instance.collection('Users').doc(uid).get();
+          await FirebaseFirestore.instance.collection('Users').doc(uid).get();
 
       if (snapshot.exists) {
         // Document exists, return the snapshot
@@ -36,7 +48,6 @@ class _ProfilePageState extends State<ProfilePage> {
   }
 
   FirebaseAuth auth = FirebaseAuth.instance;
-  var _rating = 0;
 
   @override
   Widget build(BuildContext context) {
@@ -67,299 +78,53 @@ class _ProfilePageState extends State<ProfilePage> {
                       fit: BoxFit.cover,
                     ),
                   ),
-                  child: Stack(
-                    alignment: AlignmentDirectional.center,
-                    children: [
-                      SizedBox(
-                        height: 20,
-                      ),
-                      //for white container
-                      Padding(
-                        padding: const EdgeInsets.only(top: 250),
-                        child: Container(
-                          decoration: BoxDecoration(
-                            color: Colors.white,
-                            borderRadius: BorderRadius.all(
-                              Radius.circular(35),
-                            ),
-                          ),
-                        ),
-                      ),
-                      //username
-                      Container(
-                        alignment: Alignment.topCenter,
-                        child: Text(
-                          name,
-                          style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            fontSize: 30,
-                          ),
-                        ),
-                      ),
-                      SizedBox(
-                        height: 10,
-                      ),
-                      //profile picture
-                      Positioned(
-                        top: 60,
-                        child: GestureDetector(
-                            onTap: () {
-                              print('image pressed');
-                            },
-                            child: Container(
-                              padding: EdgeInsets.all(2),
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.all(
-                                  Radius.circular(100),
-                                ),
-                                //for circle outline on pp
-                                border: Border.all(
-                                  width: 3,
-                                  color: Colors.green,
-                                ),
-                                boxShadow: [
-                                  BoxShadow(
-                                    color: Colors.grey.withOpacity(0.5),
-                                    spreadRadius: 2,
-                                    blurRadius: 5,
-                                  ),
-                                ],
-                              ),
-                              child: pfp == ' '
-                                  ? Container(
-                                height: 150,
-                                width: 150,
-                                decoration: BoxDecoration(
-                                    color: Colors.blueAccent,
-                                    borderRadius:
-                                    BorderRadius.circular(200),
-                                    image: const DecorationImage(
-                                        fit: BoxFit.fill,
-                                        image: AssetImage(
-                                            'assets/images/profile.png'))),
-                              )
-                                  : Container(
-                                height: 150,
-                                width: 150,
-                                decoration: BoxDecoration(
-                                    color: Colors.blueAccent,
-                                    borderRadius:
-                                    BorderRadius.circular(200),
-                                    image: DecorationImage(
-                                      fit: BoxFit.fill,
-                                      image: NetworkImage(pfp),
-                                    )),
-                              ),
+                  child: SizedBox(
+                    height: 700,
+                    child: Stack(
+                      alignment: AlignmentDirectional.center,
+                      children: [
+                        //for white container
+                        const WhiteContainer(),
+                        //username
+                        UserName(name: name),
+                        //profile picture
+                        ProfilePicture(pfp: pfp),
+                        //bio
+                        Bio(bio: bio),
+                        //frieds list
+                        const FriendsListButton(),
+                        const Positioned(
+                            top: 290,
+                            left: 80,
+                            child: Text(
+                              'My Friends',
+                              style: TextStyle(fontSize: 12),
                             )),
-                      ),
-                      //bio
-                      Positioned(
-                        top: 270,
-                        child: Column(
-                          children: [
-                            Text(
-                              bio,
-                              style: TextStyle(
-                                  fontSize: 16, color: Colors.black45),
-                            ),
-                          ],
-                        ),
-                      ),
+                        const Positioned(
+                            top: 290,
+                            right: 80,
+                            child: Text(
+                              'Edit Profile',
+                              style: TextStyle(fontSize: 12),
+                            )),
 
-                      const SizedBox(
-                        height: 30,
-                      ),
+                        //edit button
+                        const EditButton(),
 
-                      //edit button
-                      Positioned(
-                        top: 300,
-                        child: ElevatedButton(
-                          child: Text(
-                            "Edit Profile",
-                            style: TextStyle(
-                                fontFamily: 'Comfortaa',
-                                fontWeight: FontWeight.bold),
-                          ),
-                          style: ButtonStyle(
-                            backgroundColor: MaterialStateProperty.all(
-                              (Colors.green),
-                            ),
-                            shape: MaterialStateProperty.all<
-                                RoundedRectangleBorder>(
-                              RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(25.0),
-                              ),
-                            ),
-                          ),
-                          onPressed: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => const EditProfile()),
-                            );
-                          },
-                        ),
-                      ),
-                      StreamBuilder<QuerySnapshot>(
-                          stream: FirebaseFirestore.instance
-                              .collection('Users')
-                              .doc(auth.currentUser!.uid)
-                              .collection('Friends')
-                              .snapshots(),
-                          builder: (context, snapshots) {
-                            if (snapshots.connectionState ==
-                                ConnectionState.waiting) {
-                              return const Center(
-                                child: CircularProgressIndicator(),
-                              );
-                            }
-                            return ListView.builder(
-                                scrollDirection: Axis.vertical,
-                                shrinkWrap: true,
-                                itemCount: snapshots.data!.docs.length,
-                                itemBuilder: (context, index) {
-                                  var data = snapshots.data!.docs[index].id;
-                                  return FutureBuilder<DocumentSnapshot?>(
-                                    future: getDocumentByUID(data),
-                                    builder: (BuildContext context,
-                                        AsyncSnapshot<DocumentSnapshot?>
-                                        snapshot) {
-                                      if (snapshot.connectionState ==
-                                          ConnectionState.waiting) {
-                                        return Container();
-                                      } else if (snapshot.hasError) {
-                                        return Text('Error: ${snapshot.error}');
-                                      } else if (snapshot.hasData) {
-                                        // Document exists, access the data
-                                        Map<String, dynamic> data =
-                                        snapshot.data!.data()
-                                        as Map<String, dynamic>;
-                                        String name = data['UserName'];
-                                        //String email = data['email'];
-
-                                        return ListTile(
-                                          title: Text(name),
-                                          leading: CircleAvatar(
-                                            backgroundImage: data['pfpUrl'] !=
-                                                ' '
-                                                ? NetworkImage(data['pfpUrl'])
-                                                : const AssetImage(
-                                                'assets/images/profile.png')
-                                            as ImageProvider,
-                                          ),
-                                        );
-                                      }
-                                      return Text('NO Friends');
-                                    },
-                                  );
-                                });
-                          }),
-                      Positioned(
-                        top: 550,
-                        child: StreamBuilder<QuerySnapshot>(
-                            stream: FirebaseFirestore.instance
-                                .collection('Users')
-                                .doc(auth.currentUser!.uid)
-                                .collection('MyGroup')
-                                .snapshots(),
-                            builder: (context, snapshots) {
-                              if (snapshots.connectionState ==
-                                  ConnectionState.waiting) {
-                                return const Center(
-                                  child: CircularProgressIndicator(),
-                                );
-                              } else if (snapshots.hasError) {
-                                return Text('Error: ${snapshots.error}');
-                              } else if (snapshots.hasData) {
-                                // Document exists, access the data
-
-                                return Container(
-                                  height: 200,
-                                  width: 100,
-                                  child: ListView.builder(
-                                      scrollDirection: Axis.vertical,
-                                      shrinkWrap: true,
-                                      itemCount: snapshots.data!.docs.length,
-                                      itemBuilder: (context, index) {
-                                        var dataG =
-                                        snapshots.data!.docs[index].data() as Map<String, dynamic>;
-                                        return Text(dataG['GroupName']);
-                                      }),
-                                );
-                              }
-                              return Text('No Group');
-                            }),
-                      ),
-                      //  Padding(
-                      //    padding: EdgeInsets.only(top: 90), child: MyScheduleCard()),
-
-                      Positioned(
-                          top: 500, child: Text('*show other schedules here*')),
-
-                      //logout button
-                      Positioned(
-                        top: 630,
-                        child: SizedBox(
-                          height: 50,
-                          width: 300,
-                          child: ElevatedButton(
-                            onPressed: () {
-                              FirebaseAuth.instance.signOut().then((value) {
-                                Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) => LoginPage()));
-                              });
-                            },
-                            style: ButtonStyle(
-                              backgroundColor: MaterialStateProperty.all(
-                                (Colors.green),
-                              ),
-                              shape: MaterialStateProperty.all<
-                                  RoundedRectangleBorder>(
-                                RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(25.0),
-                                ),
-                              ),
-                            ),
-                            child: Text('LogOut'),
-                          ),
-                        ),
-                      ),
-                      Positioned(
-                        top: 700,
-                        child: SizedBox(
-                          height: 50,
-                          width: 300,
-                          child: ElevatedButton(
-                            onPressed: () {
-                              Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) => CreateGroup()));
-                            },
-                            style: ButtonStyle(
-                              backgroundColor: MaterialStateProperty.all(
-                                (Colors.green),
-                              ),
-                              shape: MaterialStateProperty.all<
-                                  RoundedRectangleBorder>(
-                                RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(25.0),
-                                ),
-                              ),
-                            ),
-                            child: Text('Create Group'),
-                          ),
-                        ),
-                      ),
-                      //Highlights
-                    ],
+                        //group list
+                        GroupList(auth: auth),
+                        //logout button
+                        const LogoutButton(),
+                        //create group button
+                        const CreateGroupButton(),
+                        //Highlights
+                      ],
+                    ),
                   ),
                 ),
               );
             }
-            return Center(
+            return const Center(
               child: CircularProgressIndicator(),
             );
           }),
