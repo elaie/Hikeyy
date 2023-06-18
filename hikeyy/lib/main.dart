@@ -5,6 +5,7 @@ import 'package:hikeyy/screens/login_signup/IsLogged.dart';
 import 'package:hikeyy/screens/login_signup/login.dart';
 import 'package:hikeyy/screens/login_signup/signup.dart';
 import 'package:hikeyy/screens/profile_page/profile_page.dart';
+
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp().then((value) {
