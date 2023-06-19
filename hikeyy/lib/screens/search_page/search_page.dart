@@ -44,6 +44,7 @@ class _SearchPageState extends State<SearchPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        automaticallyImplyLeading: false,
         title: Card(
           child: TextField(
             decoration: InputDecoration(
@@ -94,7 +95,7 @@ class _SearchPageState extends State<SearchPage> {
                         return ListTile(
                           title: Text(data['UserName']),
                           leading: CircleAvatar(
-                            backgroundImage: data['pfpUrl'] != ' '
+                            backgroundImage: data['pfpUrl'] != ''
                                 ? NetworkImage(data['pfpUrl'])
                                 : AssetImage('assets/images/profile.png')
                             as ImageProvider,
@@ -151,7 +152,7 @@ class _SearchPageState extends State<SearchPage> {
                         return ListTile(
                           title: Text(data['UserName']),
                           leading: CircleAvatar(
-                            backgroundImage: data['pfpUrl'] != ' '
+                            backgroundImage: data['pfpUrl'] != ''
                                 ? NetworkImage(data['pfpUrl'])
                                 : AssetImage('assets/images/profile.png')
                             as ImageProvider,

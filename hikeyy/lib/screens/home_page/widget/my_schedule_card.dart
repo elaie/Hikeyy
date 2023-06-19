@@ -2,8 +2,14 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class MyScheduleCard extends StatelessWidget {
+  final groupName;
+  final destination;
+  final date;
   const MyScheduleCard({
     super.key,
+    this.groupName,
+    this.destination,
+    this.date,
   });
 
   @override
@@ -37,15 +43,15 @@ class MyScheduleCard extends StatelessWidget {
                 child: Column(
                   children: [
                     Text(
-                      'Mt. Everest',
+                      groupName,
                       style: TextStyle(fontSize: 17),
                     ),
                     Row(
                       children: [
                         Icon(Icons.location_on),
-                        Text('Nepal'),
+                        Text(destination),
                         Icon(Icons.calendar_month_rounded),
-                        Text('July')
+                        Text(date)
                       ],
                     )
                   ],

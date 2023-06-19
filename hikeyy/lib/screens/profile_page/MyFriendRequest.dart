@@ -11,6 +11,10 @@ class MyFriendRequest extends StatefulWidget {
 
 class _MyFriendRequestState extends State<MyFriendRequest> {
   Future<DocumentSnapshot?> getDocumentByUID(String uid) async {
+    if (uid==null)
+      {
+        return null;
+      }
     try {
       final snapshot =
           await FirebaseFirestore.instance.collection('Users').doc(uid).get();
@@ -65,8 +69,10 @@ class _MyFriendRequestState extends State<MyFriendRequest> {
                             itemCount: snapshots.data!.docs.length,
                             itemBuilder: (context, index) {
                               var data = snapshots.data!.docs[index].data()
-                                  as Map<String, dynamic>;
-                              return FutureBuilder<DocumentSnapshot?>(
+                              as Map<String, dynamic>;
+                              //print(data['Sender']);
+                              //print('******************');
+                              return data['Sender']==null?const Text('No Requests'):FutureBuilder<DocumentSnapshot?>(
                                 future: getDocumentByUID(data['Sender']),
                                 builder: (BuildContext context,
                                     AsyncSnapshot<DocumentSnapshot?> snapshot) {
@@ -98,7 +104,7 @@ class _MyFriendRequestState extends State<MyFriendRequest> {
                                               MainAxisAlignment.spaceEvenly,
                                           children: [
                                             GestureDetector(
-                                              child: Icon(Icons.add),
+                                              child: const Icon(Icons.add),
                                               onTap: () {
                                                 FirebaseFirestore.instance
                                                     .collection('Users')
@@ -137,14 +143,14 @@ class _MyFriendRequestState extends State<MyFriendRequest> {
                                                       .delete();
                                                 }).then((value) {
                                                   ScaffoldMessenger.of(context)
-                                                      .showSnackBar(SnackBar(
+                                                      .showSnackBar(const SnackBar(
                                                           content: Text(
                                                               'Request Accepted')));
                                                 });
                                               },
                                             ),
                                             GestureDetector(
-                                              child: Icon(Icons.not_interested),
+                                              child: const Icon(Icons.not_interested),
                                               onTap: () {
                                                 FirebaseFirestore.instance
                                                     .collection('Users')
@@ -162,7 +168,7 @@ class _MyFriendRequestState extends State<MyFriendRequest> {
                                                       .delete();
                                                 }).then((value) {
                                                   ScaffoldMessenger.of(context)
-                                                      .showSnackBar(SnackBar(
+                                                      .showSnackBar(const SnackBar(
                                                           content: Text(
                                                               'Request Rejected')));
                                                 });
@@ -181,7 +187,7 @@ class _MyFriendRequestState extends State<MyFriendRequest> {
                   ),
                 );
               }
-              return const Text("NODATA");
+              return const Text("NO DATA");
             }));
   }
 }

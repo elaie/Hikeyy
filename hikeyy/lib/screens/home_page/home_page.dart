@@ -5,10 +5,12 @@ import 'package:hikeyy/screens/home_page/widget/venu_card.dart';
 import 'package:hikeyy/screens/login_signup/login.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:hikeyy/screens/profile_page/MyFriendRequest.dart';
+import 'package:hikeyy/screens/profile_page/widgets/group_list.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'dart:io';
 import 'package:hikeyy/screens/See all/see_all_recommended.dart';
+
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
 
@@ -23,7 +25,7 @@ Future<List<File>> pickImages() async {
 
   // Pick multiple images
   final List<XFile>? pickedFiles =
-  await _picker.pickMultiImage(imageQuality: 80);
+      await _picker.pickMultiImage(imageQuality: 80);
 
   if (pickedFiles != null) {
     for (var i = 0; i < pickedFiles.length; i++) {
@@ -43,10 +45,7 @@ void uploadImages(List<File> images) async {
     File image = images[i];
 
     // Create a unique filename for each image
-    String fileName = DateTime
-        .now()
-        .millisecondsSinceEpoch
-        .toString();
+    String fileName = DateTime.now().millisecondsSinceEpoch.toString();
 
     // Create a reference to the location you want to upload to in Firebase Storage
     Reference ref = storage.ref().child('images/$fileName');
@@ -63,6 +62,7 @@ void uploadImages(List<File> images) async {
 }
 
 class _HomePageState extends State<HomePage> {
+  FirebaseAuth auth = FirebaseAuth.instance;
   final _scaffoldkey = GlobalKey<ScaffoldState>();
   @override
   Widget build(BuildContext context) {
@@ -85,7 +85,7 @@ class _HomePageState extends State<HomePage> {
                 children: [
                   Padding(
                     padding:
-                    const EdgeInsets.only(top: 20.0, left: 20, right: 20),
+                        const EdgeInsets.only(top: 20.0, left: 20, right: 20),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
@@ -104,11 +104,16 @@ class _HomePageState extends State<HomePage> {
                             ),
                           ],
                         ),
-                        GestureDetector(child: Icon(Icons.notifications),
-                        onTap: (){
-                          Navigator.push(context, MaterialPageRoute(builder: (context)=>MyFriendRequest()));
-                        },),
-                        Icon(Icons.notifications),
+                        GestureDetector(
+                          child: Icon(Icons.notifications),
+                          onTap: () {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => MyFriendRequest()));
+                          },
+                        ),
+                        // Icon(Icons.notifications),
                       ],
                     ),
                   ),
@@ -134,7 +139,7 @@ class _HomePageState extends State<HomePage> {
                                 padding: EdgeInsets.only(left: 25.0, right: 25),
                                 child: Row(
                                   mainAxisAlignment:
-                                  MainAxisAlignment.spaceBetween,
+                                      MainAxisAlignment.spaceBetween,
                                   children: [
                                     Text(
                                       'Recommended',
@@ -169,12 +174,12 @@ class _HomePageState extends State<HomePage> {
                                               scrollDirection: Axis.horizontal,
                                               padding: const EdgeInsets.all(10),
                                               itemCount:
-                                              snapshots.data!.docs.length,
+                                                  snapshots.data!.docs.length,
                                               itemBuilder: (context, index) {
                                                 var data = snapshots
-                                                    .data!.docs[index]
-                                                    .data()
-                                                as Map<String, dynamic>;
+                                                        .data!.docs[index]
+                                                        .data()
+                                                    as Map<String, dynamic>;
                                                 return Row(
                                                   children: [
                                                     VenuCard(
@@ -192,33 +197,11 @@ class _HomePageState extends State<HomePage> {
                                   );
                                 },
                               ),
-                              // SingleChildScrollView(
-                              //   scrollDirection: Axis.horizontal,
-                              //   child: Row(
-                              //     children: [
-                              //       VenuCard(
-                              //         venue: 'Mt. Everest',
-                              //         location: 'Nepal',
-                              //         date: 'July',
-                              //       ),
-                              //       VenuCard(
-                              //         venue: 'ABC Babyy',
-                              //         location: 'Nepal',
-                              //         date: 'July',
-                              //       ),
-                              //       VenuCard(
-                              //         venue: 'ABC Babyy',
-                              //         location: 'Nepal',
-                              //         date: 'July',
-                              //       )
-                              //     ],
-                              //   ),
-                              // ),
                               Padding(
                                 padding: EdgeInsets.only(left: 25.0, right: 25),
                                 child: Row(
                                   mainAxisAlignment:
-                                  MainAxisAlignment.spaceBetween,
+                                      MainAxisAlignment.spaceBetween,
                                   children: [
                                     Text(
                                       'My Schedule',
@@ -228,7 +211,8 @@ class _HomePageState extends State<HomePage> {
                                     ),
                                     GestureDetector(
                                       onTap: () async {
-                                        List<File> selectedImages = await pickImages();
+                                        List<File> selectedImages =
+                                            await pickImages();
                                         uploadImages(selectedImages);
                                         // Handle click event here
                                         // print("SEE ALL TAPPED");
@@ -251,11 +235,7 @@ class _HomePageState extends State<HomePage> {
                                   ],
                                 ),
                               ),
-
-                              MyScheduleCard(),
-                              MyScheduleCard(),
-                              MyScheduleCard(),
-                              MyScheduleCard(),
+                              GroupList(auth: auth),
                             ],
                           ),
                         ),
