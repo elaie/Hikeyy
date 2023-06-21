@@ -103,7 +103,7 @@ class _TrailsState extends State<Trails> {
                         },
                       ),
                     ],
-                  );;
+                  );
                 }
                 return const Text('Error');
               })
