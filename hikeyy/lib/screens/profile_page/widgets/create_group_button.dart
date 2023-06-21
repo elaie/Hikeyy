@@ -14,7 +14,7 @@ class CreateGroupButton extends StatelessWidget {
       bottom: 80,
       child: SizedBox(
         height: 45,
-        width: 300,
+        width: 220,
         child: ElevatedButton(
           onPressed: () {
             Navigator.push(context,

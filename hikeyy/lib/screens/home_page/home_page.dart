@@ -126,16 +126,17 @@ class _HomePageState extends State<HomePage> {
                           borderRadius: const BorderRadius.only(
                               topLeft: Radius.circular(35),
                               topRight: Radius.circular(35)),
-                          color: Colors.grey.shade200.withOpacity(0.5)),
+                          color: Color.fromARGB(255, 198, 236, 199)
+                              .withOpacity(0.5)),
                       child: Padding(
-                        padding: EdgeInsets.only(
+                        padding: const EdgeInsets.only(
                           top: 25.0,
                         ),
                         child: SingleChildScrollView(
                           //  scrollDirection: Axis.vertical,
                           child: Column(
                             children: [
-                              Padding(
+                              const Padding(
                                 padding: EdgeInsets.only(left: 25.0, right: 25),
                                 child: Row(
                                   mainAxisAlignment:
