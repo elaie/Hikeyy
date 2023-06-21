@@ -93,7 +93,7 @@ class _HomePageState extends State<HomePage> {
                         Row(
                           children: [
                             GestureDetector(
-                                child: Container(child: const Icon(Icons.add)),
+                                child: const Icon(Icons.add),
                                 onTap: () =>
                                     _scaffoldkey.currentState!.openDrawer()),
                             const Padding(
@@ -139,7 +139,7 @@ class _HomePageState extends State<HomePage> {
                           child: Column(
                             mainAxisAlignment: MainAxisAlignment.start,
                             children: [
-                               Padding(
+                               const Padding(
                                 padding: EdgeInsets.only(left: 25.0, right: 25),
                                 child: Row(
                                   mainAxisAlignment:
@@ -151,17 +151,13 @@ class _HomePageState extends State<HomePage> {
                                           fontWeight: FontWeight.w800,
                                           fontSize: 17),
                                     ),
-                                    GestureDetector(
-                                      onTap: (){
-                                        Navigator.push(context, MaterialPageRoute(builder: (context)=>Trails()));
-                                      },
-                                        child: Text('See all'))
+                                    Text('See all')
                                   ],
                                 ),
                               ),
                               StreamBuilder<QuerySnapshot>(
                                 stream: FirebaseFirestore.instance
-                                    .collection('Destination')
+                                    .collection('Trails')
                                     .snapshots(),
                                 builder: (context, snapshots) {
                                   if (snapshots.hasError) {
@@ -188,13 +184,19 @@ class _HomePageState extends State<HomePage> {
                                                         .data!.docs[index]
                                                         .data()
                                                     as Map<String, dynamic>;
+                                                String id = snapshots.data!.docs[index].id;
                                                 return Row(
                                                   children: [
-                                                    VenuCard(
-                                                      venue: data['Name']
-                                                          .toString(),
-                                                      location: 'Nepal',
-                                                      date: 'July',
+                                                    GestureDetector(
+                                                      child: VenuCard(
+                                                        venue: data['Name']
+                                                            .toString(),
+                                                        location: 'Nepal',
+                                                        date: 'July',
+                                                      ),
+                                                      onTap: (){
+                                                        Navigator.push(context, MaterialPageRoute(builder: (context)=> Trails(id: id)));
+                                                      },
                                                     ),
                                                   ],
                                                 );
