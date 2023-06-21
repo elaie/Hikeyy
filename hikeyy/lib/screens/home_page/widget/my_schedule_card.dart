@@ -18,6 +18,7 @@ class MyScheduleCard extends StatelessWidget {
       padding: const EdgeInsets.all(13.0),
       child: Container(
         height: 80,
+        width: double.infinity,
         decoration: BoxDecoration(
           color: Colors.green.withOpacity(0.1),
           borderRadius: BorderRadius.all(

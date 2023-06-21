@@ -35,7 +35,7 @@ class _GroupListPageState extends State<GroupListPage> {
 
                   return SizedBox(
                     height: 200,
-                    width: 100,
+                    width: double.infinity,
                     child: ListView.builder(
                         scrollDirection: Axis.vertical,
                         shrinkWrap: true,
