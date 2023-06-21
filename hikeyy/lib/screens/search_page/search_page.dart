@@ -43,160 +43,198 @@ class _SearchPageState extends State<SearchPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        automaticallyImplyLeading: false,
-        title: Card(
-          child: TextField(
-            decoration: InputDecoration(
-                prefixIcon: Icon(Icons.search), hintText: 'Search'),
-            onChanged: (val) {
-              setState(() {
-                name = val;
-              });
-            },
+      // appBar: AppBar(
+      //   automaticallyImplyLeading: false,
+      //   title: Card(
+      //     child: TextField(
+      //       decoration: InputDecoration(
+      //           prefixIcon: Icon(Icons.search), hintText: 'Search'),
+      //       onChanged: (val) {
+      //         setState(() {
+      //           name = val;
+      //         });
+      //       },
+      //     ),
+      //   ),
+      // ),
+      body: Container(
+        height: MediaQuery.of(context).size.height,
+        alignment: Alignment.topCenter,
+        decoration: const BoxDecoration(
+          image: DecorationImage(
+              image: AssetImage('assets/images/green_background.png'),
+              fit: BoxFit.cover),
+        ),
+        child: SingleChildScrollView(
+          child: Column(
+            children: [
+              Padding(
+                padding: const EdgeInsets.symmetric(vertical: 8.0,horizontal: 8),
+                child: TextField(
+                  decoration: const InputDecoration(
+                      prefixIcon: Icon(Icons.search), hintText: 'Search'),
+                  onChanged: (val) {
+                    setState(() {
+                      name = val;
+                    });
+                  },
+                ),
+              ),
+              Container(
+                height: MediaQuery.of(context).size.height*0.82,
+                alignment: Alignment.center,
+                decoration: BoxDecoration(
+                    borderRadius: const BorderRadius.only(
+                      topLeft: Radius.circular(35),
+                      topRight: Radius.circular(35),
+                      bottomLeft:Radius.circular(25),
+                      bottomRight: Radius.circular(25),),
+                    color: Colors.grey.shade200.withOpacity(0.5)),
+                child: StreamBuilder<QuerySnapshot>(
+                  stream: FirebaseFirestore.instance.collection('Users').snapshots(),
+                  builder: (context, snapshots) {
+                    if (snapshots.connectionState == ConnectionState.waiting) {
+                      return const Center(
+                        child: CircularProgressIndicator(),
+                      );
+                    }
+                    return ListView.builder(
+                        itemCount: snapshots.data!.docs.length,
+                        itemBuilder: (context, index) {
+                          var data =
+                          snapshots.data!.docs[index].data() as Map<String, dynamic>;
+                          var id = snapshots.data!.docs[index].id;
+
+                          if (data['Email'] == auth.currentUser!.email) {
+                            return Container();
+                          }
+                          if (name == '') {
+                            return FutureBuilder<String?>(
+                              future: reqsent(id),
+                              builder: (context, snapshot) {
+                                if (snapshot.connectionState == ConnectionState.waiting) {
+                                  return Container();
+                                }
+                                 if (snapshot.connectionState== ConnectionState.done) {
+                                //   final datas = FirebaseFirestore.instance
+                                //       .collection('Users')
+                                //       .doc(auth.currentUser!.uid)
+                                //       .collection('Requests')
+                                //       .doc(uid)
+                                //       .get();
+                                //  String about=FirebaseFirestore.instance.collection('Users').doc(auth.currentUser!.uid).collection('Requests').doc(snapshots.data!.docs[index].id).snapshots().toString();
+                                 // print(about);
+                                  //print("1111111111111111111111111");
+                                  return ListTile(
+                                    title: Text(data['UserName']),
+                                    leading: CircleAvatar(
+                                      backgroundImage: data['pfpUrl'] != ''
+                                          ? NetworkImage(data['pfpUrl'])
+                                          : const AssetImage('assets/images/profile.png')
+                                      as ImageProvider,
+                                    ),
+                                    trailing: snapshot.data==null
+                                        ? GestureDetector(
+                                      child: const Icon(Icons.add),
+                                      onTap: () {
+                                        FirebaseFirestore.instance
+                                            .collection('Users')
+                                            .doc(snapshots.data!.docs[index].id)
+                                            .collection('Requests')
+                                            .doc(auth.currentUser!.uid)
+                                            .set({
+                                          'Sender': auth.currentUser!.uid,
+                                          'Status': 'Pending',
+                                          'About' : 'Received'
+                                        }).then((value) {
+                                          FirebaseFirestore.instance
+                                              .collection('Users')
+                                              .doc(auth.currentUser!.uid)
+                                              .collection('Requests')
+                                              .doc(snapshots.data!.docs[index].id)
+                                              .set({
+                                            'Receiver':
+                                            snapshots.data!.docs[index].id,
+                                            'Status': 'Pending',
+                                            'About':'Sent'
+                                          }).then((value) {
+                                            setState(() {});
+                                          });
+                                        });
+                                      },
+                                    )
+                                        :snapshot.data=='Received'?const Text('Request Received'):snapshot.data=='Friends'?const Text('Friends'):const Text("Request Sent"),
+                                  );
+                                }
+                                return const Text("Error");
+                              },
+                            );
+                          }
+
+                          if (data['UserName']
+                              .toString()
+                              .toLowerCase()
+                              .startsWith(name.toString().toLowerCase())) {
+                            return FutureBuilder<String?>(
+                              future: reqsent(id),
+                              builder: (context, snapshot) {
+                                if (snapshot.connectionState == ConnectionState.waiting) {
+                                  return const Center();
+                                }
+                                if (snapshot.connectionState== ConnectionState.done) {
+                                  return ListTile(
+                                    title: Text(data['UserName']),
+                                    leading: CircleAvatar(
+                                      backgroundImage: data['pfpUrl'] != ''
+                                          ? NetworkImage(data['pfpUrl'])
+                                          : const AssetImage('assets/images/profile.png')
+                                      as ImageProvider,
+                                    ),
+                                    trailing: snapshot.data==null
+                                        ? GestureDetector(
+                                      child: const Icon(Icons.add),
+                                      onTap: () {
+                                        FirebaseFirestore.instance
+                                            .collection('Users')
+                                            .doc(snapshots.data!.docs[index].id)
+                                            .collection('Requests')
+                                            .doc(auth.currentUser!.uid)
+                                            .set({
+                                          'Sender': auth.currentUser!.uid,
+                                          'Status': 'Pending',
+                                          'About' :'Received'
+                                        }).then((value) {
+                                          FirebaseFirestore.instance
+                                              .collection('Users')
+                                              .doc(auth.currentUser!.uid)
+                                              .collection('Requests')
+                                              .doc(snapshots.data!.docs[index].id)
+                                              .set({
+                                            'Receiver':
+                                            snapshots.data!.docs[index].id,
+                                            'Status': 'Pending',
+                                            'About' :'Sent'
+                                          }).then((value) {
+                                            setState(() {});
+                                          });
+                                        });
+                                      },
+                                    )
+                                        : snapshot.data=='Received'?const Text('Request Received'):const Text("Request Sent"),
+                                  );
+                                }
+                                return const Text("Error");
+                              },
+                            );
+                          }
+                          return Container();
+                        });
+                  },
+                ),
+              ),
+            ],
           ),
         ),
-      ),
-      body: StreamBuilder<QuerySnapshot>(
-        stream: FirebaseFirestore.instance.collection('Users').snapshots(),
-        builder: (context, snapshots) {
-          if (snapshots.connectionState == ConnectionState.waiting) {
-            return Center(
-              child: CircularProgressIndicator(),
-            );
-          }
-          return ListView.builder(
-              itemCount: snapshots.data!.docs.length,
-              itemBuilder: (context, index) {
-                var data =
-                snapshots.data!.docs[index].data() as Map<String, dynamic>;
-                var id = snapshots.data!.docs[index].id;
-
-                if (data['Email'] == auth.currentUser!.email) {
-                  return Container();
-                }
-                if (name == '') {
-                  return FutureBuilder<String?>(
-                    future: reqsent(id),
-                    builder: (context, snapshot) {
-                      if (snapshot.connectionState == ConnectionState.waiting) {
-                        return Container();
-                      }
-                       if (snapshot.connectionState== ConnectionState.done) {
-                      //   final datas = FirebaseFirestore.instance
-                      //       .collection('Users')
-                      //       .doc(auth.currentUser!.uid)
-                      //       .collection('Requests')
-                      //       .doc(uid)
-                      //       .get();
-                      //  String about=FirebaseFirestore.instance.collection('Users').doc(auth.currentUser!.uid).collection('Requests').doc(snapshots.data!.docs[index].id).snapshots().toString();
-                       // print(about);
-                        //print("1111111111111111111111111");
-                        return ListTile(
-                          title: Text(data['UserName']),
-                          leading: CircleAvatar(
-                            backgroundImage: data['pfpUrl'] != ''
-                                ? NetworkImage(data['pfpUrl'])
-                                : AssetImage('assets/images/profile.png')
-                            as ImageProvider,
-                          ),
-                          trailing: snapshot.data==null
-                              ? GestureDetector(
-                            child: Icon(Icons.add),
-                            onTap: () {
-                              FirebaseFirestore.instance
-                                  .collection('Users')
-                                  .doc(snapshots.data!.docs[index].id)
-                                  .collection('Requests')
-                                  .doc(auth.currentUser!.uid)
-                                  .set({
-                                'Sender': auth.currentUser!.uid,
-                                'Status': 'Pending',
-                                'About' : 'Received'
-                              }).then((value) {
-                                FirebaseFirestore.instance
-                                    .collection('Users')
-                                    .doc(auth.currentUser!.uid)
-                                    .collection('Requests')
-                                    .doc(snapshots.data!.docs[index].id)
-                                    .set({
-                                  'Receiver':
-                                  snapshots.data!.docs[index].id,
-                                  'Status': 'Pending',
-                                  'About':'Sent'
-                                }).then((value) {
-                                  setState(() {});
-                                });
-                              });
-                            },
-                          )
-                              :snapshot.data=='Received'?Text('Request Received'):snapshot.data=='Friends'?Text('Friends'):Text("Request Sent"),
-                        );
-                      }
-                      return Text("Error");
-                    },
-                  );
-                }
-
-                if (data['UserName']
-                    .toString()
-                    .toLowerCase()
-                    .startsWith(name.toString().toLowerCase())) {
-                  return FutureBuilder<String?>(
-                    future: reqsent(id),
-                    builder: (context, snapshot) {
-                      if (snapshot.connectionState == ConnectionState.waiting) {
-                        return Center();
-                      }
-                      if (snapshot.connectionState== ConnectionState.done) {
-                        return ListTile(
-                          title: Text(data['UserName']),
-                          leading: CircleAvatar(
-                            backgroundImage: data['pfpUrl'] != ''
-                                ? NetworkImage(data['pfpUrl'])
-                                : AssetImage('assets/images/profile.png')
-                            as ImageProvider,
-                          ),
-                          trailing: snapshot.data==null
-                              ? GestureDetector(
-                            child: Icon(Icons.add),
-                            onTap: () {
-                              FirebaseFirestore.instance
-                                  .collection('Users')
-                                  .doc(snapshots.data!.docs[index].id)
-                                  .collection('Requests')
-                                  .doc(auth.currentUser!.uid)
-                                  .set({
-                                'Sender': auth.currentUser!.uid,
-                                'Status': 'Pending',
-                                'About' :'Received'
-                              }).then((value) {
-                                FirebaseFirestore.instance
-                                    .collection('Users')
-                                    .doc(auth.currentUser!.uid)
-                                    .collection('Requests')
-                                    .doc(snapshots.data!.docs[index].id)
-                                    .set({
-                                  'Receiver':
-                                  snapshots.data!.docs[index].id,
-                                  'Status': 'Pending',
-                                  'About' :'Sent'
-                                }).then((value) {
-                                  setState(() {});
-                                });
-                              });
-                            },
-                          )
-                              : snapshot.data=='Received'?Text('Request Received'):Text("Request Sent"),
-                        );
-                      }
-                      return Text("Error");
-                    },
-                  );
-                }
-                return Container();
-              });
-        },
       ),
     );
   }

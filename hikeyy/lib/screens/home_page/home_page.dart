@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:hikeyy/screens/home_page/widget/my_schedule_card.dart';
+import 'package:hikeyy/screens/home_page/widget/trails.dart';
 import 'package:hikeyy/screens/home_page/widget/venu_card.dart';
 import 'package:hikeyy/screens/login_signup/login.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -68,7 +69,7 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
         key: _scaffoldkey,
-        drawer: Drawer(
+        drawer: const Drawer(
           child: Icon(Icons.add),
         ),
         //extendBodyBehindAppBar: true,
@@ -92,11 +93,11 @@ class _HomePageState extends State<HomePage> {
                         Row(
                           children: [
                             GestureDetector(
-                                child: Container(child: const Icon(Icons.add)),
+                                child: const Icon(Icons.add),
                                 onTap: () =>
                                     _scaffoldkey.currentState!.openDrawer()),
-                            Padding(
-                              padding: const EdgeInsets.only(left: 20.0),
+                            const Padding(
+                              padding: EdgeInsets.only(left: 20.0),
                               child: Text(
                                 'WELCOME UserName!!',
                                 style: TextStyle(fontSize: 20),
@@ -105,12 +106,12 @@ class _HomePageState extends State<HomePage> {
                           ],
                         ),
                         GestureDetector(
-                          child: Icon(Icons.notifications),
+                          child: const Icon(Icons.notifications),
                           onTap: () {
                             Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                    builder: (context) => MyFriendRequest()));
+                                    builder: (context) => const MyFriendRequest()));
                           },
                         ),
                         // Icon(Icons.notifications),
@@ -120,22 +121,25 @@ class _HomePageState extends State<HomePage> {
                   Padding(
                     padding: const EdgeInsets.only(top: 200.0),
                     child: Container(
-                      //height: double.infinity,
+                      //height: 1000,
                       alignment: Alignment.center,
                       decoration: BoxDecoration(
                           borderRadius: const BorderRadius.only(
                               topLeft: Radius.circular(35),
-                              topRight: Radius.circular(35)),
+                              topRight: Radius.circular(35),
+                          bottomLeft:Radius.circular(25),
+                          bottomRight: Radius.circular(25),),
                           color: Colors.grey.shade200.withOpacity(0.5)),
                       child: Padding(
-                        padding: EdgeInsets.only(
+                        padding: const EdgeInsets.only(
                           top: 25.0,
                         ),
                         child: SingleChildScrollView(
                           //  scrollDirection: Axis.vertical,
                           child: Column(
+                            mainAxisAlignment: MainAxisAlignment.start,
                             children: [
-                              Padding(
+                               const Padding(
                                 padding: EdgeInsets.only(left: 25.0, right: 25),
                                 child: Row(
                                   mainAxisAlignment:
@@ -153,14 +157,14 @@ class _HomePageState extends State<HomePage> {
                               ),
                               StreamBuilder<QuerySnapshot>(
                                 stream: FirebaseFirestore.instance
-                                    .collection('Destination')
+                                    .collection('Trails')
                                     .snapshots(),
                                 builder: (context, snapshots) {
                                   if (snapshots.hasError) {
                                     return Text('Error: ${snapshots.error}');
                                   }
                                   if (!snapshots.hasData) {
-                                    return Text('No data available');
+                                    return const Text('No data available');
                                   }
                                   return SingleChildScrollView(
                                     child: Column(
@@ -169,7 +173,7 @@ class _HomePageState extends State<HomePage> {
                                         SizedBox(
                                           height: 200.0,
                                           child: ListView.builder(
-                                              physics: ClampingScrollPhysics(),
+                                              physics: const ClampingScrollPhysics(),
                                               shrinkWrap: true,
                                               scrollDirection: Axis.horizontal,
                                               padding: const EdgeInsets.all(10),
@@ -180,13 +184,19 @@ class _HomePageState extends State<HomePage> {
                                                         .data!.docs[index]
                                                         .data()
                                                     as Map<String, dynamic>;
+                                                String id = snapshots.data!.docs[index].id;
                                                 return Row(
                                                   children: [
-                                                    VenuCard(
-                                                      venue: data['Name']
-                                                          .toString(),
-                                                      location: 'Nepal',
-                                                      date: 'July',
+                                                    GestureDetector(
+                                                      child: VenuCard(
+                                                        venue: data['Name']
+                                                            .toString(),
+                                                        location: 'Nepal',
+                                                        date: 'July',
+                                                      ),
+                                                      onTap: (){
+                                                        Navigator.push(context, MaterialPageRoute(builder: (context)=> Trails(id: id)));
+                                                      },
                                                     ),
                                                   ],
                                                 );
@@ -198,12 +208,12 @@ class _HomePageState extends State<HomePage> {
                                 },
                               ),
                               Padding(
-                                padding: EdgeInsets.only(left: 25.0, right: 25),
+                                padding: const EdgeInsets.only(left: 25.0, right: 25),
                                 child: Row(
                                   mainAxisAlignment:
                                       MainAxisAlignment.spaceBetween,
                                   children: [
-                                    Text(
+                                    const Text(
                                       'My Schedule',
                                       style: TextStyle(
                                           fontWeight: FontWeight.w800,
@@ -224,7 +234,7 @@ class _HomePageState extends State<HomePage> {
                                         // );
                                         print('Text clicked');
                                       },
-                                      child: Text(
+                                      child: const Text(
                                         'See all',
                                         style: TextStyle(
                                           color: Colors.blue,
@@ -235,7 +245,9 @@ class _HomePageState extends State<HomePage> {
                                   ],
                                 ),
                               ),
-                              GroupList(auth: auth),
+                              Container(
+                                  height:400,
+                                  child: GroupList(auth: auth)),
                             ],
                           ),
                         ),

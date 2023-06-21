@@ -11,12 +11,15 @@ class WhiteContainer extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.only(top: 150),
       child: Container(
-        decoration: const BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.only(
+        decoration: BoxDecoration(
+          color: Colors.grey.shade200.withOpacity(0.5),
+          borderRadius: const BorderRadius.only(
             topLeft: Radius.circular(25),
             topRight: Radius.circular(25),
+            bottomRight:  Radius.circular(25),
+            bottomLeft:  Radius.circular(25),
           ),
+
         ),
       ),
     );
