@@ -202,7 +202,7 @@ class _HomePageState extends State<HomePage> {
                                                           context,
                                                           MaterialPageRoute(
                                                             builder: (context) =>
-                                                                const VenueDetailsPage(),
+                                                                VenueDetailsPage(id: id,),
                                                             // Trails(
                                                             //     id: id),
                                                           ),
