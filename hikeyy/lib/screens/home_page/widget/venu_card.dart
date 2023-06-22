@@ -1,6 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
+import '../../../widgets/location_month_icon_row.dart';
+
 class VenuCard extends StatelessWidget {
   final String venue;
   final String location;
@@ -42,15 +44,7 @@ class VenuCard extends StatelessWidget {
                   venue,
                   style: TextStyle(fontWeight: FontWeight.w600, fontSize: 18),
                 ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    Icon(Icons.location_on),
-                    Text(location),
-                    Icon(Icons.calendar_month),
-                    Text(date)
-                  ],
-                )
+                LocationMonthIconRow(location: location, date: date)
               ],
             ),
           ),

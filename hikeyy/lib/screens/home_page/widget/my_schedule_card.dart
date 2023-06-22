@@ -20,7 +20,7 @@ class MyScheduleCard extends StatelessWidget {
         height: 80,
         width: double.infinity,
         decoration: BoxDecoration(
-          color: const Color.fromARGB(255, 200, 199, 199),
+          color: Colors.green.withOpacity(0.1),
           borderRadius: BorderRadius.all(
             Radius.circular(20),
           ),
@@ -62,7 +62,7 @@ class MyScheduleCard extends StatelessWidget {
                 height: 30,
                 width: 70,
                 decoration: BoxDecoration(
-                    color: Colors.blue,
+                    color: Color.fromARGB(255, 128, 206, 131),
                     borderRadius: BorderRadius.all(Radius.circular(50))),
                 child: Center(child: Text('Joined')),
               )

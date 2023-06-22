@@ -41,7 +41,7 @@ class _SignupState extends State<Signup> {
                       child: Container(
                           height: 200,
                           child: Image.asset('assets/images/logo.png'))),
-                  AppTextsHeading(
+                  AppTextHeading(
                     textHeading: 'Sign Up',
                     fontSize: 35,
                   ),
@@ -140,35 +140,36 @@ class _SignupState extends State<Signup> {
                                     .createUserWithEmailAndPassword(
                                         email: _emailController.text.trim(),
                                         password:
-                                            _passwordController.text.trim()).then((value) {
-                                              Users.doc(value.user!.uid).set({
-                                                'Bio' : '',
-                                                'pfpUrl': '',
-                                                'UserName':_nameController.text.trim(),
-                                                'Email': _emailController.text.trim(),
-                                              }).then((value) {
-                                                Navigator.push(
-                                                  context,
-                                                  MaterialPageRoute(
-                                                      builder: (context) =>
-                                                      const VerifyMailPage()),
-                                                );
-                                              });
-
-                                }).onError((error, stackTrace){
+                                            _passwordController.text.trim())
+                                    .then((value) {
+                                  Users.doc(value.user!.uid).set({
+                                    'Bio': '',
+                                    'pfpUrl': '',
+                                    'UserName': _nameController.text.trim(),
+                                    'Email': _emailController.text.trim(),
+                                  }).then((value) {
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) =>
+                                              const VerifyMailPage()),
+                                    );
+                                  });
+                                }).onError((error, stackTrace) {
                                   showDialog<String>(
                                       context: context,
-                                      builder: (BuildContext context) => AlertDialog(
-                                        title: const Text('Error'),
-                                        content:Text(error.toString()),
-                                        actions: <Widget>[
-                                          TextButton(
-                                            onPressed: () => Navigator.pop(context, 'OK'),
-                                            child: const Text('OK'),
-                                          ),
-                                        ],
-                                      )
-                                  );
+                                      builder: (BuildContext context) =>
+                                          AlertDialog(
+                                            title: const Text('Error'),
+                                            content: Text(error.toString()),
+                                            actions: <Widget>[
+                                              TextButton(
+                                                onPressed: () => Navigator.pop(
+                                                    context, 'OK'),
+                                                child: const Text('OK'),
+                                              ),
+                                            ],
+                                          ));
                                 });
                               }
                             },
