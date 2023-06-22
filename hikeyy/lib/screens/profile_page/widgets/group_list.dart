@@ -39,14 +39,10 @@ class GroupList extends StatelessWidget {
                 return Container(
                   height: 200,
                   width: 350,
-                  // decoration: BoxDecoration(
-                  //   borderRadius: BorderRadius.circular(20),
-                  //   border: Border.all(
-                  //       color: Colors.green, width: 5),
-                  // ),
                   child: ListView.builder(
                       scrollDirection: Axis.vertical,
                       shrinkWrap: true,
+                      physics: NeverScrollableScrollPhysics(),
                       itemCount: snapshots.data!.docs.length,
                       itemBuilder: (context, index) {
                         var dataG = snapshots.data!.docs[index].data()

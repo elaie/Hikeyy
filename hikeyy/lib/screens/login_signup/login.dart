@@ -17,31 +17,29 @@ class LoginPage extends StatefulWidget {
 class _LoginPageState extends State<LoginPage> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
-  Future signIN() async{
+  Future signIN() async {
     await FirebaseAuth.instance
         .signInWithEmailAndPassword(
-        email: _emailController.text.trim(),
-        password: _passwordController.text.trim())
+            email: _emailController.text.trim(),
+            password: _passwordController.text.trim())
         .then((value) {
       Navigator.push(
         context,
         MaterialPageRoute(builder: (context) => const IsLogged()),
       );
-    })
-        .onError((error, stackTrace) async {
+    }).onError((error, stackTrace) async {
       showDialog<String>(
           context: context,
           builder: (BuildContext context) => AlertDialog(
-            title: const Text('Error'),
-            content:Text(error.toString()),
-            actions: <Widget>[
-              TextButton(
-                onPressed: () => Navigator.pop(context, 'OK'),
-                child: const Text('OK'),
-              ),
-            ],
-          )
-      );
+                title: const Text('Error'),
+                content: Text(error.toString()),
+                actions: <Widget>[
+                  TextButton(
+                    onPressed: () => Navigator.pop(context, 'OK'),
+                    child: const Text('OK'),
+                  ),
+                ],
+              ));
     });
   }
 
@@ -62,7 +60,7 @@ class _LoginPageState extends State<LoginPage> {
                       fit: BoxFit.fill,
                     )),
               ),
-              AppTextsHeading(
+              AppTextHeading(
                 textHeading: 'Welcome!',
                 fontSize: 25,
               ),
@@ -110,7 +108,7 @@ class _LoginPageState extends State<LoginPage> {
                     width: 400,
                     height: 50,
                     child: ElevatedButton(
-                      onPressed: (){
+                      onPressed: () {
                         signIN();
                       },
                       style: ButtonStyle(
