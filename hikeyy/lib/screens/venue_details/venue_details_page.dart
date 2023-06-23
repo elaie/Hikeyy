@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:hikeyy/screens/plan_trip_page/plan_trip_page.dart';
+import 'package:hikeyy/widgets/app_colors.dart';
 import 'package:hikeyy/widgets/app_texts.dart';
 import 'package:hikeyy/widgets/location_month_icon_row.dart';
 
@@ -49,15 +51,20 @@ class _VenueDetailsPageState extends State<VenueDetailsPage> {
                             fontSize: 20,
                             textHeading: 'EBC',
                           ),
-                          LocationMonthIconRow(
-                              location: 'Def on Earth', date: 'Jan'),
+                          Row(
+                            children: [
+                              Icon(Icons.location_on),
+                              AppText(text: 'Def on Earth')
+                            ],
+                          )
                         ],
                       ),
                       SizedBox(
+                        height: 50,
                         child: ElevatedButton(
                           style: ButtonStyle(
-                            backgroundColor:
-                                MaterialStateProperty.all(Colors.black),
+                            backgroundColor: MaterialStateProperty.all(
+                                AppColor.primaryColor),
                             shape: MaterialStateProperty.all<
                                 RoundedRectangleBorder>(
                               RoundedRectangleBorder(
@@ -95,15 +102,14 @@ class _VenueDetailsPageState extends State<VenueDetailsPage> {
                     child: Container(
                       constraints: BoxConstraints(minHeight: 100),
                       decoration: BoxDecoration(
-                          color: Color.fromARGB(255, 130, 200, 133)
-                              .withOpacity(0.5),
+                          color: AppColor.primaryLightColor,
                           borderRadius: BorderRadius.circular(20)),
                       child: Padding(
                         padding: EdgeInsets.all(20.0),
                         child: Row(children: [
                           Column(
                             children: [
-                              AppText(text: 'Rating'),
+                              AppText(text: 'Ratings'),
                               Icon(
                                 Icons.star,
                                 color: Color.fromARGB(255, 233, 217, 74),
@@ -126,10 +132,74 @@ class _VenueDetailsPageState extends State<VenueDetailsPage> {
                         ]),
                       ),
                     ),
-                  )
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(top: 15.0),
+                    child: AppTextHeading(
+                      textHeading: 'Discription',
+                      fontSize: 20,
+                    ),
+                  ),
+                  AppTextSubHeading(
+                      text:
+                          'bla bla bla bla bla bla bla very nice place. Def visit. thankyou')
                 ],
               ),
             ),
+          ),
+        ),
+      ),
+      bottomNavigationBar: Padding(
+        padding: const EdgeInsets.all(20.0),
+        child: Container(
+          height: 50,
+          // decoration: BoxDecoration(color: Colors.amber),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Column(
+                children: [
+                  AppText(
+                    text: 'Estimated cost',
+                    fontSize: 17,
+                  ),
+                  AppTextSubHeading(text: 'Rs.1 per person')
+                ],
+              ),
+              SizedBox(
+                height: 50,
+                child: ElevatedButton(
+                  style: ButtonStyle(
+                    backgroundColor:
+                        MaterialStateProperty.all(AppColor.primaryColor),
+                    shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                      RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(30),
+                      ),
+                    ),
+                  ),
+                  onPressed: () {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => PlanTripPage()));
+                  },
+                  child: const Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Padding(
+                        padding: EdgeInsets.only(left: 2.0),
+                        child: AppText(
+                          text: 'Plan Trip',
+                          color: Colors.white,
+                        ),
+                      ),
+                      Icon(Icons.arrow_forward_ios),
+                    ],
+                  ),
+                ),
+              ),
+            ],
           ),
         ),
       ),
