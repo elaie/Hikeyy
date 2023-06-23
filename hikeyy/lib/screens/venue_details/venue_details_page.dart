@@ -7,7 +7,8 @@ import 'package:hikeyy/widgets/location_month_icon_row.dart';
 import '../home_page/widget/trails.dart';
 
 class VenueDetailsPage extends StatefulWidget {
-  const VenueDetailsPage({super.key});
+  final String id;
+  const VenueDetailsPage({super.key, required this.id});
 
   @override
   State<VenueDetailsPage> createState() => _VenueDetailsPageState();
@@ -76,8 +77,7 @@ class _VenueDetailsPageState extends State<VenueDetailsPage> {
                             Navigator.push(
                               context,
                               MaterialPageRoute(
-                                  builder: (context) => const Text(
-                                      'navigate to trails page here')),
+                                  builder: (context) =>Trails(id: widget.id)),
                             );
                           },
                           child: const Row(
