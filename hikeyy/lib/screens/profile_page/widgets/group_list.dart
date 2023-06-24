@@ -38,7 +38,7 @@ class GroupList extends StatelessWidget {
 
                 return Container(
                   height: 200,
-                  width: 350,
+                  width: double.infinity,
                   child: ListView.builder(
                       scrollDirection: Axis.vertical,
                       shrinkWrap: true,
@@ -51,7 +51,7 @@ class GroupList extends StatelessWidget {
                         return MyScheduleCard(
                           groupName: dataG['GroupName'],
                           destination: 'Nepal',
-                          date: 'July',
+                          date: dataG['Time'],
                         );
                       }),
                 );
