@@ -9,7 +9,6 @@ import '../home_page/widget/trails.dart';
 
 class VenueDetailsPage extends StatefulWidget {
   final String id;
-
   const VenueDetailsPage({super.key, required this.id});
 
   @override
