@@ -43,20 +43,6 @@ class _SearchPageState extends State<SearchPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // appBar: AppBar(
-      //   automaticallyImplyLeading: false,
-      //   title: Card(
-      //     child: TextField(
-      //       decoration: InputDecoration(
-      //           prefixIcon: Icon(Icons.search), hintText: 'Search'),
-      //       onChanged: (val) {
-      //         setState(() {
-      //           name = val;
-      //         });
-      //       },
-      //     ),
-      //   ),
-      // ),
       body: Container(
         height: MediaQuery.of(context).size.height,
         alignment: Alignment.topCenter,
@@ -65,23 +51,23 @@ class _SearchPageState extends State<SearchPage> {
               image: AssetImage('assets/images/green_background.png'),
               fit: BoxFit.cover),
         ),
-        child: SingleChildScrollView(
-          child: Column(
-            children: [
-              Padding(
-                padding: const EdgeInsets.symmetric(vertical: 8.0,horizontal: 8),
-                child: TextField(
-                  decoration: const InputDecoration(
-                      prefixIcon: Icon(Icons.search), hintText: 'Search'),
-                  onChanged: (val) {
-                    setState(() {
-                      name = val;
-                    });
-                  },
-                ),
+        child: Column(
+          children: [
+            Padding(
+              padding: const EdgeInsets.symmetric(vertical: 8.0,horizontal: 8),
+              child: TextField(
+                decoration: const InputDecoration(
+                    prefixIcon: Icon(Icons.search), hintText: 'Search'),
+                onChanged: (val) {
+                  setState(() {
+                    name = val;
+                  });
+                },
               ),
-              Container(
-                height: MediaQuery.of(context).size.height*0.82,
+            ),
+            Expanded(
+              child: Container(
+                //height: MediaQuery.of(context).size.height*0.82,
                 alignment: Alignment.center,
                 decoration: BoxDecoration(
                     borderRadius: const BorderRadius.only(
@@ -116,15 +102,6 @@ class _SearchPageState extends State<SearchPage> {
                                   return Container();
                                 }
                                  if (snapshot.connectionState== ConnectionState.done) {
-                                //   final datas = FirebaseFirestore.instance
-                                //       .collection('Users')
-                                //       .doc(auth.currentUser!.uid)
-                                //       .collection('Requests')
-                                //       .doc(uid)
-                                //       .get();
-                                //  String about=FirebaseFirestore.instance.collection('Users').doc(auth.currentUser!.uid).collection('Requests').doc(snapshots.data!.docs[index].id).snapshots().toString();
-                                 // print(about);
-                                  //print("1111111111111111111111111");
                                   return ListTile(
                                     title: Text(data['UserName']),
                                     leading: CircleAvatar(
@@ -232,8 +209,8 @@ class _SearchPageState extends State<SearchPage> {
                   },
                 ),
               ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );

@@ -9,7 +9,9 @@ import '../../widgets/app_colors.dart';
 import '../dashboard/dashboard.dart';
 
 class PlanTripPage extends StatefulWidget {
-  const PlanTripPage({super.key});
+  final String id;
+
+  const PlanTripPage({super.key, required this.id});
 
   @override
   State<PlanTripPage> createState() => _PlanTripPageState();
@@ -81,20 +83,20 @@ class _PlanTripPageState extends State<PlanTripPage> {
     FirebaseFirestore.instance
         .collection('Groups')
         .doc(doc_id)
-        .set({'Name': gname, 'Members': selected}).then((value) {
-      selected.forEach((element) {
+        .set({'Name': gname, 'Members': selected,'Trail' : widget.id,'Time': selectedDate}).then((value) {
+      for (var element in selected) {
         FirebaseFirestore.instance
             .collection('Users')
             .doc(element)
             .collection('MyGroup')
             .doc(doc_id)
-            .set({'GroupName': gname, 'GroupID': doc_id}).then((value) {
+            .set({'GroupName': gname, 'GroupID': doc_id,'Trail' : widget.id,'Time': selectedDate}).then((value) {
           Navigator.push(
             context,
             MaterialPageRoute(builder: (context) => const Dashboard()),
           );
         });
-      });
+      }
     });
   }
 
@@ -106,7 +108,7 @@ class _PlanTripPageState extends State<PlanTripPage> {
         initialDate: selectedDate,
         firstDate: DateTime(2015, 8),
         lastDate: DateTime(2101));
-    if (picked != null && picked != selectedDate) {
+    if (picked != null && picked != selectedDate && picked.isAfter(DateTime.now())) {
       setState(() {
         selectedDate = picked;
       });
@@ -121,8 +123,7 @@ class _PlanTripPageState extends State<PlanTripPage> {
           padding: const EdgeInsets.only(top: 100.0, left: 15),
           child: SingleChildScrollView(
             child:
-            Column(crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
+                Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
               const AppTextHeading(
                 textHeading: 'Lets Plan your Trip!',
                 fontSize: 20,
@@ -135,18 +136,20 @@ class _PlanTripPageState extends State<PlanTripPage> {
                 ),
               ),
               Padding(
-                padding: const EdgeInsets.only(right: 15.0),
-                child: TextFormField(
-                  initialValue: 'whichever venu page they came from',
-                  decoration: const InputDecoration(
-                    hintText: 'Group Name',
-                    enabledBorder: UnderlineInputBorder(
-                      borderSide:
-                          BorderSide(color: Color.fromARGB(255, 209, 207, 207)),
-                    ),
-                  ),
-                ),
-              ),
+                  padding: const EdgeInsets.only(right: 15.0),
+                  child: FutureBuilder<DocumentSnapshot<Map<String, dynamic>>>(
+                      future: FirebaseFirestore.instance
+                          .collection('Trails')
+                          .doc(widget.id)
+                          .get(),
+                      builder: (_, snapshot) {
+                        if(!snapshot.hasData){
+                          return const Text('....................');
+                        }
+                        else{
+                          return Text(snapshot.data!.data()!['Name']);
+                        }
+                      })),
               const Padding(
                 padding: EdgeInsets.only(top: 30.0, bottom: 10),
                 child: AppTextHeading(
@@ -254,9 +257,9 @@ class _PlanTripPageState extends State<PlanTripPage> {
                                           snapshot.data!.data()
                                               as Map<String, dynamic>;
                                       return Container(
-                                        width: 150,
+                                        width: 200,
                                         decoration: const BoxDecoration(
-                                            color: Colors.lightBlueAccent,
+                                            color: AppColor.primaryColor,
                                             borderRadius: BorderRadius.all(
                                                 Radius.circular(30))),
                                         child: Center(
@@ -316,7 +319,6 @@ class _PlanTripPageState extends State<PlanTripPage> {
               ),
               Column(
                 children: [
-
                   StreamBuilder<QuerySnapshot>(
                     stream: FirebaseFirestore.instance
                         .collection('Users')

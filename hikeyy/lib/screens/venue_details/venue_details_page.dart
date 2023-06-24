@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:hikeyy/screens/plan_trip_page/plan_trip_page.dart';
 import 'package:hikeyy/widgets/app_colors.dart';
 import 'package:hikeyy/widgets/app_texts.dart';
-import 'package:hikeyy/widgets/location_month_icon_row.dart';
 
 import '../home_page/widget/trails.dart';
 
@@ -251,7 +250,7 @@ class _VenueDetailsPageState extends State<VenueDetailsPage> {
                     Navigator.push(
                         context,
                         MaterialPageRoute(
-                            builder: (context) => const PlanTripPage()));
+                            builder: (context) => PlanTripPage(id: widget.id)));
                   },
                   child: const Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,

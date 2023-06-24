@@ -195,7 +195,7 @@ class _HomePageState extends State<HomePage> {
                                                         venue: data['Name']
                                                             .toString(),
                                                         location: 'Nepal',
-                                                        date: 'July',
+                                                        date: 'july',
                                                       ),
                                                       onTap: () {
                                                         Navigator.push(
