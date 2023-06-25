@@ -8,6 +8,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:hikeyy/screens/profile_page/MyFriendRequest.dart';
 import 'package:hikeyy/screens/profile_page/widgets/group_list.dart';
 import 'package:hikeyy/screens/venue_details/venue_details_page.dart';
+import 'package:hikeyy/widgets/app_texts.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'dart:io';
@@ -71,9 +72,9 @@ class _HomePageState extends State<HomePage> {
     return Scaffold(
         key: _scaffoldkey,
         drawer: const Drawer(
-          child: Icon(Icons.add),
+          child: Icon(Icons.abc_rounded),
         ),
-        //extendBodyBehindAppBar: true,
+        extendBodyBehindAppBar: false,
         body: SafeArea(
           child: Container(
             alignment: Alignment.topCenter,
@@ -94,20 +95,61 @@ class _HomePageState extends State<HomePage> {
                         Row(
                           children: [
                             GestureDetector(
-                                child: const Icon(Icons.add),
+                                child: Container(
+                                    height: 40,
+                                    width: 40,
+                                    decoration: BoxDecoration(
+                                        boxShadow: [
+                                          BoxShadow(
+                                            color: Colors.grey.withOpacity(0.5),
+                                            spreadRadius: 3,
+                                            blurRadius: 9,
+                                            offset: Offset(0, 3),
+                                          ),
+                                        ],
+                                        shape: BoxShape.circle,
+                                        color: Colors.white),
+                                    child: Padding(
+                                      padding: const EdgeInsets.all(10.0),
+                                      child: const Image(
+                                          image: AssetImage(
+                                              'assets/icons/menu.png')),
+                                    )),
                                 onTap: () =>
                                     _scaffoldkey.currentState!.openDrawer()),
                             const Padding(
-                              padding: EdgeInsets.only(left: 20.0),
+                              padding: EdgeInsets.only(left: 35.0),
                               child: Text(
-                                'WELCOME UserName!!',
-                                style: TextStyle(fontSize: 20),
+                                'Happy Hiking!',
+                                style: TextStyle(
+                                  fontSize: 25,
+                                  fontWeight: FontWeight.w900,
+                                  color: Colors.white,
+                                  shadows: [
+                                    Shadow(
+                                      color: Colors.grey,
+                                      offset: Offset(2, 2),
+                                      blurRadius: 2,
+                                    ),
+                                  ],
+                                ),
                               ),
                             ),
                           ],
                         ),
                         GestureDetector(
-                          child: const Icon(Icons.notifications),
+                          child: Container(
+                              height: 40,
+                              width: 40,
+                              decoration: BoxDecoration(boxShadow: [
+                                BoxShadow(
+                                  color: Colors.grey.withOpacity(0.5),
+                                  spreadRadius: 3,
+                                  blurRadius: 9,
+                                  offset: Offset(0, 3),
+                                ),
+                              ], shape: BoxShape.circle, color: Colors.white),
+                              child: const Icon(Icons.notifications)),
                           onTap: () {
                             Navigator.push(
                                 context,
@@ -130,7 +172,7 @@ class _HomePageState extends State<HomePage> {
                             topLeft: Radius.circular(35),
                             topRight: Radius.circular(35),
                           ),
-                          color: Colors.grey.shade200.withOpacity(0.5)),
+                          color: Colors.white),
                       child: Padding(
                         padding: const EdgeInsets.only(
                           top: 25.0,
@@ -139,6 +181,7 @@ class _HomePageState extends State<HomePage> {
                           //  scrollDirection: Axis.vertical,
                           child: Column(
                             mainAxisAlignment: MainAxisAlignment.start,
+                            crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               const Padding(
                                 padding: EdgeInsets.only(left: 25.0, right: 25),
@@ -147,10 +190,10 @@ class _HomePageState extends State<HomePage> {
                                       MainAxisAlignment.spaceBetween,
                                   children: [
                                     Text(
-                                      'Recommended',
+                                      'Explore\nNew Places',
                                       style: TextStyle(
                                           fontWeight: FontWeight.w800,
-                                          fontSize: 17),
+                                          fontSize: 25),
                                     ),
                                     Text('See all')
                                   ],
@@ -202,7 +245,9 @@ class _HomePageState extends State<HomePage> {
                                                           context,
                                                           MaterialPageRoute(
                                                             builder: (context) =>
-                                                                VenueDetailsPage(id: id,),
+                                                                VenueDetailsPage(
+                                                              id: id,
+                                                            ),
                                                             // Trails(
                                                             //     id: id),
                                                           ),

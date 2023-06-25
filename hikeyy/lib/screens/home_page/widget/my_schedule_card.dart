@@ -34,6 +34,14 @@ class MyScheduleCard extends StatelessWidget {
                 height: 70,
                 width: 70,
                 decoration: BoxDecoration(
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.grey.withOpacity(0.5), // Shadow color
+                        spreadRadius: 3, // Spread radius
+                        blurRadius: 9, // Blur radius
+                        offset: Offset(0, 3), // Offset in the x and y direction
+                      ),
+                    ],
                     image: DecorationImage(
                         image: AssetImage('assets/images/camping.png'),
                         fit: BoxFit.cover),
@@ -62,6 +70,14 @@ class MyScheduleCard extends StatelessWidget {
                 height: 30,
                 width: 70,
                 decoration: BoxDecoration(
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.grey.withOpacity(0.5), // Shadow color
+                        spreadRadius: 2, // Spread radius
+                        blurRadius: 6, // Blur radius
+                        offset: Offset(0, 3), // Offset in the x and y direction
+                      ),
+                    ],
                     color: Color.fromARGB(255, 128, 206, 131),
                     borderRadius: BorderRadius.all(Radius.circular(50))),
                 child: Center(child: Text('Joined')),

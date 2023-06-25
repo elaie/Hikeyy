@@ -21,13 +21,21 @@ class VenuCard extends StatelessWidget {
       child: Container(
         height: 230,
         width: 200,
-        decoration: const BoxDecoration(
-            image: DecorationImage(
+        decoration: BoxDecoration(
+            boxShadow: [
+              BoxShadow(
+                color: Colors.grey.withOpacity(0.5), // Shadow color
+                spreadRadius: 3, // Spread radius
+                blurRadius: 9, // Blur radius
+                offset: Offset(0, 3), // Offset in the x and y direction
+              ),
+            ],
+            image: const DecorationImage(
                 image: AssetImage(
                   'assets/images/camping.png',
                 ),
                 fit: BoxFit.cover),
-            borderRadius: BorderRadius.all(Radius.circular(30))),
+            borderRadius: const BorderRadius.all(Radius.circular(30))),
         child: Padding(
           padding:
               const EdgeInsets.only(top: 90.0, right: 10, left: 10, bottom: 10),
