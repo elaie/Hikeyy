@@ -27,7 +27,7 @@ apply from: "$flutterRoot/packages/flutter_tools/gradle/flutter.gradle"
 
 android {
     namespace "com.example.hikeyy"
-    compileSdkVersion flutter.compileSdkVersion
+    compileSdkVersion 33
     ndkVersion flutter.ndkVersion
 
     compileOptions {
@@ -64,6 +64,8 @@ android {
 }
 dependencies {
     implementation 'androidx.multidex:multidex:2.0.1'
+    implementation 'com.google.firebase:firebase-analytics:17.2.2'
+    implementation 'com.google.firebase:firebase-messaging:20.1.7'
 }
 
 flutter {
