@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:math';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -7,9 +8,12 @@ import 'package:hikeyy/widgets/app_texts.dart';
 
 import '../../widgets/app_colors.dart';
 import '../dashboard/dashboard.dart';
+import 'package:http/http.dart' as http;
 
 class PlanTripPage extends StatefulWidget {
-  const PlanTripPage({super.key});
+  final String id;
+
+  const PlanTripPage({super.key, required this.id});
 
   @override
   State<PlanTripPage> createState() => _PlanTripPageState();
@@ -81,20 +85,47 @@ class _PlanTripPageState extends State<PlanTripPage> {
     FirebaseFirestore.instance
         .collection('Groups')
         .doc(doc_id)
-        .set({'Name': gname, 'Members': selected}).then((value) {
-      selected.forEach((element) {
+        .set({'Name': gname, 'Members': selected,'Trail' : widget.id,'Time': selectedDate}).then((value) async {
+      for (var element in selected) {
+        DocumentSnapshot data = await FirebaseFirestore.instance.collection('Users').doc(element).get();
         FirebaseFirestore.instance
             .collection('Users')
             .doc(element)
             .collection('MyGroup')
             .doc(doc_id)
-            .set({'GroupName': gname, 'GroupID': doc_id}).then((value) {
+            .set({'GroupName': gname, 'GroupID': doc_id,'Trail' : widget.id,'Time': selectedDate}).then((value) {
+          try{
+            http.post(Uri.parse('https://fcm.googleapis.com/fcm/send'),
+                headers: <String,String>{
+                  'Content-Type':'application/json',
+                  'Authorization':'key=AAAAmBUmFv8:APA91bHyUqeVPNp2YUQx4J3S4nJMupqms0CprTzq1RD-aQqJaJcZwb7QhvK-GWuj-qPzc1vKXVvJKFyUT4bFYlRGxLREnbD-amKaWWeVuaxUvMsOdYNK4aEcJnUjIWRJRQm-bbv-3kTA'
+                },
+                body: jsonEncode(<String,dynamic>{
+                  'priority':'high',
+                  'data':<String,dynamic>{
+                    'click_action':'FLUTTER_NOTIFICATION_CLICK',
+                    'status':'done',
+                    'body': 'Group Created for the hike of ${gname} at ${selectedDate.year}-${selectedDate.month}-${selectedDate.day}. Best Wishes for the Hike',
+                    'title' : 'Time for Hike'
+                  },
+                  "notification":<String,dynamic>{
+                    "title":"Time For Hike",
+                    "body": "Group Created for the hike of ${gname} at ${selectedDate}. Best Wishes for the Hike",
+                    "android_channel_id" : 'db'
+                  },
+                  "to" : data['TokenId']
+                }));
+          } catch(e){
+            print(e);
+          }
           Navigator.push(
             context,
             MaterialPageRoute(builder: (context) => const Dashboard()),
-          );
+          ).then((value) {
+          });
         });
-      });
+      }
+
     });
   }
 
@@ -106,7 +137,7 @@ class _PlanTripPageState extends State<PlanTripPage> {
         initialDate: selectedDate,
         firstDate: DateTime(2015, 8),
         lastDate: DateTime(2101));
-    if (picked != null && picked != selectedDate) {
+    if (picked != null && picked != selectedDate && picked.isAfter(DateTime.now())) {
       setState(() {
         selectedDate = picked;
       });
@@ -122,32 +153,34 @@ class _PlanTripPageState extends State<PlanTripPage> {
           child: SingleChildScrollView(
             child:
                 Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-              AppTextHeading(
+              const AppTextHeading(
                 textHeading: 'Lets Plan your Trip!',
                 fontSize: 20,
               ),
-              Padding(
-                padding: const EdgeInsets.only(top: 50.0, bottom: 10),
+              const Padding(
+                padding: EdgeInsets.only(top: 50.0, bottom: 10),
                 child: AppTextHeading(
                   textHeading: 'Destination:',
                   fontSize: 20,
                 ),
               ),
               Padding(
-                padding: const EdgeInsets.only(right: 15.0),
-                child: TextFormField(
-                  initialValue: 'whichever venu page they came from',
-                  decoration: InputDecoration(
-                    hintText: 'Group Name',
-                    enabledBorder: UnderlineInputBorder(
-                      borderSide:
-                          BorderSide(color: Color.fromARGB(255, 209, 207, 207)),
-                    ),
-                  ),
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.only(top: 30.0, bottom: 10),
+                  padding: const EdgeInsets.only(right: 15.0),
+                  child: FutureBuilder<DocumentSnapshot<Map<String, dynamic>>>(
+                      future: FirebaseFirestore.instance
+                          .collection('Trails')
+                          .doc(widget.id)
+                          .get(),
+                      builder: (_, snapshot) {
+                        if(!snapshot.hasData){
+                          return const Text('....................');
+                        }
+                        else{
+                          return Text(snapshot.data!.data()!['Name']);
+                        }
+                      })),
+              const Padding(
+                padding: EdgeInsets.only(top: 30.0, bottom: 10),
                 child: AppTextHeading(
                   textHeading: 'Date:',
                   fontSize: 20,
@@ -162,7 +195,7 @@ class _PlanTripPageState extends State<PlanTripPage> {
                       padding: const EdgeInsets.only(left: 10.0),
                       child: Text(
                         "${selectedDate.toLocal()}".split(' ')[0],
-                        style: TextStyle(fontSize: 17),
+                        style: const TextStyle(fontSize: 17),
                       ),
                     ),
                     SizedBox(
@@ -180,7 +213,7 @@ class _PlanTripPageState extends State<PlanTripPage> {
                           ),
                         ),
                         onPressed: () => _selectDate(context),
-                        child: AppText(
+                        child: const AppText(
                           text: 'Select Date',
                           color: Colors.white,
                         ),
@@ -189,8 +222,8 @@ class _PlanTripPageState extends State<PlanTripPage> {
                   ],
                 ),
               ),
-              Padding(
-                padding: const EdgeInsets.only(top: 30.0, bottom: 10),
+              const Padding(
+                padding: EdgeInsets.only(top: 30.0, bottom: 10),
                 child: AppTextHeading(
                   textHeading: 'Create a group:',
                   fontSize: 20,
@@ -208,7 +241,7 @@ class _PlanTripPageState extends State<PlanTripPage> {
                       }
                       return null;
                     },
-                    decoration: InputDecoration(
+                    decoration: const InputDecoration(
                       hintText: 'Group Name',
                       enabledBorder: UnderlineInputBorder(
                         borderSide: BorderSide(
@@ -218,8 +251,8 @@ class _PlanTripPageState extends State<PlanTripPage> {
                   ),
                 ),
               ),
-              Padding(
-                padding: const EdgeInsets.only(top: 10.0, bottom: 10, left: 15),
+              const Padding(
+                padding: EdgeInsets.only(top: 10.0, bottom: 10, left: 15),
                 child: AppTextHeading(
                   textHeading: 'Select Friends:',
                   fontSize: 17,
@@ -245,7 +278,7 @@ class _PlanTripPageState extends State<PlanTripPage> {
                                           snapshot) {
                                     if (snapshot.connectionState ==
                                         ConnectionState.waiting) {
-                                      return CircularProgressIndicator();
+                                      return const CircularProgressIndicator();
                                     } else if (snapshot.hasError) {
                                       return Text('Error: ${snapshot.error}');
                                     } else if (snapshot.hasData) {
@@ -253,9 +286,9 @@ class _PlanTripPageState extends State<PlanTripPage> {
                                           snapshot.data!.data()
                                               as Map<String, dynamic>;
                                       return Container(
-                                        width: 150,
-                                        decoration: BoxDecoration(
-                                            color: Colors.lightBlueAccent,
+                                        width: 200,
+                                        decoration: const BoxDecoration(
+                                            color: AppColor.primaryColor,
                                             borderRadius: BorderRadius.all(
                                                 Radius.circular(30))),
                                         child: Center(
@@ -280,20 +313,23 @@ class _PlanTripPageState extends State<PlanTripPage> {
                                                       _Selected.removeAt(index);
                                                     });
                                                   },
-                                                  icon: Icon(Icons.remove))
+                                                  icon:
+                                                      const Icon(Icons.remove))
                                             ],
                                           ),
                                         ),
                                       );
                                     }
-                                    return Container();
+                                    return const SizedBox(
+                                      height: 50,
+                                    );
                                   }),
                             );
                           },
                         ),
                       ),
                     )
-                  : Center(
+                  : const Center(
                       child: Text('No Friends Added'),
                     ),
               TextField(
@@ -310,40 +346,8 @@ class _PlanTripPageState extends State<PlanTripPage> {
                   });
                 },
               ),
-              Stack(
+              Column(
                 children: [
-                  Padding(
-                    padding: const EdgeInsets.only(top: 50, bottom: 50),
-                    child: Center(
-                      child: SizedBox(
-                        width: 400,
-                        height: 50,
-                        child: ElevatedButton(
-                          onPressed: () {
-                            if (_gName.currentState!.validate()) {
-                              _gName.currentState!.save();
-                              _Selected.add(auth.currentUser!.uid);
-                              createGroup(
-                                  _gNameController.text.trim(), _Selected);
-                            }
-                          },
-                          style: ButtonStyle(
-                            backgroundColor: MaterialStateProperty.all(
-                                AppColor.primaryColor),
-                            shape: MaterialStateProperty.all<
-                                RoundedRectangleBorder>(
-                              RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(30),
-                              ),
-                            ),
-                          ),
-                          child: Text(
-                            'Create',
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
                   StreamBuilder<QuerySnapshot>(
                     stream: FirebaseFirestore.instance
                         .collection('Users')
@@ -353,18 +357,16 @@ class _PlanTripPageState extends State<PlanTripPage> {
                     builder: (context, snapshots) {
                       if (snapshots.connectionState ==
                           ConnectionState.waiting) {
-                        return Center(
+                        return const Center(
                           child: CircularProgressIndicator(),
                         );
                       }
                       return Container(
-                        decoration: BoxDecoration(),
+                        decoration: const BoxDecoration(),
                         height: 200,
                         child: ListView.builder(
                             itemCount: snapshots.data!.docs.length,
                             itemBuilder: (context, index) {
-                              var data = snapshots.data!.docs[index].data()
-                                  as Map<String, dynamic>;
                               var id = snapshots.data!.docs[index].id;
                               if (_name == '') {
                                 return Container();
@@ -424,6 +426,38 @@ class _PlanTripPageState extends State<PlanTripPage> {
                             }),
                       );
                     },
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(top: 50, bottom: 50),
+                    child: Center(
+                      child: SizedBox(
+                        width: 400,
+                        height: 50,
+                        child: ElevatedButton(
+                          onPressed: () {
+                            if (_gName.currentState!.validate()) {
+                              _gName.currentState!.save();
+                              _Selected.add(auth.currentUser!.uid);
+                              createGroup(
+                                  _gNameController.text.trim(), _Selected);
+                            }
+                          },
+                          style: ButtonStyle(
+                            backgroundColor: MaterialStateProperty.all(
+                                AppColor.primaryColor),
+                            shape: MaterialStateProperty.all<
+                                RoundedRectangleBorder>(
+                              RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(30),
+                              ),
+                            ),
+                          ),
+                          child: const Text(
+                            'Create',
+                          ),
+                        ),
+                      ),
+                    ),
                   ),
                 ],
               ),
