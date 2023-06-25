@@ -1,3 +1,8 @@
+import 'dart:ffi';
+
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -49,7 +54,23 @@ class _DashboardState extends State<Dashboard> {
       _selectedPageIndex = index;
     });
   }
+  getTokenId()  async {
+  final fcmToken = await FirebaseMessaging.instance.getToken();
+  FirebaseFirestore.instance.collection('Users').doc(FirebaseAuth.instance.currentUser!.uid).update({
+  'TokenId': fcmToken
+  }).then((value) {
+  print(fcmToken);
+  print('@@@@@@@@@@@@@@@@@@@@@');
+  });
+}
 
+  @override
+  void initState()  {
+    // TODO: implement initState
+    super.initState();
+    getTokenId();
+
+  }
   @override
   Widget build(BuildContext context) {
     return WillPopScope(

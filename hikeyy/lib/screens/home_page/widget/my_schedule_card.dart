@@ -16,8 +16,8 @@ class MyScheduleCard extends StatelessWidget {
  // int Date =date*1000
   @override
   Widget build(BuildContext context) {
-    print(date.toDate());
-    print('*********************');
+    //print(date.toDate());
+    //print('*********************');
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: Container(
