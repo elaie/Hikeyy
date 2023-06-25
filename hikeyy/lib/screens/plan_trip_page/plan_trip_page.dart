@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:math';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -7,6 +8,7 @@ import 'package:hikeyy/widgets/app_texts.dart';
 
 import '../../widgets/app_colors.dart';
 import '../dashboard/dashboard.dart';
+import 'package:http/http.dart' as http;
 
 class PlanTripPage extends StatefulWidget {
   final String id;
@@ -83,20 +85,47 @@ class _PlanTripPageState extends State<PlanTripPage> {
     FirebaseFirestore.instance
         .collection('Groups')
         .doc(doc_id)
-        .set({'Name': gname, 'Members': selected,'Trail' : widget.id,'Time': selectedDate}).then((value) {
+        .set({'Name': gname, 'Members': selected,'Trail' : widget.id,'Time': selectedDate}).then((value) async {
       for (var element in selected) {
+        DocumentSnapshot data = await FirebaseFirestore.instance.collection('Users').doc(element).get();
         FirebaseFirestore.instance
             .collection('Users')
             .doc(element)
             .collection('MyGroup')
             .doc(doc_id)
             .set({'GroupName': gname, 'GroupID': doc_id,'Trail' : widget.id,'Time': selectedDate}).then((value) {
+          try{
+            http.post(Uri.parse('https://fcm.googleapis.com/fcm/send'),
+                headers: <String,String>{
+                  'Content-Type':'application/json',
+                  'Authorization':'key=AAAAmBUmFv8:APA91bHyUqeVPNp2YUQx4J3S4nJMupqms0CprTzq1RD-aQqJaJcZwb7QhvK-GWuj-qPzc1vKXVvJKFyUT4bFYlRGxLREnbD-amKaWWeVuaxUvMsOdYNK4aEcJnUjIWRJRQm-bbv-3kTA'
+                },
+                body: jsonEncode(<String,dynamic>{
+                  'priority':'high',
+                  'data':<String,dynamic>{
+                    'click_action':'FLUTTER_NOTIFICATION_CLICK',
+                    'status':'done',
+                    'body': 'Group Created for the hike of ${gname} at ${selectedDate.year}-${selectedDate.month}-${selectedDate.day}. Best Wishes for the Hike',
+                    'title' : 'Time for Hike'
+                  },
+                  "notification":<String,dynamic>{
+                    "title":"Time For Hike",
+                    "body": "Group Created for the hike of ${gname} at ${selectedDate}. Best Wishes for the Hike",
+                    "android_channel_id" : 'db'
+                  },
+                  "to" : data['TokenId']
+                }));
+          } catch(e){
+            print(e);
+          }
           Navigator.push(
             context,
             MaterialPageRoute(builder: (context) => const Dashboard()),
-          );
+          ).then((value) {
+          });
         });
       }
+
     });
   }
 
