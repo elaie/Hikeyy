@@ -66,6 +66,20 @@ void uploadImages(List<File> images) async {
 class _HomePageState extends State<HomePage> {
   FirebaseAuth auth = FirebaseAuth.instance;
   final _scaffoldkey = GlobalKey<ScaffoldState>();
+  String UserName = '';
+  @override
+  Future<void> getUserName() async{
+    DocumentSnapshot data = await FirebaseFirestore.instance.collection('Users').doc(auth.currentUser!.uid).get();
+    setState(() {
+      UserName=data['UserName'];
+    });
+  }
+  @override
+  void initState(){
+    // TODO: implement initState
+    getUserName();
+    super.initState();
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -97,10 +111,10 @@ class _HomePageState extends State<HomePage> {
                                 child: const Icon(Icons.add),
                                 onTap: () =>
                                     _scaffoldkey.currentState!.openDrawer()),
-                            const Padding(
+                            Padding(
                               padding: EdgeInsets.only(left: 20.0),
                               child: Text(
-                                'WELCOME UserName!!',
+                                'WELCOME '+ UserName,
                                 style: TextStyle(fontSize: 20),
                               ),
                             ),
