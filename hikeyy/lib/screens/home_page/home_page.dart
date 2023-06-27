@@ -1,3 +1,5 @@
+// ignore_for_file: prefer_interpolation_to_compose_strings
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:hikeyy/screens/home_page/widget/my_schedule_card.dart';
@@ -66,6 +68,33 @@ void uploadImages(List<File> images) async {
 class _HomePageState extends State<HomePage> {
   FirebaseAuth auth = FirebaseAuth.instance;
   final _scaffoldkey = GlobalKey<ScaffoldState>();
+  String UserName = '';
+  bool showfilter = false;
+  RangeValues _currentRangeValues = const RangeValues(0, 100000);
+  RangeValues _currentTimeRangeValues = const RangeValues(0, 30);
+  @override
+  Future<void> filter() async {
+  Stream<QuerySnapshot<Map<String, dynamic>>> first = await FirebaseFirestore.instance.collection('Trails').where('Duration', isLessThanOrEqualTo: _currentTimeRangeValues.end).snapshots();
+}
+
+  @override
+  Future<void> getUserName() async {
+    DocumentSnapshot data = await FirebaseFirestore.instance
+        .collection('Users')
+        .doc(auth.currentUser!.uid)
+        .get();
+    setState(() {
+      UserName = data['UserName'];
+    });
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    getUserName();
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -97,11 +126,11 @@ class _HomePageState extends State<HomePage> {
                                 child: const Icon(Icons.add),
                                 onTap: () =>
                                     _scaffoldkey.currentState!.openDrawer()),
-                            const Padding(
-                              padding: EdgeInsets.only(left: 20.0),
+                            Padding(
+                              padding: const EdgeInsets.only(left: 20.0),
                               child: Text(
-                                'WELCOME UserName!!',
-                                style: TextStyle(fontSize: 20),
+                                'WELCOME $UserName',
+                                style: const TextStyle(fontSize: 20),
                               ),
                             ),
                           ],
@@ -140,25 +169,160 @@ class _HomePageState extends State<HomePage> {
                           child: Column(
                             mainAxisAlignment: MainAxisAlignment.start,
                             children: [
-                              const Padding(
-                                padding: EdgeInsets.only(left: 25.0, right: 25),
+                              Padding(
+                                padding: const EdgeInsets.only(
+                                    left: 25.0, right: 25),
                                 child: Row(
                                   mainAxisAlignment:
                                       MainAxisAlignment.spaceBetween,
                                   children: [
-                                    Text(
+                                    const Text(
                                       'Recommended',
                                       style: TextStyle(
                                           fontWeight: FontWeight.w800,
                                           fontSize: 17),
                                     ),
-                                    Text('See all')
+                                    GestureDetector(
+                                        onTap: () {
+                                          setState(() {
+                                            showfilter = true;
+                                          });
+                                        },
+                                        child: const Text('Filters'))
                                   ],
                                 ),
                               ),
+                              if (showfilter)
+                                Container(
+                                  height: 200,
+                                  width: double.infinity,
+                                  //color: Colors.green,
+                                  child: Center(
+                                    child: Column(
+                                      children: [
+                                        const Text(
+                                          'Budget',
+                                          style: TextStyle(
+                                              fontWeight: FontWeight.w800,
+                                              fontSize: 17),
+                                        ),
+                                        Padding(
+                                          padding: const EdgeInsets.symmetric(horizontal: 15.0),
+                                          child: RangeSlider(
+                                            values: _currentRangeValues,
+                                            max: 100000,
+                                            divisions: 100,
+                                            labels: RangeLabels(
+                                              _currentRangeValues.start
+                                                  .round()
+                                                  .toString(),
+                                              _currentRangeValues.end
+                                                  .round()
+                                                  .toString(),
+                                            ),
+                                            onChanged: (RangeValues values) {
+                                              setState(() {
+                                                _currentRangeValues = values;
+                                              });
+                                            },
+                                          ),
+                                        ), const Text(
+                                          'Time',
+                                          style: TextStyle(
+                                              fontWeight: FontWeight.w800,
+                                              fontSize: 17),
+                                        ),
+                                        Padding(
+                                          padding: const EdgeInsets.symmetric(horizontal: 15.0),
+                                          child: RangeSlider(
+                                            values: _currentTimeRangeValues,
+                                            max: 30,
+                                            divisions: 30,
+                                            labels: RangeLabels(
+                                              _currentTimeRangeValues.start
+                                                  .round()
+                                                  .toString(),
+                                              _currentTimeRangeValues.end
+                                                  .round()
+                                                  .toString(),
+                                            ),
+                                            onChanged: (RangeValues values) {
+                                              setState(() {
+                                                _currentTimeRangeValues = values;
+                                              });
+                                            },
+                                          ),
+                                        ),
+                                        Row(
+                                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                          children: [
+                                            ElevatedButton(
+                                              child: const Text('Apply'),
+                                              onPressed: () {
+                                                setState(() {
+                                                  showfilter = false;
+                                                });
+                                              },
+                                            ),ElevatedButton(
+                                              child: const Text('Reset'),
+                                              onPressed: () {
+                                                setState(() {
+                                                  _currentRangeValues = const RangeValues(0, 100000);
+                                                  _currentTimeRangeValues=const RangeValues(0, 30);
+                                                  showfilter = false;
+                                                });
+                                              },
+                                            ),
+                                          ],
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                )
+                              else
+                                Container(),
+                              !showfilter?Padding(
+                                padding: const EdgeInsets.only(left: 45.0,top: 8),
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  children: [
+                                    (_currentRangeValues!=const RangeValues(0,100000))?Container(
+                                      width: 190,
+                                      height: 50,
+                                      decoration: const BoxDecoration(
+                                          color: Color.fromARGB(255, 128, 206, 131),
+                                          borderRadius: BorderRadius.all(
+                                              Radius.circular(30))),
+                                      child: Center(child: Column(
+                                        children: [
+                                          const Text('Budget'),
+                                          // ignore: prefer_interpolation_to_compose_strings
+                                          Text('Rs.'+_currentRangeValues.start.toString()+"- Rs."+ _currentRangeValues.end.toString()),
+                                        ],
+                                      )),
+                                    ):Container(),
+                                    SizedBox(width: 10,),
+                                    (_currentTimeRangeValues!=RangeValues(0,30))?Container(
+                                      width: 190,
+                                      height: 50,
+                                      decoration: const BoxDecoration(
+                                          color: Color.fromARGB(255, 128, 206, 131),
+                                          borderRadius: BorderRadius.all(
+                                              Radius.circular(30))),
+                                      child: Center(child: Column(
+                                        children: [
+                                          const Text('Time'),
+                                          Text(_currentTimeRangeValues.start.toString()+"-"+ _currentTimeRangeValues.end.toString()+'Days'),
+                                        ],
+                                      )),
+                                    ):Container(),
+                                  ],
+                                ),
+                              ):Container(),
                               StreamBuilder<QuerySnapshot>(
                                 stream: FirebaseFirestore.instance
                                     .collection('Trails')
+                                    .where('Budget',isGreaterThanOrEqualTo: _currentRangeValues.start, isLessThanOrEqualTo: _currentRangeValues.end)
                                     .snapshots(),
                                 builder: (context, snapshots) {
                                   if (snapshots.hasError) {
@@ -188,7 +352,8 @@ class _HomePageState extends State<HomePage> {
                                                     as Map<String, dynamic>;
                                                 String id = snapshots
                                                     .data!.docs[index].id;
-                                                return Row(
+                                                return
+                                                  data['Duration']>=_currentTimeRangeValues.start && data['Duration']<= _currentTimeRangeValues.end?Row(
                                                   children: [
                                                     GestureDetector(
                                                       child: VenuCard(
@@ -202,7 +367,9 @@ class _HomePageState extends State<HomePage> {
                                                           context,
                                                           MaterialPageRoute(
                                                             builder: (context) =>
-                                                                VenueDetailsPage(id: id,),
+                                                                VenueDetailsPage(
+                                                              id: id,
+                                                            ),
                                                             // Trails(
                                                             //     id: id),
                                                           ),
@@ -210,7 +377,7 @@ class _HomePageState extends State<HomePage> {
                                                       },
                                                     ),
                                                   ],
-                                                );
+                                                ):Container();
                                               }),
                                         ),
                                       ],

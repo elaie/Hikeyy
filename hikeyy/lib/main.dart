@@ -20,7 +20,7 @@ void main() async {
   );
 
   print('User granted permission: ${settings.authorizationStatus}');
-  // await FirebaseMessaging.instance.getToken();
+
   FirebaseMessaging.onMessage.listen((RemoteMessage message) {
     var channel = const AndroidNotificationChannel(
       'high_importance_channel', // id
@@ -43,19 +43,20 @@ void main() async {
            channel.id,
             channel.name,
            channelDescription: channel.description,
+          // icon: 'app_icon'
            // TODO add a proper drawable resource to android, for now using
              //    one that already exists in example app.
-           //icon: 'launch_background',
+           icon: 'mipmap/ic_launcher',
           ),
         ),
       );
     }
-    print('Got a message whilst in the foreground!');
-    if (message.notification != null) {
-      print('Notification Title: ${message.notification!.title}');
-      print('Notification Body: ${message.notification!.body}');
+    // print('Got a message whilst in the foreground!');
+    // if (message.notification != null) {
+    //   print('Notification Title: ${message.notification!.title}');
+    //   print('Notification Body: ${message.notification!.body}');
     }
-  });
+  );
  // FirebaseMessaging.onBackgroundMessage(firebaseMessagingBackgroundHandler);
   runApp(const MyApp());
 }
