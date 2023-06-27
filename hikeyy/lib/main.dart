@@ -41,11 +41,11 @@ void main() async {
           android: AndroidNotificationDetails(
             channel.id,
             channel.name,
-           channelDescription: channel.description,
-          // icon: 'app_icon'
-           // TODO add a proper drawable resource to android, for now using
-             //    one that already exists in example app.
-           icon: 'mipmap/ic_launcher',
+            channelDescription: channel.description,
+            // icon: 'app_icon'
+            // TODO add a proper drawable resource to android, for now using
+            //    one that already exists in example app.
+            icon: 'mipmap/ic_launcher',
           ),
         ),
       );
@@ -54,11 +54,8 @@ void main() async {
     // if (message.notification != null) {
     //   print('Notification Title: ${message.notification!.title}');
     //   print('Notification Body: ${message.notification!.body}');
-    }
   });
   // FirebaseMessaging.onBackgroundMessage(firebaseMessagingBackgroundHandler);
-  );
- // FirebaseMessaging.onBackgroundMessage(firebaseMessagingBackgroundHandler);
   runApp(const MyApp());
 }
 
@@ -69,10 +66,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Flutter Demo',
-      theme: ThemeData(
-          primarySwatch: Colors.blue,
-          fontFamily: "Poppins",
-          scaffoldBackgroundColor: Colors.white),
+      theme: ThemeData(primarySwatch: Colors.blue, fontFamily: "Poppins"),
       home: const IsLogged(),
     );
   }
