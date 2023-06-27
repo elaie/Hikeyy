@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:hikeyy/screens/group_details/group_details.dart';
 
 import '../../home_page/widget/my_schedule_card.dart';
 
@@ -48,10 +48,18 @@ class GroupList extends StatelessWidget {
                         var dataG = snapshots.data!.docs[index].data()
                             as Map<String, dynamic>;
                         // return Text(dataG['GroupName']);
-                        return MyScheduleCard(
-                          groupName: dataG['GroupName'],
-                          destination: 'Nepal',
-                          date: dataG['Time'],
+                        return GestureDetector(
+                          onTap: () {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => GroupDetails()));
+                          },
+                          child: MyScheduleCard(
+                            groupName: dataG['GroupName'],
+                            destination: 'Nepal',
+                            date: dataG['Time'],
+                          ),
                         );
                       }),
                 );

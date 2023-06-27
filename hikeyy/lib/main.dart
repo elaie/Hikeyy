@@ -26,13 +26,12 @@ void main() async {
       'high_importance_channel', // id
       'High Importance Notifications', // title
       description:
-      'This channel is used for important notifications.', // description
+          'This channel is used for important notifications.', // description
       importance: Importance.high,
     );
     RemoteNotification? notification = message.notification;
     AndroidNotification? android = message.notification?.android;
     if (notification != null && android != null) {
-
       //var channel;
       FlutterLocalNotificationsPlugin().show(
         notification.hashCode,
@@ -40,13 +39,13 @@ void main() async {
         notification.body,
         NotificationDetails(
           android: AndroidNotificationDetails(
-           channel.id,
+            channel.id,
             channel.name,
-           channelDescription: channel.description,
-          // icon: 'app_icon'
-           // TODO add a proper drawable resource to android, for now using
-             //    one that already exists in example app.
-           icon: 'mipmap/ic_launcher',
+            channelDescription: channel.description,
+            // icon: 'app_icon'
+            // TODO add a proper drawable resource to android, for now using
+            //    one that already exists in example app.
+            icon: 'mipmap/ic_launcher',
           ),
         ),
       );
@@ -55,9 +54,8 @@ void main() async {
     // if (message.notification != null) {
     //   print('Notification Title: ${message.notification!.title}');
     //   print('Notification Body: ${message.notification!.body}');
-    }
-  );
- // FirebaseMessaging.onBackgroundMessage(firebaseMessagingBackgroundHandler);
+  });
+  // FirebaseMessaging.onBackgroundMessage(firebaseMessagingBackgroundHandler);
   runApp(const MyApp());
 }
 

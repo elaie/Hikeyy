@@ -2,10 +2,7 @@
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:hikeyy/screens/home_page/widget/my_schedule_card.dart';
-import 'package:hikeyy/screens/home_page/widget/trails.dart';
 import 'package:hikeyy/screens/home_page/widget/venu_card.dart';
-import 'package:hikeyy/screens/login_signup/login.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:hikeyy/screens/profile_page/MyFriendRequest.dart';
 import 'package:hikeyy/screens/profile_page/widgets/group_list.dart';
@@ -13,7 +10,6 @@ import 'package:hikeyy/screens/venue_details/venue_details_page.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'dart:io';
-import 'package:hikeyy/screens/See all/see_all_recommended.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -100,9 +96,9 @@ class _HomePageState extends State<HomePage> {
     return Scaffold(
         key: _scaffoldkey,
         drawer: const Drawer(
-          child: Icon(Icons.add),
+          child: Icon(Icons.abc_rounded),
         ),
-        //extendBodyBehindAppBar: true,
+        extendBodyBehindAppBar: false,
         body: SafeArea(
           child: Container(
             alignment: Alignment.topCenter,
@@ -123,7 +119,26 @@ class _HomePageState extends State<HomePage> {
                         Row(
                           children: [
                             GestureDetector(
-                                child: const Icon(Icons.add),
+                                child: Container(
+                                    height: 40,
+                                    width: 40,
+                                    decoration: BoxDecoration(
+                                        boxShadow: [
+                                          BoxShadow(
+                                            color: Colors.grey.withOpacity(0.5),
+                                            spreadRadius: 3,
+                                            blurRadius: 9,
+                                            offset: Offset(0, 3),
+                                          ),
+                                        ],
+                                        shape: BoxShape.circle,
+                                        color: Colors.white),
+                                    child: Padding(
+                                      padding: const EdgeInsets.all(10.0),
+                                      child: const Image(
+                                          image: AssetImage(
+                                              'assets/icons/menu.png')),
+                                    )),
                                 onTap: () =>
                                     _scaffoldkey.currentState!.openDrawer()),
                             Padding(
@@ -136,7 +151,18 @@ class _HomePageState extends State<HomePage> {
                           ],
                         ),
                         GestureDetector(
-                          child: const Icon(Icons.notifications),
+                          child: Container(
+                              height: 40,
+                              width: 40,
+                              decoration: BoxDecoration(boxShadow: [
+                                BoxShadow(
+                                  color: Colors.grey.withOpacity(0.5),
+                                  spreadRadius: 3,
+                                  blurRadius: 9,
+                                  offset: const Offset(0, 3),
+                                ),
+                              ], shape: BoxShape.circle, color: Colors.white),
+                              child: const Icon(Icons.notifications)),
                           onTap: () {
                             Navigator.push(
                                 context,
@@ -159,7 +185,7 @@ class _HomePageState extends State<HomePage> {
                             topLeft: Radius.circular(35),
                             topRight: Radius.circular(35),
                           ),
-                          color: Colors.grey.shade200.withOpacity(0.5)),
+                          color: Colors.white),
                       child: Padding(
                         padding: const EdgeInsets.only(
                           top: 25.0,
@@ -168,6 +194,7 @@ class _HomePageState extends State<HomePage> {
                           //  scrollDirection: Axis.vertical,
                           child: Column(
                             mainAxisAlignment: MainAxisAlignment.start,
+                            crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Padding(
                                 padding: const EdgeInsets.only(
@@ -176,11 +203,11 @@ class _HomePageState extends State<HomePage> {
                                   mainAxisAlignment:
                                       MainAxisAlignment.spaceBetween,
                                   children: [
-                                    const Text(
-                                      'Recommended',
+                                    Text(
+                                      'Explore\nNew Places',
                                       style: TextStyle(
                                           fontWeight: FontWeight.w800,
-                                          fontSize: 17),
+                                          fontSize: 25),
                                     ),
                                     GestureDetector(
                                         onTap: () {
