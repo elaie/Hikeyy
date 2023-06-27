@@ -1,18 +1,13 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:hikeyy/screens/home_page/widget/my_schedule_card.dart';
-import 'package:hikeyy/screens/home_page/widget/trails.dart';
 import 'package:hikeyy/screens/home_page/widget/venu_card.dart';
-import 'package:hikeyy/screens/login_signup/login.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:hikeyy/screens/profile_page/MyFriendRequest.dart';
 import 'package:hikeyy/screens/profile_page/widgets/group_list.dart';
 import 'package:hikeyy/screens/venue_details/venue_details_page.dart';
-import 'package:hikeyy/widgets/app_texts.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'dart:io';
-import 'package:hikeyy/screens/See all/see_all_recommended.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -122,13 +117,13 @@ class _HomePageState extends State<HomePage> {
                               child: Text(
                                 'Happy Hiking!',
                                 style: TextStyle(
-                                  fontSize: 25,
+                                  fontSize: 30,
                                   fontWeight: FontWeight.w900,
                                   color: Colors.white,
                                   shadows: [
                                     Shadow(
                                       color: Colors.grey,
-                                      offset: Offset(2, 2),
+                                      offset: Offset(1, 1),
                                       blurRadius: 2,
                                     ),
                                   ],
@@ -146,7 +141,7 @@ class _HomePageState extends State<HomePage> {
                                   color: Colors.grey.withOpacity(0.5),
                                   spreadRadius: 3,
                                   blurRadius: 9,
-                                  offset: Offset(0, 3),
+                                  offset: const Offset(0, 3),
                                 ),
                               ], shape: BoxShape.circle, color: Colors.white),
                               child: const Icon(Icons.notifications)),

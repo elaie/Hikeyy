@@ -26,13 +26,12 @@ void main() async {
       'high_importance_channel', // id
       'High Importance Notifications', // title
       description:
-      'This channel is used for important notifications.', // description
+          'This channel is used for important notifications.', // description
       importance: Importance.high,
     );
     RemoteNotification? notification = message.notification;
     AndroidNotification? android = message.notification?.android;
     if (notification != null && android != null) {
-
       //var channel;
       FlutterLocalNotificationsPlugin().show(
         notification.hashCode,
@@ -40,12 +39,12 @@ void main() async {
         notification.body,
         NotificationDetails(
           android: AndroidNotificationDetails(
-           channel.id,
+            channel.id,
             channel.name,
-           channelDescription: channel.description,
-           // TODO add a proper drawable resource to android, for now using
-             //    one that already exists in example app.
-           //icon: 'launch_background',
+            channelDescription: channel.description,
+            // TODO add a proper drawable resource to android, for now using
+            //    one that already exists in example app.
+            //icon: 'launch_background',
           ),
         ),
       );
@@ -56,7 +55,7 @@ void main() async {
       print('Notification Body: ${message.notification!.body}');
     }
   });
- // FirebaseMessaging.onBackgroundMessage(firebaseMessagingBackgroundHandler);
+  // FirebaseMessaging.onBackgroundMessage(firebaseMessagingBackgroundHandler);
   runApp(const MyApp());
 }
 
@@ -67,7 +66,10 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Flutter Demo',
-      theme: ThemeData(primarySwatch: Colors.blue, fontFamily: "Poppins"),
+      theme: ThemeData(
+          primarySwatch: Colors.blue,
+          fontFamily: "Poppins",
+          scaffoldBackgroundColor: Colors.white),
       home: const IsLogged(),
     );
   }

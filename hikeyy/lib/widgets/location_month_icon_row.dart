@@ -18,7 +18,10 @@ class LocationMonthIconRow extends StatelessWidget {
       children: [
         Icon(Icons.location_on),
         Text(location),
-        Icon(Icons.calendar_month),
+        Padding(
+          padding: const EdgeInsets.only(left: 20.0),
+          child: Icon(Icons.calendar_month),
+        ),
         Text(date)
       ],
     );
