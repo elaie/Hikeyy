@@ -1,3 +1,8 @@
+import 'dart:ffi';
+
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -22,32 +27,50 @@ class _DashboardState extends State<Dashboard> {
   ];
   Future<bool> _onWillPop() async {
     return (await showDialog(
-      context: context,
-      builder: (context) => AlertDialog(
-        title: new Text('Are you sure?'),
-        content: new Text('Do you want to exit an App'),
-        actions: <Widget>[
-          TextButton(
-            onPressed: () => Navigator.of(context).pop(false), //<-- SEE HERE
-            child: new Text('No'),
+          context: context,
+          builder: (context) => AlertDialog(
+            title: new Text('Are you sure?'),
+            content: new Text('Do you want to exit this App'),
+            actions: <Widget>[
+              TextButton(
+                onPressed: () =>
+                    Navigator.of(context).pop(false), //<-- SEE HERE
+                child: new Text('No'),
+              ),
+              TextButton(
+                onPressed: () => SystemNavigator.pop().then((value) {
+                  false;
+                }),
+                child: new Text('Yes'),
+              ),
+            ],
           ),
-          TextButton(
-            onPressed: () => SystemNavigator.pop().then((value) {
-              false;
-            }),
-            child: new Text('Yes'),
-          ),
-        ],
-      ),
-    )) ??
+        )) ??
         false;
   }
+
   void _onItemTapped(int index) {
     setState(() {
       _selectedPageIndex = index;
     });
   }
+  getTokenId()  async {
+  final fcmToken = await FirebaseMessaging.instance.getToken();
+  FirebaseFirestore.instance.collection('Users').doc(FirebaseAuth.instance.currentUser!.uid).update({
+  'TokenId': fcmToken
+  }).then((value) {
+  print(fcmToken);
+  print('@@@@@@@@@@@@@@@@@@@@@');
+  });
+}
 
+  @override
+  void initState()  {
+    // TODO: implement initState
+    super.initState();
+    getTokenId();
+
+  }
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
@@ -59,20 +82,14 @@ class _DashboardState extends State<Dashboard> {
         bottomNavigationBar: Container(
           decoration: const BoxDecoration(
             borderRadius: BorderRadius.only(
-              topRight: Radius.circular(25),
-              topLeft: Radius.circular(25),
+              topRight: Radius.circular(5),
+              topLeft: Radius.circular(5),
             ),
-            boxShadow: [
-              BoxShadow(
-                  color: Color.fromARGB(255, 215, 212, 212),
-                  spreadRadius: 2,
-                  blurRadius: 3),
-            ],
           ),
           child: ClipRRect(
             borderRadius: const BorderRadius.only(
-              topLeft: Radius.circular(25.0),
-              topRight: Radius.circular(25.0),
+              topLeft: Radius.circular(5.0),
+              topRight: Radius.circular(5.0),
             ),
             child: BottomNavigationBar(
               //type: BottomNavigationBarType.fixed,

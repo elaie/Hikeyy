@@ -1,16 +1,62 @@
 import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
-import 'package:hikeyy/screens/dashboard/dashboard.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:hikeyy/screens/login_signup/IsLogged.dart';
-import 'package:hikeyy/screens/login_signup/login.dart';
-import 'package:hikeyy/screens/login_signup/signup.dart';
-import 'package:hikeyy/screens/profile_page/profile_page.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp().then((value) {
-    print('********************');
+  await Firebase.initializeApp();
+  FirebaseMessaging messaging = FirebaseMessaging.instance;
+
+  NotificationSettings settings = await messaging.requestPermission(
+    alert: true,
+    announcement: false,
+    badge: true,
+    carPlay: false,
+    criticalAlert: false,
+    provisional: false,
+    sound: true,
+  );
+
+  print('User granted permission: ${settings.authorizationStatus}');
+  // await FirebaseMessaging.instance.getToken();
+  FirebaseMessaging.onMessage.listen((RemoteMessage message) {
+    var channel = const AndroidNotificationChannel(
+      'high_importance_channel', // id
+      'High Importance Notifications', // title
+      description:
+      'This channel is used for important notifications.', // description
+      importance: Importance.high,
+    );
+    RemoteNotification? notification = message.notification;
+    AndroidNotification? android = message.notification?.android;
+    if (notification != null && android != null) {
+
+      //var channel;
+      FlutterLocalNotificationsPlugin().show(
+        notification.hashCode,
+        notification.title,
+        notification.body,
+        NotificationDetails(
+          android: AndroidNotificationDetails(
+           channel.id,
+            channel.name,
+           channelDescription: channel.description,
+           // TODO add a proper drawable resource to android, for now using
+             //    one that already exists in example app.
+           //icon: 'launch_background',
+          ),
+        ),
+      );
+    }
+    print('Got a message whilst in the foreground!');
+    if (message.notification != null) {
+      print('Notification Title: ${message.notification!.title}');
+      print('Notification Body: ${message.notification!.body}');
+    }
   });
+ // FirebaseMessaging.onBackgroundMessage(firebaseMessagingBackgroundHandler);
   runApp(const MyApp());
 }
 

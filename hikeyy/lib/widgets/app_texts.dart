@@ -2,10 +2,12 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 
-class AppTextsHeading extends StatelessWidget {
+class AppTextHeading extends StatelessWidget {
   final String textHeading;
   final double? fontSize;
-  AppTextsHeading({Key? key, required this.textHeading, this.fontSize})
+  final Color? color;
+  const AppTextHeading(
+      {Key? key, required this.textHeading, this.fontSize, this.color})
       : super(key: key);
 
   @override
@@ -13,7 +15,7 @@ class AppTextsHeading extends StatelessWidget {
     return Text(
       textHeading,
       style: TextStyle(
-        color: Colors.black,
+        color: color,
         fontWeight: FontWeight.w800,
         fontSize: fontSize,
       ),
@@ -23,14 +25,17 @@ class AppTextsHeading extends StatelessWidget {
 
 class AppText extends StatelessWidget {
   final String text;
-  AppText({Key? key, required this.text}) : super(key: key);
+  final double? fontSize;
+  final Color? color;
+  const AppText({Key? key, required this.text, this.fontSize, this.color})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Text(
       text,
       style: TextStyle(
-          color: Colors.black, fontWeight: FontWeight.bold, fontSize: 17),
+          color: color, fontWeight: FontWeight.bold, fontSize: fontSize),
     );
   }
 }

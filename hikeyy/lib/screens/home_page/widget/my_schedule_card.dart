@@ -1,26 +1,30 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:timeago/timeago.dart' as timeago;
 
 class MyScheduleCard extends StatelessWidget {
   final groupName;
   final destination;
-  final date;
+  final  date;
   const MyScheduleCard({
     super.key,
     this.groupName,
     this.destination,
     this.date,
   });
-
+ // int Date =date*1000
   @override
   Widget build(BuildContext context) {
+    //print(date.toDate());
+    //print('*********************');
     return Padding(
-      padding: const EdgeInsets.all(13.0),
+      padding: const EdgeInsets.all(8.0),
       child: Container(
         height: 80,
         width: double.infinity,
         decoration: BoxDecoration(
-          color: const Color.fromARGB(255, 200, 199, 199),
+          color: Colors.green.withOpacity(0.1),
           borderRadius: BorderRadius.all(
             Radius.circular(20),
           ),
@@ -48,11 +52,12 @@ class MyScheduleCard extends StatelessWidget {
                       style: TextStyle(fontSize: 17),
                     ),
                     Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
                         Icon(Icons.location_on),
                         Text(destination),
                         Icon(Icons.calendar_month_rounded),
-                        Text(date)
+                        Text("${date.toDate().year}-${date.toDate().month}-${date.toDate().day}")
                       ],
                     )
                   ],
@@ -62,7 +67,7 @@ class MyScheduleCard extends StatelessWidget {
                 height: 30,
                 width: 70,
                 decoration: BoxDecoration(
-                    color: Colors.blue,
+                    color: Color.fromARGB(255, 128, 206, 131),
                     borderRadius: BorderRadius.all(Radius.circular(50))),
                 child: Center(child: Text('Joined')),
               )

@@ -7,6 +7,7 @@ import 'package:hikeyy/screens/login_signup/login.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:hikeyy/screens/profile_page/MyFriendRequest.dart';
 import 'package:hikeyy/screens/profile_page/widgets/group_list.dart';
+import 'package:hikeyy/screens/venue_details/venue_details_page.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'dart:io';
@@ -111,7 +112,8 @@ class _HomePageState extends State<HomePage> {
                             Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                    builder: (context) => const MyFriendRequest()));
+                                    builder: (context) =>
+                                        const MyFriendRequest()));
                           },
                         ),
                         // Icon(Icons.notifications),
@@ -125,10 +127,9 @@ class _HomePageState extends State<HomePage> {
                       alignment: Alignment.center,
                       decoration: BoxDecoration(
                           borderRadius: const BorderRadius.only(
-                              topLeft: Radius.circular(35),
-                              topRight: Radius.circular(35),
-                          bottomLeft:Radius.circular(25),
-                          bottomRight: Radius.circular(25),),
+                            topLeft: Radius.circular(35),
+                            topRight: Radius.circular(35),
+                          ),
                           color: Colors.grey.shade200.withOpacity(0.5)),
                       child: Padding(
                         padding: const EdgeInsets.only(
@@ -139,7 +140,7 @@ class _HomePageState extends State<HomePage> {
                           child: Column(
                             mainAxisAlignment: MainAxisAlignment.start,
                             children: [
-                               const Padding(
+                              const Padding(
                                 padding: EdgeInsets.only(left: 25.0, right: 25),
                                 child: Row(
                                   mainAxisAlignment:
@@ -173,7 +174,8 @@ class _HomePageState extends State<HomePage> {
                                         SizedBox(
                                           height: 200.0,
                                           child: ListView.builder(
-                                              physics: const ClampingScrollPhysics(),
+                                              physics:
+                                                  const ClampingScrollPhysics(),
                                               shrinkWrap: true,
                                               scrollDirection: Axis.horizontal,
                                               padding: const EdgeInsets.all(10),
@@ -184,7 +186,8 @@ class _HomePageState extends State<HomePage> {
                                                         .data!.docs[index]
                                                         .data()
                                                     as Map<String, dynamic>;
-                                                String id = snapshots.data!.docs[index].id;
+                                                String id = snapshots
+                                                    .data!.docs[index].id;
                                                 return Row(
                                                   children: [
                                                     GestureDetector(
@@ -192,10 +195,18 @@ class _HomePageState extends State<HomePage> {
                                                         venue: data['Name']
                                                             .toString(),
                                                         location: 'Nepal',
-                                                        date: 'July',
+                                                        date: 'july',
                                                       ),
-                                                      onTap: (){
-                                                        Navigator.push(context, MaterialPageRoute(builder: (context)=> Trails(id: id)));
+                                                      onTap: () {
+                                                        Navigator.push(
+                                                          context,
+                                                          MaterialPageRoute(
+                                                            builder: (context) =>
+                                                                VenueDetailsPage(id: id,),
+                                                            // Trails(
+                                                            //     id: id),
+                                                          ),
+                                                        );
                                                       },
                                                     ),
                                                   ],
@@ -208,7 +219,8 @@ class _HomePageState extends State<HomePage> {
                                 },
                               ),
                               Padding(
-                                padding: const EdgeInsets.only(left: 25.0, right: 25),
+                                padding: const EdgeInsets.only(
+                                    left: 25.0, right: 25),
                                 child: Row(
                                   mainAxisAlignment:
                                       MainAxisAlignment.spaceBetween,
@@ -246,7 +258,8 @@ class _HomePageState extends State<HomePage> {
                                 ),
                               ),
                               Container(
-                                  height:400,
+                                  constraints:
+                                      const BoxConstraints(minHeight: 550),
                                   child: GroupList(auth: auth)),
                             ],
                           ),

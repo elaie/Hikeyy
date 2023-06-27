@@ -116,7 +116,7 @@ class _ProfilePageState extends State<ProfilePage> {
                         //logout button
                         const LogoutButton(),
                         //create group button
-                        const CreateGroupButton(),
+                       // const CreateGroupButton(),
                         //Highlights
                       ],
                     ),

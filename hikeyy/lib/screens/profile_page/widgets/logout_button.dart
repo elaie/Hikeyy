@@ -15,7 +15,7 @@ class LogoutButton extends StatelessWidget {
       bottom: 20,
       child: SizedBox(
         height: 45,
-        width: 300,
+        width: 220,
         child: ElevatedButton(
           onPressed: () {
             FirebaseAuth.instance.signOut().then((value) {
