@@ -34,6 +34,8 @@ class _GroupDetailsState extends State<GroupDetails> {
               if (snapshot.connectionState == ConnectionState.done) {
                 var data = snapshot.data!.data();
                 List<dynamic> members = data!['Members'];
+                print(members);
+                print('#####################');
                 return Padding(
                   padding: const EdgeInsets.only(top: 15),
                   child: SingleChildScrollView(
@@ -97,7 +99,7 @@ class _GroupDetailsState extends State<GroupDetails> {
                                   children: [
                                     SizedBox(
                                       height:40,
-                                      width: 100,
+                                      width: MediaQuery.of(context).size.width-40,
                                       child: ListView.builder(
                                           scrollDirection: Axis.horizontal,
                                           itemCount: members.length,
@@ -139,22 +141,6 @@ class _GroupDetailsState extends State<GroupDetails> {
                                           }
                                       ),
                                     ),
-                                    Padding(
-                                      padding:
-                                      const EdgeInsets.only(left: 100.0),
-                                      child: Container(
-                                        decoration: const BoxDecoration(
-                                            color: Color.fromARGB(
-                                                255, 128, 206, 131),
-                                            borderRadius: BorderRadius.all(
-                                                Radius.circular(50))),
-                                        child: const Center(
-                                            child: Padding(
-                                              padding: EdgeInsets.all(10.0),
-                                              child: Text("You've Joined"),
-                                            )),
-                                      ),
-                                    )
                                   ],
                                 ),
                               ),
