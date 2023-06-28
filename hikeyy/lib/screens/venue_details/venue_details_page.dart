@@ -203,7 +203,7 @@ class _VenueDetailsPageState extends State<VenueDetailsPage> {
                                   fontSize: 20,
                                 ),
                               ),
-                              AppTextSubHeading(text: data['Discription']),
+                              AppTextSubHeading(text: data['Description']),
                               const Padding(
                                 padding: EdgeInsets.only(top: 15.0, bottom: 15),
                                 child: AppTextHeading(
