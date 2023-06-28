@@ -47,13 +47,14 @@ class GroupList extends StatelessWidget {
                       itemBuilder: (context, index) {
                         var dataG = snapshots.data!.docs[index].data()
                             as Map<String, dynamic>;
+                        var id = snapshots.data!.docs[index].id;
                         // return Text(dataG['GroupName']);
                         return GestureDetector(
                           onTap: () {
                             Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                    builder: (context) => GroupDetails()));
+                                    builder: (context) => GroupDetails(id: id,)));
                           },
                           child: MyScheduleCard(
                             groupName: dataG['GroupName'],
