@@ -28,7 +28,7 @@ Future<List<File>> pickImages() async {
   final ImagePicker _picker = ImagePicker();
 
   // Pick multiple images
-  final List<XFile>? pickedFiles =
+  final List<XFile> pickedFiles =
       await _picker.pickMultiImage(imageQuality: 80);
 
   if (pickedFiles != null) {
@@ -72,10 +72,6 @@ class _HomePageState extends State<HomePage> {
   bool showfilter = false;
   RangeValues _currentRangeValues = const RangeValues(0, 100000);
   RangeValues _currentTimeRangeValues = const RangeValues(0, 30);
-  @override
-  Future<void> filter() async {
-  Stream<QuerySnapshot<Map<String, dynamic>>> first = await FirebaseFirestore.instance.collection('Trails').where('Duration', isLessThanOrEqualTo: _currentTimeRangeValues.end).snapshots();
-}
 
   @override
   Future<void> getUserName() async {
@@ -209,6 +205,7 @@ class _HomePageState extends State<HomePage> {
                                         Padding(
                                           padding: const EdgeInsets.symmetric(horizontal: 15.0),
                                           child: RangeSlider(
+                                            //activeColor: Colors.brown,
                                             values: _currentRangeValues,
                                             max: 100000,
                                             divisions: 100,
@@ -296,13 +293,12 @@ class _HomePageState extends State<HomePage> {
                                       child: Center(child: Column(
                                         children: [
                                           const Text('Budget'),
-                                          // ignore: prefer_interpolation_to_compose_strings
                                           Text('Rs.'+_currentRangeValues.start.toString()+"- Rs."+ _currentRangeValues.end.toString()),
                                         ],
                                       )),
                                     ):Container(),
-                                    SizedBox(width: 10,),
-                                    (_currentTimeRangeValues!=RangeValues(0,30))?Container(
+                                    const SizedBox(width: 10,),
+                                    (_currentTimeRangeValues!=const RangeValues(0,30))?Container(
                                       width: 190,
                                       height: 50,
                                       decoration: const BoxDecoration(
