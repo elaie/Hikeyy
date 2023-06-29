@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:hikeyy/screens/home_page/widget/trails.dart';
 import 'package:hikeyy/widgets/app_buttons.dart';
 import 'package:hikeyy/widgets/app_colors.dart';
 import 'package:hikeyy/widgets/app_texts.dart';
@@ -146,6 +147,7 @@ class _GroupDetailsState extends State<GroupDetails> {
                                         padding:
                                             const EdgeInsets.only(left: 100.0),
                                         child: AppButtons(
+                                            //navigate to venu details page
                                             onPressed: () {},
                                             child: const AppText(
                                                 text: 'View Trail')),
@@ -166,24 +168,36 @@ class _GroupDetailsState extends State<GroupDetails> {
                                         text:
                                             'Very nice place bla bla add discription about place'),
                                   ),
-                                  Padding(
-                                    padding: const EdgeInsets.all(8.0),
-                                    child: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      children: [
-                                        AppButtons(
-                                            onPressed: () {},
-                                            child: const AppText(
-                                                text: 'Start Trail!')),
-                                      ],
-                                    ),
-                                  )
                                 ]),
                           )),
                     ],
                   ),
                 )
+              ],
+            ),
+          ),
+        ),
+      ),
+      bottomNavigationBar: Container(
+        decoration: BoxDecoration(boxShadow: <BoxShadow>[
+          BoxShadow(color: Colors.white, blurRadius: 8, spreadRadius: 10),
+        ], color: Colors.transparent),
+        child: Padding(
+          padding: const EdgeInsets.only(left: 20.0, right: 20, bottom: 20),
+          child: SizedBox(
+            height: 50,
+            // decoration: BoxDecoration(color: Colors.amber),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                AppButtons(
+                    onPressed: () {},
+                    child: const AppText(text: 'Start Trail!')),
+                AppButtons(
+                    onPressed: () {},
+                    child: AppText(
+                      text: 'Nearby Devices',
+                    ))
               ],
             ),
           ),
