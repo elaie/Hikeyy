@@ -42,7 +42,7 @@ class _MyFriendRequestState extends State<MyFriendRequest> {
             stream: FirebaseFirestore.instance
                 .collection('Users')
                 .doc(auth.currentUser!.uid)
-                .collection('Requests')
+                .collection('Requests').where('About', isEqualTo: 'Received')
                 .snapshots(),
             builder: (context, snapshots) {
               if (snapshots.connectionState == ConnectionState.waiting) {
