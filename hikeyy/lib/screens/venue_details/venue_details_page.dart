@@ -46,10 +46,12 @@ class _VenueDetailsPageState extends State<VenueDetailsPage> {
                     children: [
                       Stack(
                         children: [
-                          Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: ShowPhotos(Photos),
-                          ),
+                          Photos.isEmpty
+                              ? const CircularProgressIndicator()
+                              : Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: ShowPhotos(Photos),
+                                ),
                           Positioned(
                             top: 30,
                             left: 30,
