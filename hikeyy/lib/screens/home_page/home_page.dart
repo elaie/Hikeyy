@@ -230,7 +230,8 @@ class _HomePageState extends State<HomePage> {
                                               fontSize: 17),
                                         ),
                                         Padding(
-                                          padding: const EdgeInsets.symmetric(horizontal: 15.0),
+                                          padding: const EdgeInsets.symmetric(
+                                              horizontal: 15.0),
                                           child: RangeSlider(
                                             //activeColor: Colors.brown,
                                             values: _currentRangeValues,
@@ -250,14 +251,16 @@ class _HomePageState extends State<HomePage> {
                                               });
                                             },
                                           ),
-                                        ), const Text(
+                                        ),
+                                        const Text(
                                           'Time',
                                           style: TextStyle(
                                               fontWeight: FontWeight.w800,
                                               fontSize: 17),
                                         ),
                                         Padding(
-                                          padding: const EdgeInsets.symmetric(horizontal: 15.0),
+                                          padding: const EdgeInsets.symmetric(
+                                              horizontal: 15.0),
                                           child: RangeSlider(
                                             values: _currentTimeRangeValues,
                                             max: 30,
@@ -272,13 +275,15 @@ class _HomePageState extends State<HomePage> {
                                             ),
                                             onChanged: (RangeValues values) {
                                               setState(() {
-                                                _currentTimeRangeValues = values;
+                                                _currentTimeRangeValues =
+                                                    values;
                                               });
                                             },
                                           ),
                                         ),
                                         Row(
-                                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceEvenly,
                                           children: [
                                             ElevatedButton(
                                               child: const Text('Apply'),
@@ -287,12 +292,16 @@ class _HomePageState extends State<HomePage> {
                                                   showfilter = false;
                                                 });
                                               },
-                                            ),ElevatedButton(
+                                            ),
+                                            ElevatedButton(
                                               child: const Text('Reset'),
                                               onPressed: () {
                                                 setState(() {
-                                                  _currentRangeValues = const RangeValues(0, 100000);
-                                                  _currentTimeRangeValues=const RangeValues(0, 30);
+                                                  _currentRangeValues =
+                                                      const RangeValues(
+                                                          0, 100000);
+                                                  _currentTimeRangeValues =
+                                                      const RangeValues(0, 30);
                                                   showfilter = false;
                                                 });
                                               },
@@ -305,47 +314,97 @@ class _HomePageState extends State<HomePage> {
                                 )
                               else
                                 Container(),
-                              !showfilter?Padding(
-                                padding: const EdgeInsets.only(left: 45.0,top: 8),
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.start,
-                                  children: [
-                                    (_currentRangeValues!=const RangeValues(0,100000))?Container(
-                                      width: 190,
-                                      height: 50,
-                                      decoration: const BoxDecoration(
-                                          color: Color.fromARGB(255, 128, 206, 131),
-                                          borderRadius: BorderRadius.all(
-                                              Radius.circular(30))),
-                                      child: Center(child: Column(
+                              !showfilter
+                                  ? Padding(
+                                      padding: const EdgeInsets.only(
+                                          left: 45.0, top: 8),
+                                      child: Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.start,
                                         children: [
-                                          const Text('Budget'),
-                                          Text('Rs.'+_currentRangeValues.start.toString()+"- Rs."+ _currentRangeValues.end.toString()),
+                                          (_currentRangeValues !=
+                                                  const RangeValues(0, 100000))
+                                              ? Container(
+                                                  width: 190,
+                                                  height: 50,
+                                                  decoration:
+                                                      const BoxDecoration(
+                                                          color:
+                                                              Color.fromARGB(
+                                                                  255,
+                                                                  128,
+                                                                  206,
+                                                                  131),
+                                                          borderRadius:
+                                                              BorderRadius.all(
+                                                                  Radius
+                                                                      .circular(
+                                                                          30))),
+                                                  child: Center(
+                                                      child: Column(
+                                                    children: [
+                                                      const Text('Budget'),
+                                                      Text('Rs.' +
+                                                          _currentRangeValues
+                                                              .start
+                                                              .toString() +
+                                                          "- Rs." +
+                                                          _currentRangeValues
+                                                              .end
+                                                              .toString()),
+                                                    ],
+                                                  )),
+                                                )
+                                              : Container(),
+                                          const SizedBox(
+                                            width: 10,
+                                          ),
+                                          (_currentTimeRangeValues !=
+                                                  const RangeValues(0, 30))
+                                              ? Container(
+                                                  width: 190,
+                                                  height: 50,
+                                                  decoration:
+                                                      const BoxDecoration(
+                                                          color:
+                                                              Color.fromARGB(
+                                                                  255,
+                                                                  128,
+                                                                  206,
+                                                                  131),
+                                                          borderRadius:
+                                                              BorderRadius.all(
+                                                                  Radius
+                                                                      .circular(
+                                                                          30))),
+                                                  child: Center(
+                                                      child: Column(
+                                                    children: [
+                                                      const Text('Time'),
+                                                      Text(_currentTimeRangeValues
+                                                              .start
+                                                              .toString() +
+                                                          "-" +
+                                                          _currentTimeRangeValues
+                                                              .end
+                                                              .toString() +
+                                                          'Days'),
+                                                    ],
+                                                  )),
+                                                )
+                                              : Container(),
                                         ],
-                                      )),
-                                    ):Container(),
-                                    const SizedBox(width: 10,),
-                                    (_currentTimeRangeValues!=const RangeValues(0,30))?Container(
-                                      width: 190,
-                                      height: 50,
-                                      decoration: const BoxDecoration(
-                                          color: Color.fromARGB(255, 128, 206, 131),
-                                          borderRadius: BorderRadius.all(
-                                              Radius.circular(30))),
-                                      child: Center(child: Column(
-                                        children: [
-                                          const Text('Time'),
-                                          Text(_currentTimeRangeValues.start.toString()+"-"+ _currentTimeRangeValues.end.toString()+'Days'),
-                                        ],
-                                      )),
-                                    ):Container(),
-                                  ],
-                                ),
-                              ):Container(),
+                                      ),
+                                    )
+                                  : Container(),
                               StreamBuilder<QuerySnapshot>(
                                 stream: FirebaseFirestore.instance
                                     .collection('Trails')
-                                    .where('Budget',isGreaterThanOrEqualTo: _currentRangeValues.start, isLessThanOrEqualTo: _currentRangeValues.end)
+                                    .where('Budget',
+                                        isGreaterThanOrEqualTo:
+                                            _currentRangeValues.start,
+                                        isLessThanOrEqualTo:
+                                            _currentRangeValues.end)
                                     .snapshots(),
                                 builder: (context, snapshots) {
                                   if (snapshots.hasError) {
@@ -375,32 +434,44 @@ class _HomePageState extends State<HomePage> {
                                                     as Map<String, dynamic>;
                                                 String id = snapshots
                                                     .data!.docs[index].id;
-                                                return
-                                                  data['Duration']>=_currentTimeRangeValues.start && data['Duration']<= _currentTimeRangeValues.end?Row(
-                                                  children: [
-                                                    GestureDetector(
-                                                      child: VenuCard(
-                                                        venue: data['Name']
-                                                            .toString(),
-                                                        location: 'Nepal',
-                                                        date: 'july',
-                                                      ),
-                                                      onTap: () {
-                                                        Navigator.push(
-                                                          context,
-                                                          MaterialPageRoute(
-                                                            builder: (context) =>
-                                                                VenueDetailsPage(
-                                                              id: id,
+                                                List<dynamic> photos =
+                                                    data["PhotoURLs"];
+                                                return data['Duration'] >=
+                                                            _currentTimeRangeValues
+                                                                .start &&
+                                                        data['Duration'] <=
+                                                            _currentTimeRangeValues
+                                                                .end
+                                                    ? Row(
+                                                        children: [
+                                                          GestureDetector(
+                                                            child: VenuCard(
+                                                              photourl:
+                                                                  photos.first,
+                                                              venue: data[
+                                                                      'Name']
+                                                                  .toString(),
+                                                              location: 'Nepal',
+                                                              date: 'july',
                                                             ),
-                                                            // Trails(
-                                                            //     id: id),
+                                                            onTap: () {
+                                                              Navigator.push(
+                                                                context,
+                                                                MaterialPageRoute(
+                                                                  builder:
+                                                                      (context) =>
+                                                                          VenueDetailsPage(
+                                                                    id: id,
+                                                                  ),
+                                                                  // Trails(
+                                                                  //     id: id),
+                                                                ),
+                                                              );
+                                                            },
                                                           ),
-                                                        );
-                                                      },
-                                                    ),
-                                                  ],
-                                                ):Container();
+                                                        ],
+                                                      )
+                                                    : Container();
                                               }),
                                         ),
                                       ],

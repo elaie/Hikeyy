@@ -7,11 +7,13 @@ class VenuCard extends StatelessWidget {
   final String venue;
   final String location;
   final String date;
+  final String photourl;
   const VenuCard(
       {Key? key,
       required this.venue,
       required this.location,
-      required this.date})
+      required this.date,
+      required this.photourl})
       : super(key: key);
 
   @override
@@ -30,10 +32,8 @@ class VenuCard extends StatelessWidget {
                 offset: Offset(0, 3), // Offset in the x and y direction
               ),
             ],
-            image: const DecorationImage(
-                image: AssetImage(
-                  'assets/images/camping.png',
-                ),
+            image:  DecorationImage(
+                image: NetworkImage(photourl),
                 fit: BoxFit.cover),
             borderRadius: const BorderRadius.all(Radius.circular(30))),
         child: Padding(

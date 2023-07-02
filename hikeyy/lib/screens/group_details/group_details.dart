@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:hikeyy/screens/home_page/widget/mapwidget.dart';
+import 'package:hikeyy/start_trail/start_trail.dart';
 import 'package:hikeyy/widgets/app_buttons.dart';
 import 'package:hikeyy/widgets/app_colors.dart';
 import 'package:hikeyy/widgets/app_texts.dart';
@@ -98,48 +99,60 @@ class _GroupDetailsState extends State<GroupDetails> {
                                   mainAxisAlignment: MainAxisAlignment.start,
                                   children: [
                                     SizedBox(
-                                      height:40,
-                                      width: MediaQuery.of(context).size.width-40,
+                                      height: 40,
+                                      width: MediaQuery.of(context).size.width -
+                                          40,
                                       child: ListView.builder(
                                           scrollDirection: Axis.horizontal,
                                           itemCount: members.length,
                                           itemBuilder: (context, index) {
-                                            return FutureBuilder<DocumentSnapshot<
-                                                Map<String, dynamic>>>(
-                                                future: FirebaseFirestore.instance
+                                            return FutureBuilder<
+                                                    DocumentSnapshot<
+                                                        Map<String, dynamic>>>(
+                                                future: FirebaseFirestore
+                                                    .instance
                                                     .collection('Users')
                                                     .doc(members[index])
                                                     .get(),
                                                 builder: (_, snapshot) {
-                                                  if (snapshot.connectionState ==
+                                                  if (snapshot
+                                                          .connectionState ==
                                                       ConnectionState.waiting) {
                                                     return const Center(
-                                                      child: CircularProgressIndicator(),
+                                                      child:
+                                                          CircularProgressIndicator(),
                                                     );
                                                   }
-                                                  if (snapshot.connectionState ==
+                                                  if (snapshot
+                                                          .connectionState ==
                                                       ConnectionState.done) {
                                                     return Padding(
                                                       padding:
-                                                      const EdgeInsets.only(right: 10.0),
+                                                          const EdgeInsets.only(
+                                                              right: 10.0),
                                                       child: Container(
                                                         height: 40,
                                                         width: 40,
                                                         decoration: BoxDecoration(
-                                                            color: Colors.blueAccent,
+                                                            color: Colors
+                                                                .blueAccent,
                                                             borderRadius:
-                                                            BorderRadius.circular(200),
-                                                            image:  DecorationImage(
-                                                                fit: BoxFit.fill,
-                                                                image: NetworkImage(snapshot.data!.data()!['pfpUrl']))),
+                                                                BorderRadius
+                                                                    .circular(
+                                                                        200),
+                                                            image: DecorationImage(
+                                                                fit:
+                                                                    BoxFit.fill,
+                                                                image: NetworkImage(snapshot
+                                                                        .data!
+                                                                        .data()![
+                                                                    'pfpUrl']))),
                                                       ),
                                                     );
-
                                                   }
                                                   return Container();
                                                 });
-                                          }
-                                      ),
+                                          }),
                                     ),
                                   ],
                                 ),
@@ -164,7 +177,7 @@ class _GroupDetailsState extends State<GroupDetails> {
                                         top: 30.0, left: 15),
                                     child: Column(
                                         crossAxisAlignment:
-                                        CrossAxisAlignment.start,
+                                            CrossAxisAlignment.start,
                                         children: [
                                           Row(
                                             children: [
@@ -192,26 +205,15 @@ class _GroupDetailsState extends State<GroupDetails> {
                                                 top: 10.0, bottom: 30),
                                             child: AppTextSubHeading(
                                                 text:
-                                                'Very nice place bla bla add discription about place'),
+                                                    'Very nice place bla bla add discription about place'),
                                           ),
                                           Container(
+                                            width: 350,
                                             height: 200,
                                             child: MapWidget(
-                                              id: data!['Trail'],),
-                                          ),
-                                          Padding(
-                                            padding: const EdgeInsets.all(8.0),
-                                            child: Row(
-                                              mainAxisAlignment:
-                                              MainAxisAlignment.center,
-                                              children: [
-                                                AppButtons(
-                                                    onPressed: () {},
-                                                    child: const AppText(
-                                                        text: 'Start Trail!')),
-                                              ],
+                                              id: data!['Trail'],
                                             ),
-                                          )
+                                          ),
                                         ]),
                                   )),
                             ],
@@ -240,7 +242,12 @@ class _GroupDetailsState extends State<GroupDetails> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 AppButtons(
-                    onPressed: () {},
+                    onPressed: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => StartTrail()));
+                    },
                     child: const AppText(text: 'Start Trail!')),
                 AppButtons(
                     onPressed: () {},
