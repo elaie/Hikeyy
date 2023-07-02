@@ -1,6 +1,4 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/framework.dart';
 
 class AppTextHeading extends StatelessWidget {
   final String textHeading;
@@ -27,15 +25,23 @@ class AppText extends StatelessWidget {
   final String text;
   final double? fontSize;
   final Color? color;
-  const AppText({Key? key, required this.text, this.fontSize, this.color})
+  final int? maxLines;
+  final TextOverflow? textOverflow;
+  const AppText(
+      {Key? key, required this.text, this.fontSize, this.color, this.maxLines, this.textOverflow})
       : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Text(
       text,
+      maxLines: maxLines,
+      overflow: TextOverflow.ellipsis,
       style: TextStyle(
-          color: color, fontWeight: FontWeight.bold, fontSize: fontSize),
+        color: color,
+        fontWeight: FontWeight.bold,
+        fontSize: fontSize,
+      ),
     );
   }
 }

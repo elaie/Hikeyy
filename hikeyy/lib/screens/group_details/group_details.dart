@@ -72,8 +72,8 @@ class _GroupDetailsState extends State<GroupDetails> {
                                       ))),
                               Padding(
                                 padding: const EdgeInsets.only(left: 70.0),
-                                child: AppTextHeading(
-                                  textHeading: data!['Name'],
+                                child: AppText(
+                                  text: data!['Name'],
                                   fontSize: 25,
                                   color: AppColor.primaryColor,
                                 ),
