@@ -41,15 +41,17 @@ class _VenueDetailsPageState extends State<VenueDetailsPage> {
                   List<dynamic> Photos = data!['PhotoURLs'];
                   List<dynamic> BestMonths = data['BestMonths'];
                   // print(BestMonths);
-                  //  print('****************');
+                  //  print('****************');\
                   return Column(
                     children: [
                       Stack(
                         children: [
-                          Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: ShowPhotos(Photos),
-                          ),
+                          Photos.isEmpty
+                              ? const CircularProgressIndicator()
+                              : Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: ShowPhotos(Photos),
+                                ),
                           Positioned(
                             top: 30,
                             left: 30,
@@ -249,10 +251,14 @@ class _VenueDetailsPageState extends State<VenueDetailsPage> {
       ),
       bottomNavigationBar: Container(
         decoration: BoxDecoration(boxShadow: <BoxShadow>[
-          BoxShadow(color: Colors.grey, blurRadius: 8),
-        ], color: Colors.white),
+          BoxShadow(
+              color: Colors.white,
+              blurRadius: 20,
+              spreadRadius: 20,
+              offset: Offset(0, -5)),
+        ], color: Colors.transparent),
         child: Padding(
-          padding: const EdgeInsets.all(20.0),
+          padding: const EdgeInsets.only(left: 20.0, right: 20, bottom: 20),
           child: SizedBox(
             height: 50,
             // decoration: BoxDecoration(color: Colors.amber),
