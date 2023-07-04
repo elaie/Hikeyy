@@ -1,4 +1,10 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:cron/cron.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:geolocator/geolocator.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:hikeyy/start_trail/friendslocation.dart';
 import 'package:hikeyy/start_trail/widgets/collapseable_options.dart';
 import 'package:hikeyy/widgets/app_colors.dart';
 import 'package:hikeyy/widgets/app_texts.dart';
@@ -6,13 +12,46 @@ import 'package:hikeyy/widgets/app_texts.dart';
 import '../widgets/app_buttons.dart';
 
 class StartTrail extends StatefulWidget {
-  const StartTrail({super.key});
+  final String id;
+  const StartTrail({super.key, required this.id});
 
   @override
   State<StartTrail> createState() => _StartTrailState();
 }
 
 class _StartTrailState extends State<StartTrail> {
+  FirebaseAuth auth= FirebaseAuth.instance;
+
+  // ignore: non_constant_identifier_names
+  Future<void> UpdateLocation() async {
+    await Geolocator.requestPermission().then((value){
+    }).onError((error, stackTrace) async {
+      await Geolocator.requestPermission();
+      print("ERROR"+error.toString());
+    });
+   // print(permission);
+  Geolocator.getCurrentPosition().then((value){
+  //  print(value.latitude.toString() +" "+value.longitude.toString());
+ // print('########################aa');
+  FirebaseFirestore.instance.collection('Groups').doc(widget.id).collection('Locations').doc(auth.currentUser?.uid).set({
+    'Position': GeoPoint(value.latitude,value.longitude)
+  });
+  });
+  //print('33333333333333333333333333333');
+  }
+  @override
+  void initState() {
+    // TODO: implement initState
+    //LocationPermission permission = await Geolocator.checkPermission();
+    //print(permission);
+    UpdateLocation();
+    super.initState();
+    final cron = Cron();
+    cron.schedule(Schedule.parse('* * * * *'), () async {
+      UpdateLocation();
+    });
+
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -44,8 +83,8 @@ class _StartTrailState extends State<StartTrail> {
                               Navigator.of(context).pop();
                             },
                           ))),
-                  Padding(
-                    padding: const EdgeInsets.only(right: 50.0),
+                  const Padding(
+                    padding: EdgeInsets.only(right: 50.0),
                     child: AppText(
                       text: '*enter group name*',
                       fontSize: 20,
@@ -54,28 +93,28 @@ class _StartTrailState extends State<StartTrail> {
                   )
                 ],
               ),
-              Padding(
-                padding: const EdgeInsets.only(
+              const Padding(
+                padding: EdgeInsets.only(
                   top: 15.0,
                 ),
                 child: Row(
                   children: [
                     Padding(
-                      padding: const EdgeInsets.all(5.0),
+                      padding: EdgeInsets.all(5.0),
                       child: CircleAvatar(
                         backgroundColor: Colors.green,
                         radius: 15,
                       ),
                     ),
                     Padding(
-                      padding: const EdgeInsets.all(5.0),
+                      padding: EdgeInsets.all(5.0),
                       child: CircleAvatar(
                         backgroundColor: Colors.green,
                         radius: 15,
                       ),
                     ),
                     Padding(
-                      padding: const EdgeInsets.all(5.0),
+                      padding: EdgeInsets.all(5.0),
                       child: CircleAvatar(
                         backgroundColor: Colors.green,
                         radius: 15,
@@ -87,20 +126,20 @@ class _StartTrailState extends State<StartTrail> {
               Padding(
                 padding: const EdgeInsets.only(top: 30.0),
                 child: Container(
-                  constraints: BoxConstraints(maxHeight: 200, maxWidth: 295),
+                  constraints: const BoxConstraints(maxHeight: 200, maxWidth: 295),
                   decoration:
                       BoxDecoration(borderRadius: BorderRadius.circular(30)),
                   child: Stack(children: [
                     ClipRRect(
                         borderRadius: BorderRadius.circular(30),
-                        child: Image(
+                        child: const Image(
                           image: AssetImage('assets/images/EBC.jpg'),
                           fit: BoxFit.cover,
                         )),
                     Container(
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(30),
-                        gradient: LinearGradient(
+                        gradient: const LinearGradient(
                           begin: Alignment.topCenter,
                           end: Alignment.bottomCenter,
                           colors: [
@@ -110,7 +149,7 @@ class _StartTrailState extends State<StartTrail> {
                         ),
                       ),
                     ),
-                    Positioned(
+                    const Positioned(
                       top: 100,
                       left: 20,
                       child: AppText(
@@ -119,14 +158,14 @@ class _StartTrailState extends State<StartTrail> {
                         color: Colors.white,
                       ),
                     ),
-                    Positioned(
+                    const Positioned(
                         top: 100,
                         left: 250,
                         child: Icon(
                           Icons.star,
                           color: Colors.yellow,
                         )),
-                    Padding(
+                    const Padding(
                       padding: EdgeInsets.only(top: 130, left: 15, right: 15),
                       child: Divider(
                         thickness: 1,
@@ -138,7 +177,7 @@ class _StartTrailState extends State<StartTrail> {
                       left: 20,
                       child: Container(
                         constraints: const BoxConstraints(maxWidth: 250),
-                        child: AppText(
+                        child: const AppText(
                           text:
                               'The Everest Base Camp trek on the south side, at an elevation of 5,364 m (17,598 ft), is one of the most popular trekking routes in the Himalayas and about 40,000 people per year make the trek there from Lukla Airport (2,846 m (9,337 ft)). Trekkers usually fly from Kathmandu to Lukla to save time and energy before beginning the trek to the base camp.',
                           color: Color.fromARGB(255, 223, 223, 223),
@@ -157,8 +196,10 @@ class _StartTrailState extends State<StartTrail> {
               Padding(
                 padding: const EdgeInsets.only(top: 25.0),
                 child: AppButtons(
-                    onPressed: () {},
-                    child: AppText(
+                    onPressed: () {
+                      Navigator.push(context, MaterialPageRoute(builder: (context)=> LocationFriends(id: widget.id)));
+                    },
+                    child: const AppText(
                       text: 'Nearby Devices',
                     )),
               ),

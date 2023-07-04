@@ -246,7 +246,7 @@ class _GroupDetailsState extends State<GroupDetails> {
                       Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => StartTrail()));
+                              builder: (context) => StartTrail(id: widget.id,)));
                     },
                     child: const AppText(text: 'Start Trail!')),
                 AppButtons(
