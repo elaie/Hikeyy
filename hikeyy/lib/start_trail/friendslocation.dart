@@ -144,7 +144,7 @@ class _LocationFriendsState extends State<LocationFriends> {
                                           fit: BoxFit.fill,
                                           image: NetworkImage(pfp))),
                                 ),
-                                SizedBox(
+                                const SizedBox(
                                   width: 10,
                                 ),
                                 Text(name)
@@ -182,19 +182,19 @@ class _LocationFriendsState extends State<LocationFriends> {
           future: getLocations(),
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
-              return CircularProgressIndicator();
+              return const CircularProgressIndicator();
             }
             return FutureBuilder(
                 future: getUserCurrentLocation(),
                 builder: (context, snap) {
                   if (snap.connectionState == ConnectionState.waiting) {
-                    return CircularProgressIndicator();
+                    return const CircularProgressIndicator();
                   }
                   return FutureBuilder(
                       future: getTrail(),
                       builder: (context, snap) {
                         if (snap.connectionState == ConnectionState.waiting) {
-                          return CircularProgressIndicator();
+                          return const CircularProgressIndicator();
                         }
                         return GoogleMap(
                           // on below line setting camera position

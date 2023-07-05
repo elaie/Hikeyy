@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:cron/cron.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -21,6 +23,7 @@ class StartTrail extends StatefulWidget {
 
 class _StartTrailState extends State<StartTrail> {
   FirebaseAuth auth= FirebaseAuth.instance;
+  Timer? timer;
 
   // ignore: non_constant_identifier_names
   Future<void> UpdateLocation() async {
@@ -31,10 +34,9 @@ class _StartTrailState extends State<StartTrail> {
     });
    // print(permission);
   Geolocator.getCurrentPosition().then((value){
-  //  print(value.latitude.toString() +" "+value.longitude.toString());
- // print('########################aa');
   FirebaseFirestore.instance.collection('Groups').doc(widget.id).collection('Locations').doc(auth.currentUser?.uid).set({
-    'Position': GeoPoint(value.latitude,value.longitude)
+    'Position': GeoPoint(value.latitude,value.longitude),
+    'Time' : DateTime.now()
   });
   });
   //print('33333333333333333333333333333');
@@ -46,11 +48,19 @@ class _StartTrailState extends State<StartTrail> {
     //print(permission);
     UpdateLocation();
     super.initState();
-    final cron = Cron();
-    cron.schedule(Schedule.parse('* * * * *'), () async {
+    // final cron = Cron();
+    // cron.schedule(Schedule.parse('* * * * *'), () async {
+    //   UpdateLocation();
+    // });
+    timer = Timer.periodic(Duration(seconds: 30), (timer) {
       UpdateLocation();
     });
 
+  }
+  @override
+  void dispose() {
+    timer?.cancel();
+    super.dispose();
   }
   @override
   Widget build(BuildContext context) {
@@ -192,7 +202,7 @@ class _StartTrailState extends State<StartTrail> {
               //group members
 
               //checkpoints
-              CollapsibleOptions(),
+              CollapsibleOptions(id: widget.id,),
               Padding(
                 padding: const EdgeInsets.only(top: 25.0),
                 child: AppButtons(

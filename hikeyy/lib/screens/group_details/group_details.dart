@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:hikeyy/screens/home_page/widget/mapwidget.dart';
 import 'package:hikeyy/start_trail/start_trail.dart';
@@ -243,6 +244,10 @@ class _GroupDetailsState extends State<GroupDetails> {
               children: [
                 AppButtons(
                     onPressed: () {
+                      FirebaseFirestore.instance.collection('Users').doc(FirebaseAuth.instance.currentUser!.uid).update({
+                        'Status': 'Busy',
+                        'Trail' : widget.id
+                      });
                       Navigator.push(
                           context,
                           MaterialPageRoute(
