@@ -11,20 +11,20 @@ import '../profile_page/profile_page.dart';
 import '../search_page/search_page.dart';
 
 class Dashboard extends StatefulWidget {
-  const Dashboard({super.key});
+  final Widget page;
+  const Dashboard({super.key, required this.page});
 
   @override
   State<Dashboard> createState() => _DashboardState();
 }
 
 class _DashboardState extends State<Dashboard> {
+  Widget pageA=CircularProgressIndicator();
   int _selectedPageIndex = 0;
+  List<Widget> _pages=[];
 
-  final List<Widget> _pages = [
-    const HomePage(),
-    const SearchPage(),
-    const ProfilePage(),
-  ];
+
+
   Future<bool> _onWillPop() async {
     return (await showDialog(
           context: context,
@@ -54,23 +54,31 @@ class _DashboardState extends State<Dashboard> {
       _selectedPageIndex = index;
     });
   }
-  getTokenId()  async {
-  final fcmToken = await FirebaseMessaging.instance.getToken();
-  FirebaseFirestore.instance.collection('Users').doc(FirebaseAuth.instance.currentUser!.uid).update({
-  'TokenId': fcmToken
-  }).then((value) {
-  print(fcmToken);
-  print('@@@@@@@@@@@@@@@@@@@@@');
-  });
-}
+
+  getTokenId() async {
+    final fcmToken = await FirebaseMessaging.instance.getToken();
+    FirebaseFirestore.instance
+        .collection('Users')
+        .doc(FirebaseAuth.instance.currentUser!.uid)
+        .update({'TokenId': fcmToken}).then((value) {
+      print(fcmToken);
+      print('@@@@@@@@@@@@@@@@@@@@@');
+    });
+  }
 
   @override
-  void initState()  {
+  void initState() {
     // TODO: implement initState
     super.initState();
     getTokenId();
-
+    pageA=widget.page;
+    _pages = [
+      pageA,
+      const SearchPage(),
+      const ProfilePage(),
+    ];
   }
+
   @override
   Widget build(BuildContext context) {
     return WillPopScope(

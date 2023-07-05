@@ -10,6 +10,8 @@ import '../../widgets/app_colors.dart';
 import '../dashboard/dashboard.dart';
 import 'package:http/http.dart' as http;
 
+import '../home_page/home_page.dart';
+
 class PlanTripPage extends StatefulWidget {
   final String id;
 
@@ -120,7 +122,7 @@ class _PlanTripPageState extends State<PlanTripPage> {
           }
           Navigator.push(
             context,
-            MaterialPageRoute(builder: (context) => const Dashboard()),
+            MaterialPageRoute(builder: (context) => Dashboard(page: HomePage())),
           ).then((value) {
           });
         });

@@ -5,6 +5,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:hikeyy/screens/dashboard/dashboard.dart';
 
+import '../home_page/home_page.dart';
+
 class CreateGroup extends StatefulWidget {
   const CreateGroup({super.key});
 
@@ -88,7 +90,7 @@ class _CreateGroupState extends State<CreateGroup> {
             .set({'GroupName': gname, 'GroupID': doc_id}).then((value) {
           Navigator.push(
             context,
-            MaterialPageRoute(builder: (context) => const Dashboard()),
+            MaterialPageRoute(builder: (context) => Dashboard(page: HomePage())),
           );
         });
       });
