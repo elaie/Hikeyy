@@ -8,6 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:hikeyy/start_trail/Expenses.dart';
 import 'package:hikeyy/start_trail/friendslocation.dart';
 import 'package:hikeyy/start_trail/widgets/collapseable_options.dart';
 import 'package:hikeyy/widgets/app_colors.dart';
@@ -55,8 +56,8 @@ class _StartTrailState extends State<StartTrail> {
         .collection('Users')
         .doc(FirebaseAuth.instance.currentUser!.uid)
         .update({'TokenId': fcmToken}).then((value) {
-      print(fcmToken);
-      print('@@@@@@@@@@@@@@@@@@@@@');
+      //print(fcmToken);
+     // print('@@@@@@@@@@@@@@@@@@@@@');
     });
   }
   // ignore: non_constant_identifier_names
@@ -83,10 +84,7 @@ class _StartTrailState extends State<StartTrail> {
     getTokenId();
     UpdateLocation();
     super.initState();
-    // final cron = Cron();
-    // cron.schedule(Schedule.parse('* * * * *'), () async {
-    //   UpdateLocation();
-    // });
+
     timer = Timer.periodic(Duration(seconds: 30), (timer) {
       UpdateLocation();
     });
@@ -127,7 +125,7 @@ class _StartTrailState extends State<StartTrail> {
                             child: IconButton(
                               icon: const Icon(Icons.arrow_back_ios),
                               onPressed: () {
-                                Navigator.of(context).pop();
+                                _onWillPop();
                               },
                             ))),
                     const Padding(
@@ -250,6 +248,16 @@ class _StartTrailState extends State<StartTrail> {
                         text: 'Nearby Devices',
                       )),
                 ),
+                    Padding(
+                      padding: const EdgeInsets.only(top: 25.0),
+                      child: AppButtons(
+                          onPressed: () {
+                            Navigator.push(context, MaterialPageRoute(builder: (context)=> Expenses(id: widget.id)));
+                          },
+                          child: const AppText(
+                            text: 'Expenses',
+                          )),
+                    ),
               ]),
             ),
           ),
