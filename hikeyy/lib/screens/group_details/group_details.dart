@@ -37,8 +37,8 @@ class _GroupDetailsState extends State<GroupDetails> {
               if (snapshot.connectionState == ConnectionState.done) {
                 var data = snapshot.data!.data();
                 List<dynamic> members = data!['Members'];
-                print(members);
-                print('#####################');
+                //print(members);
+              //  print('#####################');
                 return Padding(
                   padding: const EdgeInsets.only(top: 15),
                   child: SingleChildScrollView(

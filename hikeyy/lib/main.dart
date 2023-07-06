@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
@@ -19,8 +21,9 @@ void main() async {
     sound: true,
   );
 
-  print('User granted permission: ${settings.authorizationStatus}');
-
+  // Timer? timer = Timer.periodic(Duration(seconds: 30), (timer) {
+  //   print('User granted permission: ${settings.authorizationStatus}');
+  // });
   FirebaseMessaging.onMessage.listen((RemoteMessage message) {
     var channel = const AndroidNotificationChannel(
       'high_importance_channel', // id
@@ -50,10 +53,6 @@ void main() async {
         ),
       );
     }
-    // print('Got a message whilst in the foreground!');
-    // if (message.notification != null) {
-    //   print('Notification Title: ${message.notification!.title}');
-    //   print('Notification Body: ${message.notification!.body}');
   });
   // FirebaseMessaging.onBackgroundMessage(firebaseMessagingBackgroundHandler);
   runApp(const MyApp());
