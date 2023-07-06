@@ -3,7 +3,7 @@ import 'dart:ffi';
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:hikeyy/screens/dashboard/dashboard.dart';
+import 'package:hikeyy/screens/login_signup/IsInTrip.dart';
 import 'package:hikeyy/screens/login_signup/login.dart';
 
 class VerifyMailPage extends StatefulWidget {
@@ -61,7 +61,7 @@ class _VerifyMailPageState extends State<VerifyMailPage> {
 
   @override
   Widget build(BuildContext context) => isEmailVerified
-      ? const Dashboard()
+      ? const IsBusy()
       : Scaffold(
     body: Padding(
       padding: const EdgeInsets.all(16),

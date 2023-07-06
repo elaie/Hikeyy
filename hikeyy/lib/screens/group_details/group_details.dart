@@ -1,5 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:hikeyy/screens/dashboard/dashboard.dart';
 import 'package:hikeyy/screens/home_page/widget/mapwidget.dart';
 import 'package:hikeyy/start_trail/start_trail.dart';
 import 'package:hikeyy/widgets/app_buttons.dart';
@@ -230,7 +232,7 @@ class _GroupDetailsState extends State<GroupDetails> {
             }),
       ),
       bottomNavigationBar: Container(
-        decoration: BoxDecoration(boxShadow: <BoxShadow>[
+        decoration: const BoxDecoration(boxShadow: <BoxShadow>[
           BoxShadow(color: Colors.white, blurRadius: 8, spreadRadius: 10),
         ], color: Colors.transparent),
         child: Padding(
@@ -243,15 +245,19 @@ class _GroupDetailsState extends State<GroupDetails> {
               children: [
                 AppButtons(
                     onPressed: () {
+                      FirebaseFirestore.instance.collection('Users').doc(FirebaseAuth.instance.currentUser!.uid).update({
+                        'Status': 'Busy',
+                        'Trail' : widget.id
+                      });
                       Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => StartTrail(id: widget.id,)));
+                              builder: (context) => Dashboard(page: StartTrail(id: widget.id,))));
                     },
                     child: const AppText(text: 'Start Trail!')),
                 AppButtons(
                     onPressed: () {},
-                    child: AppText(
+                    child: const AppText(
                       text: 'Nearby Devices',
                     ))
               ],

@@ -220,7 +220,7 @@ class _EditProfileState extends State<EditProfile> {
                                     Navigator.push(
                                       context,
                                       MaterialPageRoute(
-                                          builder: (context) => const Dashboard()),
+                                          builder: (context) => const Dashboard(page: HomePage())),
                                     );
                                   }).onError((error, stackTrace) async {
                                     showDialog<String>(
