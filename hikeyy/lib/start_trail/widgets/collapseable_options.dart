@@ -28,8 +28,8 @@ class _CollapsibleOptionsState extends State<CollapsibleOptions> {
                 borderRadius: BorderRadius.circular(30),
               ),
               child: ListTile(
-                trailing: Icon(Icons.arrow_drop_down_outlined),
-                title: Text('Trail Details'),
+                trailing: const Icon(Icons.arrow_drop_down_outlined),
+                title: const Text('Trail Details'),
                 onTap: () {
                   setState(() {
                     _tripDetailsExpanded = !_tripDetailsExpanded;
@@ -44,9 +44,9 @@ class _CollapsibleOptionsState extends State<CollapsibleOptions> {
                 color: Colors.grey[200],
                 borderRadius: BorderRadius.circular(30),
               ),
-              margin: EdgeInsets.symmetric(horizontal: 16),
-              padding: EdgeInsets.all(16),
-              child: Column(
+              margin: const EdgeInsets.symmetric(horizontal: 16),
+              padding: const EdgeInsets.all(16),
+              child: const Column(
                 children: [
                   ListTile(
                     title: Text('Duration'),
@@ -65,8 +65,8 @@ class _CollapsibleOptionsState extends State<CollapsibleOptions> {
                 borderRadius: BorderRadius.circular(30),
               ),
               child: ListTile(
-                trailing: Icon(Icons.arrow_drop_down_outlined),
-                title: Text('Checkpoints'),
+                trailing: const Icon(Icons.arrow_drop_down_outlined),
+                title: const Text('Checkpoints'),
                 onTap: () {
                   setState(() {
                     _checkpointsExpanded = !_checkpointsExpanded;
@@ -120,8 +120,8 @@ class _CollapsibleOptionsState extends State<CollapsibleOptions> {
                               color: Colors.grey[200],
                               borderRadius: BorderRadius.circular(30),
                             ),
-                            margin: EdgeInsets.symmetric(horizontal: 16),
-                            padding: EdgeInsets.all(16),
+                            margin: const EdgeInsets.symmetric(horizontal: 16),
+                            padding: const EdgeInsets.all(16),
                             child: ListView.builder(
                               itemBuilder: (context, index) {
                                 return Text("${index + 1} . ${points[index]}");
