@@ -41,25 +41,22 @@ class _TimeLineState extends State<TimeLine> {
                         var data = snapshots.data!.docs[index].data()
                             as Map<String, dynamic>;
 
-                        return ListTile(
-                            leading: Container(
-                              height: 40,
-                              width: 50,
-                              child: FutureBuilder<DocumentSnapshot<Map<String, dynamic>>>(
-                                  future: FirebaseFirestore.instance
-                                      .collection('Users')
-                                      .doc(data['User'])
-                                      .get(),
-                                  builder: (_, snapshot) {
-                                    if (snapshot.connectionState ==
-                                        ConnectionState.waiting) {
-                                      return const Center(
-                                        child: CircularProgressIndicator(),
-                                      );
-                                    }
-                                    if (snapshot.connectionState ==
-                                        ConnectionState.done) {
-                                      return Padding(
+                        return FutureBuilder<DocumentSnapshot<Map<String, dynamic>>>(
+                                future: FirebaseFirestore.instance
+                                    .collection('Users')
+                                    .doc(data['User'])
+                                    .get(),
+                                builder: (_, snapshot) {
+                                  if (snapshot.connectionState ==
+                                      ConnectionState.waiting) {
+                                    return const Center(
+                                      child: CircularProgressIndicator(),
+                                    );
+                                  }
+                                  if (snapshot.connectionState ==
+                                      ConnectionState.done) {
+                                    return ListTile(
+                                      leading: Padding(
                                         padding:
                                         const EdgeInsets.only(right: 10.0),
                                         child: Container(
@@ -75,14 +72,15 @@ class _TimeLineState extends State<TimeLine> {
                                                       .data!
                                                       .data()!['pfpUrl']))),
                                         ),
-                                      );
-                                    }
-                                    return Container();
-                                  }),
-                            ),
-                            subtitle: Text("${data['Time'].toDate().hour}:${data['Time'].toDate().minute}    ${data['Time'].toDate().year}|${data['Time'].toDate().month}|${data['Time'].toDate().day}"),
-                            title: Text(widget.checkpoints[data['pos']]),
-                          );
+                                      ),
+                                      subtitle: Text("${data['Time'].toDate().hour}:${data['Time'].toDate().minute}    ${data['Time'].toDate().year}|${data['Time'].toDate().month}|${data['Time'].toDate().day}"),
+                                      title: Text('${snapshot
+                                          .data!
+                                          .data()!['UserName']} reached ${widget.checkpoints[data['pos']]}'),
+                                    );
+                                  }
+                                  return Container();
+                                });
 
                       }),
                 ),
