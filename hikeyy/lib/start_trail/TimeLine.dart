@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:timeline_tile/timeline_tile.dart';
 
 class TimeLine extends StatefulWidget {
   final String id;
@@ -55,28 +56,47 @@ class _TimeLineState extends State<TimeLine> {
                                   }
                                   if (snapshot.connectionState ==
                                       ConnectionState.done) {
-                                    return ListTile(
-                                      leading: Padding(
-                                        padding:
-                                        const EdgeInsets.only(right: 10.0),
-                                        child: Container(
-                                          height: 40,
-                                          width: 40,
-                                          decoration: BoxDecoration(
-                                              color: Colors.blueAccent,
-                                              borderRadius:
-                                              BorderRadius.circular(200),
-                                              image: DecorationImage(
-                                                  fit: BoxFit.fill,
-                                                  image: NetworkImage(snapshot
-                                                      .data!
-                                                      .data()!['pfpUrl']))),
+                                    bool isfirst=false;
+                                    if(index==0){
+                                      isfirst= true;
+                                    }
+                                    bool islast=false;
+                                    if(index==snapshots.data!.docs.length-1){
+                                      islast= true;
+                                    }
+                                    return Padding(
+                                      padding: const EdgeInsets.only(left: 18.0),
+                                      child: TimelineTile(
+                                        axis: TimelineAxis.vertical,
+                                       // nodeAlign: TimelineNodeAlign.start,
+                                        //node: const Icon(Icons.navigation),
+                                        isFirst: isfirst,
+                                        isLast: islast,
+                                        endChild: ListTile(
+                                        leading: Padding(
+                                          padding:
+                                          const EdgeInsets.only(right: 10.0),
+                                          child: Container(
+                                            height: 40,
+                                            width: 40,
+                                            decoration: BoxDecoration(
+                                                color: Colors.blueAccent,
+                                                borderRadius:
+                                                BorderRadius.circular(200),
+                                                image: DecorationImage(
+                                                    fit: BoxFit.fill,
+                                                    image: NetworkImage(snapshot
+                                                        .data!
+                                                        .data()!['pfpUrl']))),
+                                          ),
                                         ),
+                                        subtitle: Text("${data['Time'].toDate().hour}:${data['Time'].toDate().minute}    ${data['Time'].toDate().year}|${data['Time'].toDate().month}|${data['Time'].toDate().day}"),
+                                        title: Text('${snapshot
+                                            .data!
+                                            .data()!['UserName']} reached ${widget.checkpoints[data['pos']]}'),
                                       ),
-                                      subtitle: Text("${data['Time'].toDate().hour}:${data['Time'].toDate().minute}    ${data['Time'].toDate().year}|${data['Time'].toDate().month}|${data['Time'].toDate().day}"),
-                                      title: Text('${snapshot
-                                          .data!
-                                          .data()!['UserName']} reached ${widget.checkpoints[data['pos']]}'),
+                                        //direction: Axis.vertical,
+                                      ),
                                     );
                                   }
                                   return Container();
