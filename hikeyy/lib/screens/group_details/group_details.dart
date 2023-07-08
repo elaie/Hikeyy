@@ -255,7 +255,7 @@ class _GroupDetailsState extends State<GroupDetails> {
                             .doc(widget.id)
                             .collection('Locations')
                             .doc(FirebaseAuth.instance.currentUser?.uid)
-                            .set({'Position': null, 'Time': DateTime.now()});
+                            .set({'Position': null, 'Time': DateTime.now(),'Status':'Going'});
                       });
                       Navigator.push(
                           context,

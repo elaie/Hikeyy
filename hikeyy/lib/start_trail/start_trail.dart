@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:convert';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:cron/cron.dart';
@@ -14,6 +15,7 @@ import 'package:hikeyy/start_trail/friendslocation.dart';
 import 'package:hikeyy/start_trail/widgets/collapseable_options.dart';
 import 'package:hikeyy/widgets/app_colors.dart';
 import 'package:hikeyy/widgets/app_texts.dart';
+import 'package:http/http.dart' as http;
 
 import '../widgets/app_buttons.dart';
 
@@ -71,6 +73,7 @@ class _StartTrailState extends State<StartTrail> {
     List<LatLng>? points;
     GeoPoint? mypos;
     int? posdetail;
+    String? Status;
     await FirebaseFirestore.instance
         .collection('Groups')
         .doc(widget.id)
@@ -80,6 +83,7 @@ class _StartTrailState extends State<StartTrail> {
         .then((DocumentSnapshot<Map<String, dynamic>> snapshots) async {
       mypos = snapshots.data()!['Position'];
       posdetail = snapshots.data()?['pos'];
+      Status = snapshots.data()?['Status'];
     });
     //TrailID
     // DocumentSnapshot group= await FirebaseFirestore.instance.collection('Group').doc(widget.id).get();
@@ -103,7 +107,7 @@ class _StartTrailState extends State<StartTrail> {
         points![pos] = LatLng(double.parse(lat), double.parse(lon));
       }
     });
-    if (posdetail == null) {
+    if (posdetail == null && Status == 'Going') {
       for (int i = 0; i <= points!.length - 1; i++) {
         var distance = Geolocator.distanceBetween(points![i].latitude,
             points![i].longitude, mypos!.latitude, mypos!.longitude);
@@ -130,7 +134,7 @@ class _StartTrailState extends State<StartTrail> {
         // print(points);
         //   print('####################');
       }
-    } else {
+    } else if (posdetail! != points!.length-1 && Status == 'Going') {
       for (int i = posdetail! + 1; i <= points!.length - 1; i++) {
         var distance = Geolocator.distanceBetween(points![i].latitude,
             points![i].longitude, mypos!.latitude, mypos!.longitude);
@@ -155,6 +159,45 @@ class _StartTrailState extends State<StartTrail> {
           break;
         }
       }
+    }
+    else if(posdetail! == points!.length-1 && Status == 'Going')
+    {
+      await FirebaseFirestore.instance.collection('Group').doc(widget.id).collection('Locations').doc(FirebaseAuth.instance.currentUser!.uid).update(
+          {
+            'Status' : 'Returning'
+          });
+    }
+    else if (Status == 'Returning') {
+      for (int i = posdetail! - 1; i >= 0; i--) {
+        var distance = Geolocator.distanceBetween(points![i].latitude,
+            points![i].longitude, mypos!.latitude, mypos!.longitude);
+        if (distance <= 200) {
+          await FirebaseFirestore.instance
+              .collection('Groups')
+              .doc(widget.id)
+              .collection('Locations')
+              .doc(FirebaseAuth.instance.currentUser!.uid)
+              .update({'pos': i}).then((value) async {
+            await FirebaseFirestore.instance
+                .collection('Groups')
+                .doc(widget.id)
+                .collection('Timeline')
+                .add({
+              'User': FirebaseAuth.instance.currentUser!.uid,
+              'Time': DateTime.now(),
+              'pos': i
+            });
+          });
+          //add the pos to the db
+          break;
+        }
+      }
+    }
+    else if(Status == 'Returning' && posdetail! == 0){
+      await FirebaseFirestore.instance.collection('Group').doc(widget.id).collection('Locations').doc(FirebaseAuth.instance.currentUser!.uid).update(
+          {
+            'Status' : 'Ended'
+          });
     }
   }
 
@@ -201,6 +244,43 @@ class _StartTrailState extends State<StartTrail> {
       });
     });
     //print('33333333333333333333333333333');
+  }
+
+  emergencycall() async {
+    DocumentSnapshot dataG = await FirebaseFirestore.instance.collection(
+        'Groups').doc(widget.id).get();
+
+    List members = dataG['Members'];
+    DocumentSnapshot dataMe = await FirebaseFirestore.instance.collection(
+        'Users').doc(FirebaseAuth.instance.currentUser!.uid).get();
+    for (var element in members) {
+      DocumentSnapshot data = await FirebaseFirestore.instance.collection(
+          'Users').doc(element).get();
+      try {
+        http.post(Uri.parse('https://fcm.googleapis.com/fcm/send'),
+            headers: <String, String>{
+              'Content-Type': 'application/json',
+              'Authorization': 'key=AAAAmBUmFv8:APA91bHyUqeVPNp2YUQx4J3S4nJMupqms0CprTzq1RD-aQqJaJcZwb7QhvK-GWuj-qPzc1vKXVvJKFyUT4bFYlRGxLREnbD-amKaWWeVuaxUvMsOdYNK4aEcJnUjIWRJRQm-bbv-3kTA'
+            },
+            body: jsonEncode(<String, dynamic>{
+              'priority': 'high',
+              'data': <String, dynamic>{
+                'click_action': 'FLUTTER_NOTIFICATION_CLICK',
+                'status': 'done',
+                'body': '${dataMe['UserName']} call for emergency. Please look map for his location or Call them',
+                'title': 'Emergency!!!!!'
+              },
+              "notification": <String, dynamic>{
+                "title": "Emergency!!!!",
+                "body": "${dataMe['UserName']} call for emergency. Please look map for his location or Call them",
+                "android_channel_id": 'db'
+              },
+              "to": data['TokenId']
+            }));
+      } catch (e) {
+        print(e);
+      }
+    }
   }
 
   @override
@@ -525,8 +605,19 @@ class _StartTrailState extends State<StartTrail> {
                                             text: 'Expenses',
                                           )),
                                     ),
+                                    Padding(
+                                      padding: const EdgeInsets.only(top: 25.0),
+                                      child: AppButtons(
+                                          onPressed: () {
+                                            emergencycall();
+                                          },
+                                          child: const AppText(
+                                            text: 'Emergency',
+                                          )),
+                                    ),
                                   ]),
                             ),
+
                           );
                         }
                         return Container();
