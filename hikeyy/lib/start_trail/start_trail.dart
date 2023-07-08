@@ -167,7 +167,7 @@ class _StartTrailState extends State<StartTrail> {
             'Status' : 'Returning'
           });
     }
-    else if (Status == 'Returning') {
+    else if (Status == 'Returning'&& posdetail! != 0) {
       for (int i = posdetail! - 1; i >= 0; i--) {
         var distance = Geolocator.distanceBetween(points![i].latitude,
             points![i].longitude, mypos!.latitude, mypos!.longitude);
