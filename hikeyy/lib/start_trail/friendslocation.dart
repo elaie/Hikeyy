@@ -1,11 +1,15 @@
 import 'dart:async';
-import 'dart:typed_data';
 import 'dart:ui' as ui;
+import 'dart:ui';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_cache_manager/file.dart';
+import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:http/http.dart' as http;
 
 import '../screens/profile_page/widgets/profile_picture.dart';
 import '../screens/profile_page/widgets/user_name.dart';
@@ -89,78 +93,107 @@ class _LocationFriendsState extends State<LocationFriends> {
     // print(datas.get('Trails'));
     // print('##################aaaaa');
   }
+  Future<Uint8List> loadImage(String URL)async {
+    final completer = Completer<ImageInfo>();
+    var image = NetworkImage(URL);
+    image.resolve(ImageConfiguration()).addListener(
+      ImageStreamListener((info,_)=> completer.complete(info))
+    );
+    final imageInfo = await completer.future;
+    final byteData = await imageInfo.image.toByteData(format: ui.ImageByteFormat.png);
+    return byteData!.buffer.asUint8List();
+  }
 
   Future<void> getLocations() async {
-    // BitmapDescriptor markerbitmap = await BitmapDescriptor.fromAssetImage(
-    // BitmapDescriptor markerbitmap = await BitmapDescriptor.fromAssetImage(
-    //   ImageConfiguration(size: Size.square(1),
-    //   devicePixelRatio: 10),
-    //   "assets/images/profile.png",
-    // );
-    final Uint8List markerIcon =
-        await getBytesFromAsset('assets/icons/profile.png', 60);
+
     QuerySnapshot datas = await FirebaseFirestore.instance
         .collection('Groups')
         .doc(widget.id)
         .collection('Locations')
         .get();
-    datas.docs.forEach((element) {
+    datas.docs.forEach((element) async {
       GeoPoint point = element['Position'];
       String id = element.id;
-      _markers.add(
-        Marker(
-            markerId: MarkerId(id),
-            position: LatLng(point.latitude, point.longitude),
-            icon: BitmapDescriptor.fromBytes(markerIcon),
-            onTap: () {
-              showDialog(
-                context: context,
-                builder: (context) =>
-                    FutureBuilder<DocumentSnapshot<Map<String, dynamic>>>(
-                        future: FirebaseFirestore.instance
-                            .collection('Users')
-                            .doc(id)
-                            .get(),
-                        builder: (_, snapshot) {
-                          if (snapshot.connectionState ==
-                              ConnectionState.waiting) {
-                            return const Center(
-                              child: CircularProgressIndicator(),
-                            );
-                          }
-                          var data = snapshot.data!.data();
-                          var name = data!['UserName'];
-                          var pfp = data['pfpUrl'];
-                          return AlertDialog(
-                            content: Row(
-                              children: [
-                                Container(
-                                  height: 40,
-                                  width: 40,
-                                  decoration: BoxDecoration(
-                                      color: Colors.blueAccent,
-                                      borderRadius: BorderRadius.circular(200),
-                                      image: DecorationImage(
-                                          fit: BoxFit.fill,
-                                          image: NetworkImage(pfp))),
-                                ),
-                                const SizedBox(
-                                  width: 10,
-                                ),
-                                Text(name)
-                              ],
-                            ),
-                            actions: <Widget>[
-                              TextButton(
-                                onPressed: () => Navigator.of(context).pop(),
-                                child: new Text('Dismiss'),
+      if (id != FirebaseAuth.instance.currentUser!.uid) {
+        DateTime time = element['Time'].toDate();
+        DocumentSnapshot dataFriends = await FirebaseFirestore.instance
+            .collection('Users')
+            .doc(id)
+            .get();
+        String pfp = dataFriends.get('pfpUrl');
+        String name = dataFriends.get('UserName');
+        Uint8List? image = await loadImage(pfp);
+        final Uint8List markerIcon = await getBytesFromAsset(
+            'assets/icons/profile.png', 60);
+        final ui.Codec markerImage = await instantiateImageCodec(
+          image.buffer.asUint8List(),
+          targetHeight: 80,
+          targetWidth: 80
+        );
+        final ui.FrameInfo frameInfo =await markerImage.getNextFrame();
+        final ByteData? byteData = await frameInfo.image.toByteData(
+          format: ui.ImageByteFormat.png
+        );
+        final Uint8List resixedImageMarker = byteData!.buffer.asUint8List();
+        _markers.add(
+          Marker(
+              infoWindow: InfoWindow(
+                  title: name, snippet: '${time.hour}:${time.minute}'),
+              markerId: MarkerId(id),
+              position: LatLng(point.latitude, point.longitude),
+              icon: BitmapDescriptor.fromBytes(resixedImageMarker),
+              onTap: () {
+                showDialog(
+                  context: context,
+                  builder: (context) =>
+                      FutureBuilder<DocumentSnapshot<Map<String, dynamic>>>(
+                          future: FirebaseFirestore.instance
+                              .collection('Users')
+                              .doc(id)
+                              .get(),
+                          builder: (_, snapshot) {
+                            if (snapshot.connectionState ==
+                                ConnectionState.waiting) {
+                              return const Center(
+                                child: CircularProgressIndicator(),
+                              );
+                            }
+                            var data = snapshot.data!.data();
+                            var name = data!['UserName'];
+                            var pfp = data['pfpUrl'];
+                            return AlertDialog(
+                              title: Row(
+                                children: [
+                                  Container(
+                                    height: 40,
+                                    width: 40,
+                                    decoration: BoxDecoration(
+                                        color: Colors.blueAccent,
+                                        borderRadius: BorderRadius.circular(
+                                            200),
+                                        image: DecorationImage(
+                                            fit: BoxFit.fill,
+                                            image: NetworkImage(pfp))),
+                                  ),
+                                  const SizedBox(
+                                    width: 10,
+                                  ),
+                                  Text(name)
+                                ],
                               ),
-                            ],
-                          );
-                        }),
-              );
-            }),
-      );
+                              content: Text("Last Updated :${time.year}|${time.month}|${time.day} ${time.hour}:${time.minute} "),
+                              actions: <Widget>[
+                                TextButton(
+                                  onPressed: () => Navigator.of(context).pop(),
+                                  child: new Text('Dismiss'),
+                                ),
+                              ],
+                            );
+                          }),
+                );
+              }),
+        );
+      }
     });
     //return _markers;
   }
