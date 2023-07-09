@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:convert';
+import 'dart:ffi';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:cron/cron.dart';
@@ -239,6 +240,8 @@ class _StartTrailState extends State<StartTrail> {
           .collection('Locations')
           .doc(auth.currentUser?.uid)
           .update({
+        'latitude':value.latitude,
+        'longitude': value.longitude,
         'Position': GeoPoint(value.latitude, value.longitude),
         'Time': DateTime.now()
       });
@@ -333,7 +336,7 @@ class _StartTrailState extends State<StartTrail> {
                           var data = snapshot.data!.data();
                           List<dynamic> members = data!['Members'];
                           var name = data['Name'];
-
+                          print(data['Trail']);
                           return SingleChildScrollView(
                             child: Padding(
                               padding: const EdgeInsets.all(20.0),
