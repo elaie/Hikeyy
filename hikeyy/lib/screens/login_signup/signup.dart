@@ -144,7 +144,7 @@ class _SignupState extends State<Signup> {
                                     .then((value) {
                                   Users.doc(value.user!.uid).set({
                                     'Bio': '',
-                                    'pfpUrl': '',
+                                    'pfpUrl': 'https://firebasestorage.googleapis.com/v0/b/hikeyyy.appspot.com/o/Pfp%2Fprofile.png?alt=media&token=69ba79e5-7f39-41bd-9bd1-b4b509e5e0f3',
                                     'UserName': _nameController.text.trim(),
                                     'Email': _emailController.text.trim(),
                                   }).then((value) {
