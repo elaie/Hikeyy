@@ -201,7 +201,7 @@ class _VenueDetailsPageState extends State<VenueDetailsPage> {
                               const Padding(
                                 padding: EdgeInsets.only(top: 15.0),
                                 child: AppTextHeading(
-                                  textHeading: 'Discription',
+                                  textHeading: 'Description',
                                   fontSize: 20,
                                 ),
                               ),
@@ -271,7 +271,7 @@ class _VenueDetailsPageState extends State<VenueDetailsPage> {
                       text: 'Estimated cost',
                       fontSize: 17,
                     ),
-                    AppTextSubHeading(text: 'Rs.1 per person')
+                    AppTextSubHeading(text: '')
                   ],
                 ),
                 AppButtons(

@@ -3,7 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:hikeyy/screens/dashboard/dashboard.dart';
 import 'package:hikeyy/screens/home_page/home_page.dart';
-import 'package:hikeyy/start_trail/start_trail.dart';
+import 'package:hikeyy/screens/start_trail/start_trail.dart';
 
 class IsBusy extends StatefulWidget {
   const IsBusy({Key? key}) : super(key: key);

@@ -11,8 +11,8 @@ import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:http/http.dart' as http;
 
-import '../screens/profile_page/widgets/profile_picture.dart';
-import '../screens/profile_page/widgets/user_name.dart';
+import '../profile_page/widgets/profile_picture.dart';
+import '../profile_page/widgets/user_name.dart';
 
 class LocationFriends extends StatefulWidget {
   final String id;

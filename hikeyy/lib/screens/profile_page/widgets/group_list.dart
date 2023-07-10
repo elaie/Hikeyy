@@ -54,7 +54,8 @@ class GroupList extends StatelessWidget {
                             Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                    builder: (context) => GroupDetails(id: id,)));
+                                    builder: (context) =>
+                                        GroupDetails(id: id)));
                           },
                           child: MyScheduleCard(
                             groupName: dataG['GroupName'],
