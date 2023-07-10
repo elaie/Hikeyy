@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:hikeyy/screens/group_details/group_details.dart';
+import 'package:hikeyy/group_details/group_details.dart';
 
 import '../../home_page/widget/my_schedule_card.dart';
 
@@ -54,7 +54,8 @@ class GroupList extends StatelessWidget {
                             Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                    builder: (context) => GroupDetails(id: id,)));
+                                    builder: (context) =>
+                                        GroupDetails(id: id)));
                           },
                           child: MyScheduleCard(
                             groupName: dataG['GroupName'],
