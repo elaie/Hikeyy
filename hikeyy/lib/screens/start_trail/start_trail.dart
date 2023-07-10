@@ -1,6 +1,5 @@
 import 'dart:async';
 import 'dart:convert';
-import 'dart:ffi';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -9,10 +8,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:hikeyy/screens/group_details/Expenses.dart';
+import 'package:hikeyy/screens/expenses/Expenses.dart';
 import 'package:hikeyy/screens/group_details/friendslocation.dart';
 import 'package:hikeyy/screens/group_details/widgets/collapseable_options.dart';
-import 'package:hikeyy/screens/start_trail/TimeLine.dart';
+import 'package:hikeyy/screens/start_trail/widgets/timeline_collapsable.dart';
 
 import 'package:hikeyy/widgets/app_colors.dart';
 import 'package:hikeyy/widgets/app_texts.dart';
@@ -135,7 +134,7 @@ class _StartTrailState extends State<StartTrail> {
         // print(points);
         //   print('####################');
       }
-    } else if (posdetail! != points!.length-1 && Status == 'Going') {
+    } else if (posdetail! != points!.length - 1 && Status == 'Going') {
       for (int i = posdetail! + 1; i <= points!.length - 1; i++) {
         var distance = Geolocator.distanceBetween(points![i].latitude,
             points![i].longitude, mypos!.latitude, mypos!.longitude);
@@ -160,15 +159,14 @@ class _StartTrailState extends State<StartTrail> {
           break;
         }
       }
-    }
-    else if(posdetail! == points!.length-1 && Status == 'Going')
-    {
-      await FirebaseFirestore.instance.collection('Group').doc(widget.id).collection('Locations').doc(FirebaseAuth.instance.currentUser!.uid).update(
-          {
-            'Status' : 'Returning'
-          });
-    }
-    else if (Status == 'Returning'&& posdetail! != 0) {
+    } else if (posdetail! == points!.length - 1 && Status == 'Going') {
+      await FirebaseFirestore.instance
+          .collection('Group')
+          .doc(widget.id)
+          .collection('Locations')
+          .doc(FirebaseAuth.instance.currentUser!.uid)
+          .update({'Status': 'Returning'});
+    } else if (Status == 'Returning' && posdetail! != 0) {
       for (int i = posdetail! - 1; i >= 0; i--) {
         var distance = Geolocator.distanceBetween(points![i].latitude,
             points![i].longitude, mypos!.latitude, mypos!.longitude);
@@ -193,12 +191,13 @@ class _StartTrailState extends State<StartTrail> {
           break;
         }
       }
-    }
-    else if(Status == 'Returning' && posdetail! == 0){
-      await FirebaseFirestore.instance.collection('Group').doc(widget.id).collection('Locations').doc(FirebaseAuth.instance.currentUser!.uid).update(
-          {
-            'Status' : 'Ended'
-          });
+    } else if (Status == 'Returning' && posdetail! == 0) {
+      await FirebaseFirestore.instance
+          .collection('Group')
+          .doc(widget.id)
+          .collection('Locations')
+          .doc(FirebaseAuth.instance.currentUser!.uid)
+          .update({'Status': 'Ended'});
     }
   }
 
@@ -240,7 +239,7 @@ class _StartTrailState extends State<StartTrail> {
           .collection('Locations')
           .doc(auth.currentUser?.uid)
           .update({
-        'latitude':value.latitude,
+        'latitude': value.latitude,
         'longitude': value.longitude,
         'Position': GeoPoint(value.latitude, value.longitude),
         'Time': DateTime.now()
@@ -250,32 +249,41 @@ class _StartTrailState extends State<StartTrail> {
   }
 
   emergencycall() async {
-    DocumentSnapshot dataG = await FirebaseFirestore.instance.collection(
-        'Groups').doc(widget.id).get();
+    DocumentSnapshot dataG = await FirebaseFirestore.instance
+        .collection('Groups')
+        .doc(widget.id)
+        .get();
 
     List members = dataG['Members'];
-    DocumentSnapshot dataMe = await FirebaseFirestore.instance.collection(
-        'Users').doc(FirebaseAuth.instance.currentUser!.uid).get();
+    DocumentSnapshot dataMe = await FirebaseFirestore.instance
+        .collection('Users')
+        .doc(FirebaseAuth.instance.currentUser!.uid)
+        .get();
     for (var element in members) {
-      DocumentSnapshot data = await FirebaseFirestore.instance.collection(
-          'Users').doc(element).get();
+      DocumentSnapshot data = await FirebaseFirestore.instance
+          .collection('Users')
+          .doc(element)
+          .get();
       try {
         http.post(Uri.parse('https://fcm.googleapis.com/fcm/send'),
             headers: <String, String>{
               'Content-Type': 'application/json',
-              'Authorization': 'key=AAAAmBUmFv8:APA91bHyUqeVPNp2YUQx4J3S4nJMupqms0CprTzq1RD-aQqJaJcZwb7QhvK-GWuj-qPzc1vKXVvJKFyUT4bFYlRGxLREnbD-amKaWWeVuaxUvMsOdYNK4aEcJnUjIWRJRQm-bbv-3kTA'
+              'Authorization':
+                  'key=AAAAmBUmFv8:APA91bHyUqeVPNp2YUQx4J3S4nJMupqms0CprTzq1RD-aQqJaJcZwb7QhvK-GWuj-qPzc1vKXVvJKFyUT4bFYlRGxLREnbD-amKaWWeVuaxUvMsOdYNK4aEcJnUjIWRJRQm-bbv-3kTA'
             },
             body: jsonEncode(<String, dynamic>{
               'priority': 'high',
               'data': <String, dynamic>{
                 'click_action': 'FLUTTER_NOTIFICATION_CLICK',
                 'status': 'done',
-                'body': '${dataMe['UserName']} call for emergency. Please look map for his location or Call them',
+                'body':
+                    '${dataMe['UserName']} call for emergency. Please look map for his location or Call them',
                 'title': 'Emergency!!!!!'
               },
               "notification": <String, dynamic>{
                 "title": "Emergency!!!!",
-                "body": "${dataMe['UserName']} call for emergency. Please look map for his location or Call them",
+                "body":
+                    "${dataMe['UserName']} call for emergency. Please look map for his location or Call them",
                 "android_channel_id": 'db'
               },
               "to": data['TokenId']
@@ -474,7 +482,7 @@ class _StartTrailState extends State<StartTrail> {
                                                 constraints:
                                                     const BoxConstraints(
                                                         maxHeight: 300,
-                                                        maxWidth: 500),
+                                                        maxWidth: 350),
                                                 decoration: BoxDecoration(
                                                     borderRadius:
                                                         BorderRadius.circular(
@@ -485,9 +493,10 @@ class _StartTrailState extends State<StartTrail> {
                                                           BorderRadius.circular(
                                                               30),
                                                       child: Image(
+                                                        height: 400,
                                                         image: NetworkImage(
                                                             photourls.first),
-                                                        fit: BoxFit.cover,
+                                                        fit: BoxFit.fitHeight,
                                                       )),
                                                   Container(
                                                     decoration: BoxDecoration(
@@ -516,13 +525,6 @@ class _StartTrailState extends State<StartTrail> {
                                                       color: Colors.white,
                                                     ),
                                                   ),
-                                                  const Positioned(
-                                                      top: 100,
-                                                      left: 400,
-                                                      child: Icon(
-                                                        Icons.star,
-                                                        color: Colors.yellow,
-                                                      )),
                                                   const Padding(
                                                     padding: EdgeInsets.only(
                                                         top: 130,
@@ -537,6 +539,7 @@ class _StartTrailState extends State<StartTrail> {
                                                     top: 150,
                                                     left: 20,
                                                     child: Container(
+                                                      width: 300,
                                                       constraints:
                                                           const BoxConstraints(
                                                               maxWidth: 400),
@@ -561,66 +564,96 @@ class _StartTrailState extends State<StartTrail> {
                                         }),
 
                                     // group members
-                                    Padding(
-                                      padding: const EdgeInsets.only(top: 25.0),
-                                      child: AppButtons(
-                                          onPressed: () {
-                                            Navigator.push(
-                                                context,
-                                                MaterialPageRoute(
-                                                    builder: (context) => TimeLine(id: widget.id, checkpoints: positions)));
-                                          },
-                                          child: const AppText(
-                                            text: 'TimeLine',
-                                          )),
+                                    // Padding(
+                                    //   padding: const EdgeInsets.only(top: 25.0),
+                                    //   child: AppButtons(
+                                    //       onPressed: () {
+                                    //         Navigator.push(
+                                    //             context,
+                                    //             MaterialPageRoute(
+                                    //                 builder: (context) =>
+                                    //                     TimeLine(
+                                    //                         id: widget.id,
+                                    //                         checkpoints:
+                                    //                             positions)));
+                                    //       },
+                                    //       child: const AppText(
+                                    //         text: 'TimeLine',
+                                    //       )),
+                                    // ),
+                                    //timeline
+                                    TimelineCollapsable(
+                                      id: widget.id,
+                                      checkpoints: positions,
                                     ),
                                     //checkpoints
                                     CollapsibleOptions(
                                       id: widget.id,
                                     ),
-                                    Padding(
-                                      padding: const EdgeInsets.only(top: 25.0),
-                                      child: AppButtons(
-                                          onPressed: () {
-                                            Navigator.push(
-                                                context,
-                                                MaterialPageRoute(
-                                                    builder: (context) =>
-                                                        LocationFriends(
-                                                            id: widget.id)));
-                                          },
-                                          child: const AppText(
-                                            text: 'Nearby Devices',
-                                          )),
+                                    Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceEvenly,
+                                      children: [
+                                        Padding(
+                                          padding:
+                                              const EdgeInsets.only(top: 25.0),
+                                          child: AppButtons(
+                                              onPressed: () {
+                                                Navigator.push(
+                                                    context,
+                                                    MaterialPageRoute(
+                                                        builder: (context) =>
+                                                            LocationFriends(
+                                                                id: widget
+                                                                    .id)));
+                                              },
+                                              child: const AppText(
+                                                text: 'Nearby Devices',
+                                              )),
+                                        ),
+                                        Padding(
+                                          padding:
+                                              const EdgeInsets.only(top: 25.0),
+                                          child: AppButtons(
+                                              onPressed: () {
+                                                Navigator.push(
+                                                    context,
+                                                    MaterialPageRoute(
+                                                        builder: (context) =>
+                                                            Expenses(
+                                                                id: widget
+                                                                    .id)));
+                                              },
+                                              child: const AppText(
+                                                text: 'Expenses',
+                                              )),
+                                        ),
+                                      ],
                                     ),
-                                    Padding(
-                                      padding: const EdgeInsets.only(top: 25.0),
-                                      child: AppButtons(
-                                          onPressed: () {
-                                            Navigator.push(
-                                                context,
-                                                MaterialPageRoute(
-                                                    builder: (context) =>
-                                                        Expenses(
-                                                            id: widget.id)));
-                                          },
-                                          child: const AppText(
-                                            text: 'Expenses',
-                                          )),
-                                    ),
-                                    Padding(
-                                      padding: const EdgeInsets.only(top: 25.0),
-                                      child: AppButtons(
-                                          onPressed: () {
-                                            emergencycall();
-                                          },
-                                          child: const AppText(
-                                            text: 'Emergency',
-                                          )),
+
+                                    Center(
+                                      child: Padding(
+                                        padding:
+                                            const EdgeInsets.only(top: 25.0),
+                                        child: Builder(builder: (context) {
+                                          return AppButtons(
+                                              onPressed: () {
+                                                emergencycall();
+                                                ScaffoldMessenger.of(context)
+                                                    .showSnackBar(SnackBar(
+                                                        content: AppText(
+                                                  text:
+                                                      'Emergency signal sent!',
+                                                )));
+                                              },
+                                              child: const AppText(
+                                                text: 'Emergency',
+                                              ));
+                                        }),
+                                      ),
                                     ),
                                   ]),
                             ),
-
                           );
                         }
                         return Container();

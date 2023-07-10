@@ -13,7 +13,6 @@ class CollapsibleOptions extends StatefulWidget {
 }
 
 class _CollapsibleOptionsState extends State<CollapsibleOptions> {
-  bool _tripDetailsExpanded = false;
   bool _checkpointsExpanded = false;
 
   @override
@@ -66,7 +65,7 @@ class _CollapsibleOptionsState extends State<CollapsibleOptions> {
                 borderRadius: BorderRadius.circular(30),
               ),
               child: ListTile(
-                trailing: const Icon(Icons.arrow_drop_down_outlined),
+                trailing: const Icon(Icons.arrow_drop_down_circle_outlined),
                 title: const Text('Checkpoints'),
                 onTap: () {
                   setState(() {
@@ -138,52 +137,77 @@ class _CollapsibleOptionsState extends State<CollapsibleOptions> {
                                     color: Colors.grey[200],
                                     borderRadius: BorderRadius.circular(30),
                                   ),
-                                  margin: const EdgeInsets.symmetric(horizontal: 16),
+                                  margin: const EdgeInsets.symmetric(
+                                      horizontal: 16),
                                   padding: const EdgeInsets.all(16),
                                   child: ListView.builder(
                                     itemBuilder: (context, index) {
-                                      if(Status=='Going'){
+                                      if (Status == 'Going') {
                                         return Padding(
-                                          padding: const EdgeInsets.symmetric(vertical: 5.0),
-                                          child: Container(
-                                            height: 30,
-                                              decoration: BoxDecoration(
-                                                color: snapshot.data!.data()!['pos']!=null? index<=snapshot.data!.data()!['pos']?AppColor.primaryColor:AppColor.primaryLightColor:AppColor.primaryLightColor,
-                                                borderRadius: BorderRadius.circular(10),
-                                              ),
-                                              child: Center(child: Text("${index + 1} . ${points[index]}"))),
-                                        );
-                                      }
-                                      else if(Status =='Returning'){
-                                        return Padding(
-                                          padding: const EdgeInsets.symmetric(vertical: 5.0),
-                                          child: Container(
-                                            height: 30,
-                                              decoration: BoxDecoration(
-                                                color:  index>=snapshot.data!.data()!['pos']?AppColor.primaryColor:AppColor.primaryLightColor,
-                                                borderRadius: BorderRadius.circular(10),
-                                              ),
-                                              child: Center(child: Text("${index + 1} . ${points[snapshots.data!.docs.length-index-1]}"))),
-                                        );
-                                      }
-                                      else {
-                                        return Padding(
-                                          padding: const EdgeInsets.symmetric(vertical: 5.0),
+                                          padding: const EdgeInsets.symmetric(
+                                              vertical: 5.0),
                                           child: Container(
                                               height: 30,
                                               decoration: BoxDecoration(
-                                                color:  AppColor.primaryColor,
-                                                borderRadius: BorderRadius.circular(10),
+                                                color: snapshot.data!
+                                                            .data()!['pos'] !=
+                                                        null
+                                                    ? index <=
+                                                            snapshot.data!
+                                                                .data()!['pos']
+                                                        ? AppColor
+                                                            .primaryLightColor
+                                                        : const Color.fromARGB(
+                                                            255, 204, 202, 202)
+                                                    : Colors.grey,
+                                                borderRadius:
+                                                    BorderRadius.circular(10),
                                               ),
-                                              child: Center(child: Text("${index + 1} . ${points[index]}"))),
+                                              child: Center(
+                                                  child: Text(
+                                                      "${index + 1} . ${points[index]}"))),
+                                        );
+                                      } else if (Status == 'Returning') {
+                                        return Padding(
+                                          padding: const EdgeInsets.symmetric(
+                                              vertical: 5.0),
+                                          child: Container(
+                                              height: 30,
+                                              decoration: BoxDecoration(
+                                                color: index >=
+                                                        snapshot.data!
+                                                            .data()!['pos']
+                                                    ? AppColor.primaryColor
+                                                    : AppColor
+                                                        .primaryLightColor,
+                                                borderRadius:
+                                                    BorderRadius.circular(10),
+                                              ),
+                                              child: Center(
+                                                  child: Text(
+                                                      "${index + 1} . ${points[snapshots.data!.docs.length - index - 1]}"))),
+                                        );
+                                      } else {
+                                        return Padding(
+                                          padding: const EdgeInsets.symmetric(
+                                              vertical: 5.0),
+                                          child: Container(
+                                              height: 30,
+                                              decoration: BoxDecoration(
+                                                color: AppColor.primaryColor,
+                                                borderRadius:
+                                                    BorderRadius.circular(10),
+                                              ),
+                                              child: Center(
+                                                  child: Text(
+                                                      "${index + 1} . ${points[index]}"))),
                                         );
                                       }
-                                      },
+                                    },
                                     itemCount: snapshots.data!.docs.length,
                                   ));
                             });
                         // return
-
                       });
                 })
         ],
