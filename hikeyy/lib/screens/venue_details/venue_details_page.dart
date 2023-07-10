@@ -106,7 +106,7 @@ class _VenueDetailsPageState extends State<VenueDetailsPage> {
                                   ),
                                   Container(
                                     decoration:
-                                        BoxDecoration(boxShadow: <BoxShadow>[
+                                        BoxDecoration(boxShadow: const <BoxShadow>[
                                       BoxShadow(
                                           color: Colors.grey,
                                           spreadRadius: 1,
@@ -160,7 +160,7 @@ class _VenueDetailsPageState extends State<VenueDetailsPage> {
                                   constraints:
                                       const BoxConstraints(minHeight: 100),
                                   decoration: BoxDecoration(
-                                      boxShadow: [
+                                      boxShadow: const [
                                         BoxShadow(
                                             color: Colors.grey,
                                             blurRadius: 3,
@@ -250,7 +250,7 @@ class _VenueDetailsPageState extends State<VenueDetailsPage> {
         ),
       ),
       bottomNavigationBar: Container(
-        decoration: BoxDecoration(boxShadow: <BoxShadow>[
+        decoration: BoxDecoration(boxShadow: const <BoxShadow>[
           BoxShadow(
               color: Colors.white,
               blurRadius: 20,
@@ -311,7 +311,7 @@ Widget ShowPhotos(List? data) {
                     child: Container(
                   decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(40),
-                      boxShadow: [
+                      boxShadow: const [
                         BoxShadow(
                             color: Colors.grey,
                             offset: Offset(0, 10),

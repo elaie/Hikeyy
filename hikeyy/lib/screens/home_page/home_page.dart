@@ -176,8 +176,8 @@ class _HomePageState extends State<HomePage> {
                     child: Container(
                       //height: 1000,
                       alignment: Alignment.center,
-                      decoration: BoxDecoration(
-                          borderRadius: const BorderRadius.only(
+                      decoration: const BoxDecoration(
+                          borderRadius: BorderRadius.only(
                             topLeft: Radius.circular(35),
                             topRight: Radius.circular(35),
                           ),

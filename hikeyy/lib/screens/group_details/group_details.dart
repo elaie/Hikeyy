@@ -37,8 +37,8 @@ class _GroupDetailsState extends State<GroupDetails> {
               if (snapshot.connectionState == ConnectionState.done) {
                 var data = snapshot.data!.data();
                 List<dynamic> members = data!['Members'];
-                print(members);
-                print('#####################');
+                //print(members);
+                //  print('#####################');
                 return Padding(
                   padding: const EdgeInsets.only(top: 15),
                   child: SingleChildScrollView(
@@ -245,14 +245,25 @@ class _GroupDetailsState extends State<GroupDetails> {
               children: [
                 AppButtons(
                     onPressed: () {
-                      FirebaseFirestore.instance.collection('Users').doc(FirebaseAuth.instance.currentUser!.uid).update({
-                        'Status': 'Busy',
-                        'Trail' : widget.id
+                      FirebaseFirestore.instance
+                          .collection('Users')
+                          .doc(FirebaseAuth.instance.currentUser!.uid)
+                          .update({'Status': 'Busy', 'Trail': widget.id}).then(
+                              (value) {
+                        FirebaseFirestore.instance
+                            .collection('Groups')
+                            .doc(widget.id)
+                            .collection('Locations')
+                            .doc(FirebaseAuth.instance.currentUser?.uid)
+                            .set({'Position': null, 'Time': DateTime.now(),'Status':'Going'});
                       });
                       Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => Dashboard(page: StartTrail(id: widget.id,))));
+                              builder: (context) => Dashboard(
+                                      page: StartTrail(
+                                    id: widget.id,
+                                  ))));
                     },
                     child: const AppText(text: 'Start Trail!')),
                 AppButtons(
