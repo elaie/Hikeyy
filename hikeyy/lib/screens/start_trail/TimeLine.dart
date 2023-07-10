@@ -42,7 +42,6 @@ class _TimeLineState extends State<TimeLine> {
                       itemBuilder: (context, index) {
                         var data = snapshots.data!.docs[index].data()
                             as Map<String, dynamic>;
-
                         return FutureBuilder<DocumentSnapshot<Map<String, dynamic>>>(
                                 future: FirebaseFirestore.instance
                                     .collection('Users')

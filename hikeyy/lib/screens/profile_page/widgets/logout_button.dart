@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -18,10 +19,15 @@ class LogoutButton extends StatelessWidget {
         width: 220,
         child: ElevatedButton(
           onPressed: () {
-            FirebaseAuth.instance.signOut().then((value) {
-              Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => LoginPage()));
+            FirebaseFirestore.instance.collection('Users').doc(FirebaseAuth.instance.currentUser!.uid).update({
+              'TokenId' : ''
+            }).then((value){
+              FirebaseAuth.instance.signOut().then((value) {
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => LoginPage()));
+              });
             });
+
           },
           style: ButtonStyle(
             backgroundColor: MaterialStateProperty.all(

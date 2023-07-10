@@ -3,7 +3,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:hikeyy/screens/dashboard/dashboard.dart';
 import 'package:hikeyy/screens/home_page/widget/mapwidget.dart';
-import 'package:hikeyy/start_trail/start_trail.dart';
+import 'package:hikeyy/screens/home_page/widget/trails.dart';
+import 'package:hikeyy/screens/start_trail/start_trail.dart';
 import 'package:hikeyy/widgets/app_buttons.dart';
 import 'package:hikeyy/widgets/app_colors.dart';
 import 'package:hikeyy/widgets/app_texts.dart';
@@ -189,7 +190,14 @@ class _GroupDetailsState extends State<GroupDetails> {
                                                 padding: const EdgeInsets.only(
                                                     left: 100.0),
                                                 child: AppButtons(
-                                                    onPressed: () {},
+                                                    onPressed: () {
+                                                      Navigator.push(
+                                                        context,
+                                                        MaterialPageRoute(
+                                                            builder: (context) =>
+                                                                Trails(id:  data!['Trail'])),
+                                                      );
+                                                    },
                                                     child: const AppText(
                                                         text: 'View Trail')),
                                               )
