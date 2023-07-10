@@ -3,10 +3,12 @@ import 'package:flutter/material.dart';
 import 'app_colors.dart';
 
 class AppButtons extends StatelessWidget {
+  final Color? color;
   final Widget child;
   final Function onPressed;
 
-  const AppButtons({super.key, required this.onPressed, required this.child});
+  const AppButtons(
+      {super.key, required this.onPressed, required this.child, this.color});
 
   @override
   Widget build(BuildContext context) {
@@ -21,7 +23,8 @@ class AppButtons extends StatelessWidget {
       height: 40,
       child: ElevatedButton(
         style: ButtonStyle(
-          backgroundColor: MaterialStateProperty.all(AppColor.primaryColor),
+          backgroundColor:
+              MaterialStateProperty.all(color ?? AppColor.primaryColor),
           shape: MaterialStateProperty.all<RoundedRectangleBorder>(
             RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(30),

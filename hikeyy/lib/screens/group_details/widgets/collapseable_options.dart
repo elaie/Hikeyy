@@ -20,43 +20,6 @@ class _CollapsibleOptionsState extends State<CollapsibleOptions> {
     return SingleChildScrollView(
       child: Column(
         children: [
-          // Padding(
-          //   padding: const EdgeInsets.only(bottom: 10.0, top: 30),
-          //   child: Container(
-          //     decoration: BoxDecoration(
-          //       color: AppColor.primaryLightColor,
-          //       borderRadius: BorderRadius.circular(30),
-          //     ),
-          //     child: ListTile(
-          //       trailing: const Icon(Icons.arrow_drop_down_outlined),
-          //       title: const Text('Trail Details'),
-          //       onTap: () {
-          //         setState(() {
-          //           _tripDetailsExpanded = !_tripDetailsExpanded;
-          //         });
-          //       },
-          //     ),
-          //   ),
-          // ),
-          // if (_tripDetailsExpanded)
-          //   Container(
-          //     decoration: BoxDecoration(
-          //       color: Colors.grey[200],
-          //       borderRadius: BorderRadius.circular(30),
-          //     ),
-          //     margin: const EdgeInsets.symmetric(horizontal: 16),
-          //     padding: const EdgeInsets.all(16),
-          //     child: const Column(
-          //       children: [
-          //         ListTile(
-          //           title: Text('Duration'),
-          //         ),
-          //         ListTile(
-          //           title: Text('other details'),
-          //         ),
-          //       ],
-          //     ),
-          //   ),
           Padding(
             padding: const EdgeInsets.only(bottom: 10.0, top: 20),
             child: Container(
