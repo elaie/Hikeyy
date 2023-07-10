@@ -2,17 +2,17 @@ import 'dart:async';
 import 'dart:convert';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:cron/cron.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:hikeyy/start_trail/Expenses.dart';
+import 'package:hikeyy/group_details/Expenses.dart';
+import 'package:hikeyy/group_details/friendslocation.dart';
+import 'package:hikeyy/group_details/widgets/collapseable_options.dart';
 import 'package:hikeyy/start_trail/TimeLine.dart';
-import 'package:hikeyy/start_trail/friendslocation.dart';
-import 'package:hikeyy/start_trail/widgets/collapseable_options.dart';
+
 import 'package:hikeyy/widgets/app_colors.dart';
 import 'package:hikeyy/widgets/app_texts.dart';
 import 'package:http/http.dart' as http;
@@ -218,7 +218,7 @@ class _StartTrailState extends State<StartTrail> {
       for (var element in datas.docs) {
         int pos = element['pos'];
         String name = element['Name'];
-        positions![pos] = name;
+        positions[pos] = name;
       }
     });
   }

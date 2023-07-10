@@ -86,7 +86,6 @@ class _GroupDetailsState extends State<GroupDetails> {
                                 Padding(
                                   padding: const EdgeInsets.all(5.0),
                                   child: CircleAvatar(
-                                    
                                     backgroundColor: Colors.green,
                                     radius: 15,
                                   ),
@@ -182,7 +181,9 @@ class _GroupDetailsState extends State<GroupDetails> {
                             ),
                           ),
                           //checkpoints
-                          CollapsibleOptions(),
+                          CollapsibleOptions(
+                            id: widget.id,
+                          ),
                         ]),
                   ),
                 );
