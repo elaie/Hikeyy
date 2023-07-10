@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-import '../widgets/app_buttons.dart';
-import '../widgets/app_texts.dart';
+import '../../widgets/app_buttons.dart';
+import '../../widgets/app_texts.dart';
 
 class Expenses extends StatefulWidget {
   final String id;

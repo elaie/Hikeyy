@@ -148,7 +148,7 @@ class _CollapsibleOptionsState extends State<CollapsibleOptions> {
                                           child: Container(
                                             height: 30,
                                               decoration: BoxDecoration(
-                                                color:  index<=snapshot.data!.data()!['pos']?AppColor.primaryColor:AppColor.primaryLightColor,
+                                                color: snapshot.data!.data()!['pos']!=null? index<=snapshot.data!.data()!['pos']?AppColor.primaryColor:AppColor.primaryLightColor:AppColor.primaryLightColor,
                                                 borderRadius: BorderRadius.circular(10),
                                               ),
                                               child: Center(child: Text("${index + 1} . ${points[index]}"))),
