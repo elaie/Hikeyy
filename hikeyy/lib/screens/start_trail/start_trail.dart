@@ -399,60 +399,82 @@ class _StartTrailState extends State<StartTrail> {
                                         width:
                                             MediaQuery.of(context).size.width -
                                                 40,
-                                        child: ListView.builder(
-                                            scrollDirection: Axis.horizontal,
-                                            itemCount: members.length,
-                                            itemBuilder: (context, index) {
-                                              return FutureBuilder<
-                                                      DocumentSnapshot<
-                                                          Map<String,
-                                                              dynamic>>>(
-                                                  future: FirebaseFirestore
-                                                      .instance
-                                                      .collection('Users')
-                                                      .doc(members[index])
-                                                      .get(),
-                                                  builder: (_, snapshot) {
-                                                    if (snapshot
-                                                            .connectionState ==
-                                                        ConnectionState
-                                                            .waiting) {
-                                                      return const Center(
-                                                        child:
-                                                            CircularProgressIndicator(),
-                                                      );
-                                                    }
-                                                    if (snapshot
-                                                            .connectionState ==
-                                                        ConnectionState.done) {
-                                                      return Padding(
-                                                        padding:
-                                                            const EdgeInsets
-                                                                    .only(
-                                                                right: 10.0),
-                                                        child: Container(
-                                                          height: 40,
-                                                          width: 40,
-                                                          decoration: BoxDecoration(
-                                                              color: Colors
-                                                                  .blueAccent,
-                                                              borderRadius:
-                                                                  BorderRadius
-                                                                      .circular(
-                                                                          200),
-                                                              image: DecorationImage(
-                                                                  fit: BoxFit
-                                                                      .fill,
-                                                                  image: NetworkImage(snapshot
+                                        child: Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceBetween,
+                                          children: [
+                                            ListView.builder(
+                                                shrinkWrap: true,
+                                                scrollDirection:
+                                                    Axis.horizontal,
+                                                itemCount: members.length,
+                                                itemBuilder: (context, index) {
+                                                  return FutureBuilder<
+                                                          DocumentSnapshot<
+                                                              Map<String,
+                                                                  dynamic>>>(
+                                                      future: FirebaseFirestore
+                                                          .instance
+                                                          .collection('Users')
+                                                          .doc(members[index])
+                                                          .get(),
+                                                      builder: (_, snapshot) {
+                                                        if (snapshot
+                                                                .connectionState ==
+                                                            ConnectionState
+                                                                .waiting) {
+                                                          return const Center(
+                                                            child:
+                                                                CircularProgressIndicator(),
+                                                          );
+                                                        }
+                                                        if (snapshot
+                                                                .connectionState ==
+                                                            ConnectionState
+                                                                .done) {
+                                                          return Padding(
+                                                            padding:
+                                                                const EdgeInsets
+                                                                        .only(
+                                                                    right:
+                                                                        10.0),
+                                                            child: Container(
+                                                              height: 40,
+                                                              width: 40,
+                                                              decoration: BoxDecoration(
+                                                                  color: Colors
+                                                                      .blueAccent,
+                                                                  borderRadius:
+                                                                      BorderRadius
+                                                                          .circular(
+                                                                              200),
+                                                                  image: DecorationImage(
+                                                                      fit: BoxFit
+                                                                          .fill,
+                                                                      image: NetworkImage(snapshot
                                                                           .data!
-                                                                          .data()![
-                                                                      'pfpUrl']))),
-                                                        ),
-                                                      );
-                                                    }
-                                                    return Container();
-                                                  });
-                                            }),
+                                                                          .data()!['pfpUrl']))),
+                                                            ),
+                                                          );
+                                                        }
+                                                        return Container();
+                                                      });
+                                                }),
+                                            AppButtons(
+                                                onPressed: () {
+                                                  Navigator.push(
+                                                      context,
+                                                      MaterialPageRoute(
+                                                          builder: (context) =>
+                                                              LocationFriends(
+                                                                  id: widget
+                                                                      .id)));
+                                                },
+                                                child: const AppText(
+                                                  text: 'Friends Nearby',
+                                                )),
+                                          ],
+                                        ),
                                       ),
                                     ),
                                     FutureBuilder<
@@ -595,25 +617,8 @@ class _StartTrailState extends State<StartTrail> {
                                           MainAxisAlignment.spaceEvenly,
                                       children: [
                                         Padding(
-                                          padding:
-                                              const EdgeInsets.only(top: 25.0),
-                                          child: AppButtons(
-                                              onPressed: () {
-                                                Navigator.push(
-                                                    context,
-                                                    MaterialPageRoute(
-                                                        builder: (context) =>
-                                                            LocationFriends(
-                                                                id: widget
-                                                                    .id)));
-                                              },
-                                              child: const AppText(
-                                                text: 'Nearby Devices',
-                                              )),
-                                        ),
-                                        Padding(
-                                          padding:
-                                              const EdgeInsets.only(top: 25.0),
+                                          padding: const EdgeInsets.only(
+                                              top: 25.0, bottom: 25),
                                           child: AppButtons(
                                               onPressed: () {
                                                 Navigator.push(
@@ -628,26 +633,40 @@ class _StartTrailState extends State<StartTrail> {
                                                 text: 'Expenses',
                                               )),
                                         ),
+                                        Padding(
+                                          padding: const EdgeInsets.only(
+                                              top: 25.0, bottom: 25),
+                                          child: Builder(builder: (context) {
+                                            return AppButtons(
+                                                color: Color.fromARGB(
+                                                    255, 183, 49, 39),
+                                                onPressed: () {
+                                                  emergencycall();
+                                                  ScaffoldMessenger.of(context)
+                                                      .showSnackBar(SnackBar(
+                                                          content: AppText(
+                                                    text:
+                                                        'Emergency signal sent!',
+                                                  )));
+                                                },
+                                                child: const AppText(
+                                                  text: 'Emergency',
+                                                ));
+                                          }),
+                                        ),
                                       ],
                                     ),
-
                                     Center(
                                       child: Padding(
                                         padding:
                                             const EdgeInsets.only(top: 25.0),
                                         child: Builder(builder: (context) {
                                           return AppButtons(
-                                              onPressed: () {
-                                                emergencycall();
-                                                ScaffoldMessenger.of(context)
-                                                    .showSnackBar(SnackBar(
-                                                        content: AppText(
-                                                  text:
-                                                      'Emergency signal sent!',
-                                                )));
-                                              },
+                                              color: Color.fromARGB(
+                                                  255, 183, 49, 39),
+                                              onPressed: () {},
                                               child: const AppText(
-                                                text: 'Emergency',
+                                                text: 'End Trip',
                                               ));
                                         }),
                                       ),
