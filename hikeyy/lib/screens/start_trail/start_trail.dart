@@ -638,6 +638,8 @@ class _StartTrailState extends State<StartTrail> {
                                               top: 25.0, bottom: 25),
                                           child: Builder(builder: (context) {
                                             return AppButtons(
+                                               color: Color.fromARGB(
+                                                  255, 183, 49, 39),
                                                 onPressed: () {
                                                   emergencycall();
                                                   ScaffoldMessenger.of(context)
