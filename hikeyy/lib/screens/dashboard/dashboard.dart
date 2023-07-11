@@ -1,12 +1,9 @@
-import 'dart:ffi';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-
-import '../home_page/home_page.dart';
 import '../profile_page/profile_page.dart';
 import '../search_page/search_page.dart';
 
@@ -19,7 +16,7 @@ class Dashboard extends StatefulWidget {
 }
 
 class _DashboardState extends State<Dashboard> {
-  Widget pageA=CircularProgressIndicator();
+  Widget pageA=const CircularProgressIndicator();
   int _selectedPageIndex = 0;
   List<Widget> _pages=[];
 
@@ -29,19 +26,19 @@ class _DashboardState extends State<Dashboard> {
     return (await showDialog(
           context: context,
           builder: (context) => AlertDialog(
-            title: new Text('Are you sure?'),
-            content: new Text('Do you want to exit this App'),
+            title: const Text('Are you sure?'),
+            content: const Text('Do you want to exit this App'),
             actions: <Widget>[
               TextButton(
                 onPressed: () =>
                     Navigator.of(context).pop(false), //<-- SEE HERE
-                child: new Text('No'),
+                child: const Text('No'),
               ),
               TextButton(
                 onPressed: () => SystemNavigator.pop().then((value) {
                   false;
                 }),
-                child: new Text('Yes'),
+                child: const Text('Yes'),
               ),
             ],
           ),
@@ -61,14 +58,13 @@ class _DashboardState extends State<Dashboard> {
         .collection('Users')
         .doc(FirebaseAuth.instance.currentUser!.uid)
         .update({'TokenId': fcmToken}).then((value) {
-      print(fcmToken);
-      print('@@@@@@@@@@@@@@@@@@@@@');
+      // print(fcmToken);
+      // print('@@@@@@@@@@@@@@@@@@@@@');
     });
   }
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     getTokenId();
     pageA=widget.page;

@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import '../../../widgets/location_month_icon_row.dart';
@@ -29,7 +28,7 @@ class VenuCard extends StatelessWidget {
                 color: Colors.grey.withOpacity(0.5), // Shadow color
                 spreadRadius: 3, // Spread radius
                 blurRadius: 9, // Blur radius
-                offset: Offset(0, 3), // Offset in the x and y direction
+                offset: const Offset(0, 3), // Offset in the x and y direction
               ),
             ],
             image: DecorationImage(
@@ -51,7 +50,7 @@ class VenuCard extends StatelessWidget {
                   padding: const EdgeInsets.only(left: 8.0, right: 8),
                   child: Text(
                     venue,
-                    style: TextStyle(fontWeight: FontWeight.w600, fontSize: 18),
+                    style: const TextStyle(fontWeight: FontWeight.w600, fontSize: 18),
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
                   ),

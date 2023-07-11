@@ -1,29 +1,13 @@
-import 'dart:async';
 
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
-import 'package:hikeyy/screens/login_signup/IsLogged.dart';
+import 'package:hikeyy/screens/login_signup/is_logged_in.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
-  FirebaseMessaging messaging = FirebaseMessaging.instance;
-
-  NotificationSettings settings = await messaging.requestPermission(
-    alert: true,
-    announcement: false,
-    badge: true,
-    carPlay: false,
-    criticalAlert: false,
-    provisional: false,
-    sound: true,
-  );
-
-  // Timer? timer = Timer.periodic(Duration(seconds: 30), (timer) {
-  //   print('User granted permission: ${settings.authorizationStatus}');
-  // });
   FirebaseMessaging.onMessage.listen((RemoteMessage message) {
     var channel = const AndroidNotificationChannel(
       'high_importance_channel', // id
@@ -46,7 +30,6 @@ void main() async {
             channel.name,
             channelDescription: channel.description,
             // icon: 'app_icon'
-            // TODO add a proper drawable resource to android, for now using
             //    one that already exists in example app.
             icon: 'mipmap/ic_launcher',
           ),

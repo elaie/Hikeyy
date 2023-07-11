@@ -139,7 +139,7 @@ class _TimelineCollapsableState extends State<TimelineCollapsable> {
                               Navigator.push(
                                   context,
                                   MaterialPageRoute(
-                                      builder: (context) => UpdateLocation()));
+                                      builder: (context) => const UpdateLocation()));
                             },
                             child: const AppText(
                               text: 'Update My Location',

@@ -1,11 +1,9 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:hikeyy/screens/login_signup/IsLogged.dart';
-import 'package:hikeyy/screens/login_signup/VerifyMail.dart';
+import 'package:hikeyy/screens/login_signup/is_logged_in.dart';
 import 'package:hikeyy/screens/login_signup/signup.dart';
 
 import '../../widgets/app_texts.dart';
-import '../dashboard/dashboard.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -53,14 +51,14 @@ class _LoginPageState extends State<LoginPage> {
             child:
                 Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
               Center(
-                child: Container(
+                child: SizedBox(
                     height: 250,
                     child: Image.asset(
                       'assets/images/logo.png',
                       fit: BoxFit.fill,
                     )),
               ),
-              AppTextHeading(
+              const AppTextHeading(
                 textHeading: 'Welcome!',
                 fontSize: 25,
               ),
@@ -68,24 +66,24 @@ class _LoginPageState extends State<LoginPage> {
                 'Please login or signup to continue our app',
                 style: TextStyle(color: Colors.grey),
               ),
-              Padding(
-                padding: const EdgeInsets.only(top: 50.0),
+              const Padding(
+                padding: EdgeInsets.only(top: 50.0),
                 child: AppText(text: 'Email'),
               ),
               SizedBox(
                 height: 50,
                 child: TextFormField(
                   controller: _emailController,
-                  decoration: InputDecoration(
-                    enabledBorder: const UnderlineInputBorder(
+                  decoration: const InputDecoration(
+                    enabledBorder: UnderlineInputBorder(
                       borderSide:
                           BorderSide(color: Color.fromARGB(255, 209, 207, 207)),
                     ),
                   ),
                 ),
               ),
-              Padding(
-                padding: const EdgeInsets.only(top: 20.0),
+              const Padding(
+                padding: EdgeInsets.only(top: 20.0),
                 child: AppText(text: 'Password'),
               ),
               SizedBox(
@@ -93,7 +91,7 @@ class _LoginPageState extends State<LoginPage> {
                 child: TextFormField(
                   controller: _passwordController,
                   obscureText: true,
-                  decoration: InputDecoration(
+                  decoration: const InputDecoration(
                     enabledBorder: UnderlineInputBorder(
                       borderSide:
                           BorderSide(color: Color.fromARGB(255, 209, 207, 207)),
@@ -121,7 +119,7 @@ class _LoginPageState extends State<LoginPage> {
                           ),
                         ),
                       ),
-                      child: Text(
+                      child: const Text(
                         'Login',
                       ),
                     ),
@@ -142,9 +140,9 @@ class _LoginPageState extends State<LoginPage> {
                     GestureDetector(
                       onTap: () {
                         Navigator.push(context,
-                            MaterialPageRoute(builder: (context) => Signup()));
+                            MaterialPageRoute(builder: (context) => const Signup()));
                       },
-                      child: Text(
+                      child: const Text(
                         'Signup',
                         style: TextStyle(
                             color: Colors.black, fontFamily: 'Poppin'),

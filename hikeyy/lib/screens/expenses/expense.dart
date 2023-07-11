@@ -45,8 +45,8 @@ class _ExpensesState extends State<Expenses> {
                       offset: const Offset(0, 2),
                     ),
                   ], shape: BoxShape.circle, color: Colors.white),
-                  child: Padding(
-                    padding: const EdgeInsets.only(
+                  child: const Padding(
+                    padding: EdgeInsets.only(
                       left: 8.0,
                     ),
                     child: Icon(Icons.arrow_back_ios),
@@ -175,45 +175,44 @@ class _ExpensesState extends State<Expenses> {
                       color: AppColor.primaryDarkColor),
                 ),
                 Padding(
-                  padding: EdgeInsets.only(right: 10),
-                  child: Container(
-                      child: ListView.builder(
+                  padding: const EdgeInsets.only(right: 10),
+                  child: ListView.builder(
                     physics: const NeverScrollableScrollPhysics(),
                     shrinkWrap: true,
                     itemCount: 3,
                     itemBuilder: (BuildContext context, int index) {
-                      return Container(
-                        decoration: BoxDecoration(
-                          border: Border(
-                            bottom: BorderSide(
-                              color: Colors.black,
-                              width: 1.0,
-                            ),
-                          ),
+                  return Container(
+                    decoration: const BoxDecoration(
+                      border: Border(
+                        bottom: BorderSide(
+                          color: Colors.black,
+                          width: 1.0,
                         ),
-                        child: ListTile(
-                          subtitle: Row(
-                            children: [
-                              AppText(
-                                text: 'Made By: ',
-                              ),
-                              AppText(text: 'Pritisha')
-                            ],
+                      ),
+                    ),
+                    child: const ListTile(
+                      subtitle: Row(
+                        children: [
+                          AppText(
+                            text: 'Made By: ',
                           ),
-                          leading: Icon(Icons.money_off),
-                          title: AppText(
-                            text: 'Dinner',
-                            fontSize: 20,
-                          ),
-                          trailing: AppText(
-                            text: 'Rs. 1000',
-                            fontSize: 17,
-                            color: AppColor.primaryDarkColor,
-                          ),
-                        ),
-                      );
+                          AppText(text: 'Pritisha')
+                        ],
+                      ),
+                      leading: Icon(Icons.money_off),
+                      title: AppText(
+                        text: 'Dinner',
+                        fontSize: 20,
+                      ),
+                      trailing: AppText(
+                        text: 'Rs. 1000',
+                        fontSize: 17,
+                        color: AppColor.primaryDarkColor,
+                      ),
+                    ),
+                  );
                     },
-                  )),
+                  ),
                 ),
                 showfield
                     ? Padding(

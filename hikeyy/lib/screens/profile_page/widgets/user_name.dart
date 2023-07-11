@@ -6,7 +6,7 @@ class UserName extends StatelessWidget {
     required this.name,
   });
 
-  final name;
+  final String name;
 
   @override
   Widget build(BuildContext context) {
@@ -14,7 +14,7 @@ class UserName extends StatelessWidget {
       alignment: Alignment.topCenter,
       child: Text(
         name,
-        style: TextStyle(
+        style: const TextStyle(
           fontWeight: FontWeight.bold,
           fontSize: 30,
         ),

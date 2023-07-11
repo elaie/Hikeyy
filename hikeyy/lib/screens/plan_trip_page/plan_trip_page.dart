@@ -36,7 +36,7 @@ class _PlanTripPageState extends State<PlanTripPage> {
       }
     } catch (e) {
       // Error occurred while fetching the document
-      print('Error: $e');
+      //print('Error: $e');
       return null;
     }
   }
@@ -44,11 +44,11 @@ class _PlanTripPageState extends State<PlanTripPage> {
   final _gName = GlobalKey<FormState>();
   FirebaseAuth auth = FirebaseAuth.instance;
   String _name = '';
-  List _Selected = [];
+  final List _selected = [];
   final TextEditingController _gNameController = TextEditingController();
 
   bool checklist(var data) {
-    if (_Selected.contains(data)) {
+    if (_selected.contains(data)) {
       return true;
     } else {
       return false;
@@ -80,11 +80,11 @@ class _PlanTripPageState extends State<PlanTripPage> {
   }
 
   createGroup(var gname, List selected) {
-    const _chars =
+    const chars =
         'AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvWwXxYyZz1234567890';
-    String doc_id = String.fromCharCodes(Iterable.generate(
-        7, (_) => _chars.codeUnitAt(Random().nextInt(_chars.length))));
-    FirebaseFirestore.instance.collection('Groups').doc(doc_id).set({
+    String docId = String.fromCharCodes(Iterable.generate(
+        7, (_) => chars.codeUnitAt(Random().nextInt(chars.length))));
+    FirebaseFirestore.instance.collection('Groups').doc(docId).set({
       'Name': gname,
       'Members': selected,
       'Trail': widget.id,
@@ -99,10 +99,10 @@ class _PlanTripPageState extends State<PlanTripPage> {
             .collection('Users')
             .doc(element)
             .collection('MyGroup')
-            .doc(doc_id)
+            .doc(docId)
             .set({
           'GroupName': gname,
-          'GroupID': doc_id,
+          'GroupID': docId,
           'Trail': widget.id,
           'Time': selectedDate
         }).then((value) {
@@ -119,24 +119,24 @@ class _PlanTripPageState extends State<PlanTripPage> {
                     'click_action': 'FLUTTER_NOTIFICATION_CLICK',
                     'status': 'done',
                     'body':
-                        'Group Created for the hike of ${gname} at ${selectedDate.year}-${selectedDate.month}-${selectedDate.day}. Best Wishes for the Hike',
+                        'Group Created for the hike of $gname at ${selectedDate.year}-${selectedDate.month}-${selectedDate.day}. Best Wishes for the Hike',
                     'title': 'Time for Hike'
                   },
                   "notification": <String, dynamic>{
                     "title": "Time For Hike",
                     "body":
-                        "Group Created for the hike of ${gname} at ${selectedDate}. Best Wishes for the Hike",
+                        "Group Created for the hike of $gname at $selectedDate. Best Wishes for the Hike",
                     "android_channel_id": 'db'
                   },
                   "to": data['TokenId']
                 }));
           } catch (e) {
-            print(e);
+            //print(e);
           }
           Navigator.push(
             context,
             MaterialPageRoute(
-                builder: (context) => Dashboard(page: HomePage())),
+                builder: (context) => const Dashboard(page: HomePage())),
           ).then((value) {});
         });
       }
@@ -273,20 +273,20 @@ class _PlanTripPageState extends State<PlanTripPage> {
                   fontSize: 17,
                 ),
               ),
-              _Selected.isNotEmpty
+              _selected.isNotEmpty
                   ? Padding(
                       padding: const EdgeInsets.symmetric(
                           horizontal: 8.0, vertical: 5),
                       child: ListView.builder(
                         shrinkWrap: true,
-                        itemCount: _Selected.length,
+                        itemCount: _selected.length,
                         scrollDirection: Axis.horizontal,
                         itemBuilder: (context, index) {
                           return Padding(
                             padding:
                                 const EdgeInsets.symmetric(horizontal: 5),
                             child: FutureBuilder<DocumentSnapshot?>(
-                                future: getDocumentByUID(_Selected[index]),
+                                future: getDocumentByUID(_selected[index]),
                                 builder: (BuildContext context,
                                     AsyncSnapshot<DocumentSnapshot?>
                                         snapshot) {
@@ -324,7 +324,7 @@ class _PlanTripPageState extends State<PlanTripPage> {
                                             IconButton(
                                                 onPressed: () {
                                                   setState(() {
-                                                    _Selected.removeAt(index);
+                                                    _selected.removeAt(index);
                                                   });
                                                 },
                                                 icon:
@@ -420,10 +420,10 @@ class _PlanTripPageState extends State<PlanTripPage> {
                                               onChanged: (bool? value) {
                                                 value == true
                                                     ? setState(() {
-                                                        _Selected.add(id);
+                                                        _selected.add(id);
                                                       })
                                                     : setState(() {
-                                                        _Selected.remove(id);
+                                                        _selected.remove(id);
                                                       });
                                                 //print(_Selected);
                                                 //print("***********************");
@@ -435,7 +435,6 @@ class _PlanTripPageState extends State<PlanTripPage> {
                                   },
                                 );
                               }
-                              return Container();
                             }),
                       );
                     },
@@ -450,9 +449,9 @@ class _PlanTripPageState extends State<PlanTripPage> {
                           onPressed: () {
                             if (_gName.currentState!.validate()) {
                               _gName.currentState!.save();
-                              _Selected.add(auth.currentUser!.uid);
+                              _selected.add(auth.currentUser!.uid);
                               createGroup(
-                                  _gNameController.text.trim(), _Selected);
+                                  _gNameController.text.trim(), _selected);
                             }
                           },
                           style: ButtonStyle(

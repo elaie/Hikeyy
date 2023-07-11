@@ -76,7 +76,7 @@ class _GroupDetailsState extends State<GroupDetails> {
                               Padding(
                                 padding: const EdgeInsets.only(left: 70.0),
                                 child: AppText(
-                                  text: data!['Name'],
+                                  text: data['Name'],
                                   fontSize: 25,
                                   color: AppColor.primaryColor,
                                 ),
@@ -195,7 +195,7 @@ class _GroupDetailsState extends State<GroupDetails> {
                                                         context,
                                                         MaterialPageRoute(
                                                             builder: (context) =>
-                                                                Trails(id:  data!['Trail'])),
+                                                                Trails(id:  data['Trail'])),
                                                       );
                                                     },
                                                     child: const AppText(
@@ -210,18 +210,18 @@ class _GroupDetailsState extends State<GroupDetails> {
                                               thickness: 1,
                                             ),
                                           ),
-                                          Padding(
-                                            padding: const EdgeInsets.only(
+                                          const Padding(
+                                            padding: EdgeInsets.only(
                                                 top: 10.0, bottom: 30),
                                             child: AppTextSubHeading(
                                                 text:
                                                     'Very nice place bla bla add discription about place'),
                                           ),
-                                          Container(
+                                          SizedBox(
                                             width: 350,
                                             height: 200,
                                             child: MapWidget(
-                                              id: data!['Trail'],
+                                              id: data['Trail'],
                                             ),
                                           ),
                                         ]),

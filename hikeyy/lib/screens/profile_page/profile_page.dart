@@ -1,13 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:hikeyy/screens/home_page/home_page.dart';
-import 'package:hikeyy/screens/home_page/widget/my_schedule_card.dart';
-import 'package:hikeyy/screens/profile_page/CreateGroup.dart';
-import 'package:hikeyy/screens/profile_page/EditProfile.dart';
-import 'package:hikeyy/screens/profile_page/friends_list.dart';
 import 'package:hikeyy/screens/profile_page/widgets/bio.dart';
-import 'package:hikeyy/screens/profile_page/widgets/create_group_button.dart';
 import 'package:hikeyy/screens/profile_page/widgets/edit_button.dart';
 import 'package:hikeyy/screens/profile_page/widgets/friends_list_button.dart';
 import 'package:hikeyy/screens/profile_page/widgets/group_list.dart';
@@ -15,10 +9,6 @@ import 'package:hikeyy/screens/profile_page/widgets/logout_button.dart';
 import 'package:hikeyy/screens/profile_page/widgets/profile_picture.dart';
 import 'package:hikeyy/screens/profile_page/widgets/user_name.dart';
 import 'package:hikeyy/screens/profile_page/widgets/white_container.dart';
-import 'package:hikeyy/widgets/app_texts.dart';
-
-import '../login_signup/login.dart';
-import 'group_list_page.dart';
 
 class ProfilePage extends StatefulWidget {
   const ProfilePage({super.key});
@@ -42,6 +32,7 @@ class _ProfilePageState extends State<ProfilePage> {
       }
     } catch (e) {
       // Error occurred while fetching the document
+      // ignore: avoid_print
       print('Error: $e');
       return null;
     }

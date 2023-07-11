@@ -31,14 +31,14 @@ class _IsBusyState extends State<IsBusy> {
                 );
               }
               var data = snapshot.data!.data();
-              var Status = data!['Status'];
+              var status = data!['Status'];
               var groupid = data['Trail'];
               //var bio = data['Bio'];
-              if (Status == 'Busy'){
+              if (status == 'Busy'){
                 return Dashboard(page: StartTrail(id: groupid));
               }
               else {
-                return Dashboard(page: HomePage());
+                return const Dashboard(page: HomePage());
               }
             }
 

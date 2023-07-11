@@ -1,14 +1,13 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-class see_all_recommended extends StatefulWidget {
-  const see_all_recommended({super.key});
+class SeeAllRecommended extends StatefulWidget {
+  const SeeAllRecommended({super.key});
 
   @override
-  State<see_all_recommended> createState() => _see_all_recommendedState();
+  State<SeeAllRecommended> createState() => _SeeAllRecommendedState();
 }
 
-class _see_all_recommendedState extends State<see_all_recommended> {
+class _SeeAllRecommendedState extends State<SeeAllRecommended> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -16,7 +15,7 @@ class _see_all_recommendedState extends State<see_all_recommended> {
         stream: FirebaseFirestore.instance.collection('Destination').snapshots(),
         builder: (context, snapshots) {
           return (snapshots.connectionState == ConnectionState.waiting)
-              ? Center(
+              ? const Center(
             child: CircularProgressIndicator(),
           )
               : ListView.builder(
@@ -25,8 +24,8 @@ class _see_all_recommendedState extends State<see_all_recommended> {
               itemBuilder: (context, index) {
                 var data = snapshots.data!.docs[index].data()
                 as Map<String, dynamic>;
-                print("data printing");
-                print(data);
+                // print("data printing");
+                // print(data);
                 return GestureDetector(
                     onTap: () {
                       //hehe
@@ -43,12 +42,12 @@ class _see_all_recommendedState extends State<see_all_recommended> {
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.start,
                           children: [
-                            SizedBox(
+                            const SizedBox(
                               width: 20,
                             ),
                             Text(
                               data['Name'].toString(),
-                              style: TextStyle(
+                              style: const TextStyle(
                                   fontFamily: 'Comfortaa',
                               ),
                             ),

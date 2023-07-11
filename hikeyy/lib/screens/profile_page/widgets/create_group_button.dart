@@ -1,7 +1,6 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-import '../CreateGroup.dart';
+import '../create_group.dart';
 
 class CreateGroupButton extends StatelessWidget {
   const CreateGroupButton({

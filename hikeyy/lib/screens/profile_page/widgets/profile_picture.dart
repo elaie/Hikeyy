@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class ProfilePicture extends StatelessWidget {
@@ -7,7 +6,7 @@ class ProfilePicture extends StatelessWidget {
     required this.pfp,
   });
 
-  final pfp;
+  final dynamic pfp;
 
   @override
   Widget build(BuildContext context) {
@@ -15,12 +14,12 @@ class ProfilePicture extends StatelessWidget {
       top: 60,
       child: GestureDetector(
           onTap: () {
-            print('image pressed');
+           // print('image pressed');
           },
           child: Container(
-            padding: EdgeInsets.all(2),
+            padding: const EdgeInsets.all(2),
             decoration: BoxDecoration(
-              borderRadius: BorderRadius.all(
+              borderRadius: const BorderRadius.all(
                 Radius.circular(100),
               ),
               //for circle outline on pp

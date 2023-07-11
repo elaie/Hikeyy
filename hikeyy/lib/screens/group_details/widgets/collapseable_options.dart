@@ -9,7 +9,7 @@ class CollapsibleOptions extends StatefulWidget {
   const CollapsibleOptions({super.key, required this.id});
 
   @override
-  _CollapsibleOptionsState createState() => _CollapsibleOptionsState();
+  State<CollapsibleOptions> createState() => _CollapsibleOptionsState();
 }
 
 class _CollapsibleOptionsState extends State<CollapsibleOptions> {
@@ -93,7 +93,7 @@ class _CollapsibleOptionsState extends State<CollapsibleOptions> {
                                   child: CircularProgressIndicator(),
                                 );
                               }
-                              String Status = snapshot.data!.data()!['Status'];
+                              String status = snapshot.data!.data()!['Status'];
                               return Container(
                                   height: 200,
                                   decoration: BoxDecoration(
@@ -105,7 +105,7 @@ class _CollapsibleOptionsState extends State<CollapsibleOptions> {
                                   padding: const EdgeInsets.all(16),
                                   child: ListView.builder(
                                     itemBuilder: (context, index) {
-                                      if (Status == 'Going') {
+                                      if (status == 'Going') {
                                         return Padding(
                                           padding: const EdgeInsets.symmetric(
                                               vertical: 5.0),
@@ -130,7 +130,7 @@ class _CollapsibleOptionsState extends State<CollapsibleOptions> {
                                                   child: Text(
                                                       "${index + 1} . ${points[index]}"))),
                                         );
-                                      } else if (Status == 'Returning') {
+                                      } else if (status == 'Returning') {
                                         return Padding(
                                           padding: const EdgeInsets.symmetric(
                                               vertical: 5.0),

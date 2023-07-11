@@ -28,6 +28,7 @@ class _MyFriendRequestState extends State<MyFriendRequest> {
       }
     } catch (e) {
       // Error occurred while fetching the document
+      // ignore: avoid_print
       print('Error: $e');
       return null;
     }

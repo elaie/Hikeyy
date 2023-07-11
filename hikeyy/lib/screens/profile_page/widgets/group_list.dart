@@ -18,7 +18,7 @@ class GroupList extends StatelessWidget {
     return Positioned(
       top: 310,
       child: Scrollbar(
-        radius: Radius.circular(20),
+        radius: const Radius.circular(20),
         thumbVisibility: true,
         child: StreamBuilder<QuerySnapshot>(
             stream: FirebaseFirestore.instance
@@ -36,13 +36,13 @@ class GroupList extends StatelessWidget {
               } else if (snapshots.hasData) {
                 // Document exists, access the data
 
-                return Container(
+                return SizedBox(
                   height: 200,
                   width: double.infinity,
                   child: ListView.builder(
                       scrollDirection: Axis.vertical,
                       shrinkWrap: true,
-                      physics: NeverScrollableScrollPhysics(),
+                      physics: const NeverScrollableScrollPhysics(),
                       itemCount: snapshots.data!.docs.length,
                       itemBuilder: (context, index) {
                         var dataG = snapshots.data!.docs[index].data()

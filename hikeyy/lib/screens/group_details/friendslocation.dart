@@ -5,14 +5,9 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_cache_manager/file.dart';
-import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:http/http.dart' as http;
 
-import '../profile_page/widgets/profile_picture.dart';
-import '../profile_page/widgets/user_name.dart';
 
 class LocationFriends extends StatefulWidget {
   final String id;
@@ -24,8 +19,8 @@ class LocationFriends extends StatefulWidget {
 }
 
 class _LocationFriendsState extends State<LocationFriends> {
-  Completer<GoogleMapController> _controller = Completer();
-  List<Marker> _markers = [];
+  final Completer<GoogleMapController> _controller = Completer();
+  final List<Marker> _markers = [];
   List<Polyline> polylines = [];
 
   Future<Uint8List> getBytesFromAsset(String path, int width) async {
@@ -46,7 +41,7 @@ class _LocationFriendsState extends State<LocationFriends> {
         .then((value) {})
         .onError((error, stackTrace) async {
       await Geolocator.requestPermission();
-      print("ERROR" + error.toString());
+      //print("ERROR" + error.toString());
     });
     await Geolocator.getCurrentPosition().then((value) {
       _kGoogle = CameraPosition(
@@ -70,7 +65,7 @@ class _LocationFriendsState extends State<LocationFriends> {
           .get();
       List<LatLng> points = List.generate(datas.docs.length,
           (index) => LatLng(index.toDouble(), index.toDouble()));
-      datas.docs.forEach((element) {
+      for (var element in datas.docs) {
         String lat = element['Latitude'];
         String lon = element['Longitude'];
         int pos = element['pos'];
@@ -87,16 +82,16 @@ class _LocationFriendsState extends State<LocationFriends> {
             points: points,
             color: Colors.purple,
             width: 7));
-      });
+      }
     });
 
     // print(datas.get('Trails'));
     // print('##################aaaaa');
   }
-  Future<Uint8List> loadImage(String URL)async {
+  Future<Uint8List> loadImage(String url)async {
     final completer = Completer<ImageInfo>();
-    var image = NetworkImage(URL);
-    image.resolve(ImageConfiguration()).addListener(
+    var image = NetworkImage(url);
+    image.resolve(const ImageConfiguration()).addListener(
       ImageStreamListener((info,_)=> completer.complete(info))
     );
     final imageInfo = await completer.future;
@@ -123,8 +118,6 @@ class _LocationFriendsState extends State<LocationFriends> {
         String pfp = dataFriends.get('pfpUrl');
         String name = dataFriends.get('UserName');
         Uint8List? image = await loadImage(pfp);
-        final Uint8List markerIcon = await getBytesFromAsset(
-            'assets/icons/profile.png', 60);
         final ui.Codec markerImage = await instantiateImageCodec(
           image.buffer.asUint8List(),
           targetHeight: 80,
@@ -185,7 +178,7 @@ class _LocationFriendsState extends State<LocationFriends> {
                               actions: <Widget>[
                                 TextButton(
                                   onPressed: () => Navigator.of(context).pop(),
-                                  child: new Text('Dismiss'),
+                                  child: const Text('Dismiss'),
                                 ),
                               ],
                             );
@@ -200,7 +193,6 @@ class _LocationFriendsState extends State<LocationFriends> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     getTrail();
     // getLocations();
