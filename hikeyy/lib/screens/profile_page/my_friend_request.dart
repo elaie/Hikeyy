@@ -11,10 +11,6 @@ class MyFriendRequest extends StatefulWidget {
 
 class _MyFriendRequestState extends State<MyFriendRequest> {
   Future<DocumentSnapshot?> getDocumentByUID(String uid) async {
-    if (uid==null)
-      {
-        return null;
-      }
     try {
       final snapshot =
           await FirebaseFirestore.instance.collection('Users').doc(uid).get();
