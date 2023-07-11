@@ -11,6 +11,9 @@ import 'package:image_picker/image_picker.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'dart:io';
 
+import '../../widgets/app_buttons.dart';
+import '../../widgets/app_texts.dart';
+
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
 
@@ -140,7 +143,7 @@ class _HomePageState extends State<HomePage> {
                             Padding(
                               padding: const EdgeInsets.only(left: 20.0),
                               child: Text(
-                                'WELCOME $UserName',
+                                'WELCOME! $UserName',
                                 style: const TextStyle(fontSize: 20),
                               ),
                             ),
@@ -233,7 +236,7 @@ class _HomePageState extends State<HomePage> {
                                           padding: const EdgeInsets.symmetric(
                                               horizontal: 15.0),
                                           child: RangeSlider(
-                                            //activeColor: Colors.brown,
+                                            activeColor: Colors.green,
                                             values: _currentRangeValues,
                                             max: 100000,
                                             divisions: 100,
@@ -262,6 +265,7 @@ class _HomePageState extends State<HomePage> {
                                           padding: const EdgeInsets.symmetric(
                                               horizontal: 15.0),
                                           child: RangeSlider(
+                                            activeColor: Colors.green,
                                             values: _currentTimeRangeValues,
                                             max: 30,
                                             divisions: 30,
@@ -285,27 +289,30 @@ class _HomePageState extends State<HomePage> {
                                           mainAxisAlignment:
                                               MainAxisAlignment.spaceEvenly,
                                           children: [
-                                            ElevatedButton(
-                                              child: const Text('Apply'),
-                                              onPressed: () {
-                                                setState(() {
-                                                  showfilter = false;
-                                                });
-                                              },
-                                            ),
-                                            ElevatedButton(
-                                              child: const Text('Reset'),
-                                              onPressed: () {
-                                                setState(() {
-                                                  _currentRangeValues =
-                                                      const RangeValues(
-                                                          0, 100000);
-                                                  _currentTimeRangeValues =
-                                                      const RangeValues(0, 30);
-                                                  showfilter = false;
-                                                });
-                                              },
-                                            ),
+                                            AppButtons(
+                                                onPressed: () {
+                                                  setState(() {
+                                                    showfilter = false;
+                                                  });
+                                                },
+                                                child: const AppText(
+                                                  text: 'Apply',
+                                                )),
+                                            AppButtons(
+                                                onPressed: () {
+                                                  setState(() {
+                                                    _currentRangeValues =
+                                                        const RangeValues(
+                                                            0, 100000);
+                                                    _currentTimeRangeValues =
+                                                        const RangeValues(
+                                                            0, 30);
+                                                    showfilter = false;
+                                                  });
+                                                },
+                                                child: const AppText(
+                                                  text: 'Reset',
+                                                )),
                                           ],
                                         ),
                                       ],

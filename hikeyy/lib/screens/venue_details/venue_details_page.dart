@@ -1,6 +1,8 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:hikeyy/screens/checkpoint_detail_page/checkpoint_detail_page.dart';
+import 'package:hikeyy/screens/group_details/widgets/collapseable_options.dart';
 import 'package:hikeyy/screens/plan_trip_page/plan_trip_page.dart';
 import 'package:hikeyy/widgets/app_colors.dart';
 import 'package:hikeyy/widgets/app_texts.dart';
@@ -92,9 +94,13 @@ class _VenueDetailsPageState extends State<VenueDetailsPage> {
                                     crossAxisAlignment:
                                         CrossAxisAlignment.start,
                                     children: [
-                                      AppTextHeading(
-                                        fontSize: 20,
-                                        textHeading: data!['Name'],
+                                      Container(
+                                        width: 170,
+                                        child: AppTextHeading(
+                                          maxLines: 2,
+                                          fontSize: 20,
+                                          textHeading: data!['Name'],
+                                        ),
                                       ),
                                       Row(
                                         children: [
@@ -105,14 +111,16 @@ class _VenueDetailsPageState extends State<VenueDetailsPage> {
                                     ],
                                   ),
                                   Container(
-                                    decoration:
-                                        BoxDecoration(boxShadow: const <BoxShadow>[
-                                      BoxShadow(
-                                          color: Colors.grey,
-                                          spreadRadius: 1,
-                                          offset: Offset(0, 3),
-                                          blurRadius: 3),
-                                    ], borderRadius: BorderRadius.circular(30)),
+                                    decoration: BoxDecoration(
+                                        boxShadow: const <BoxShadow>[
+                                          BoxShadow(
+                                              color: Colors.grey,
+                                              spreadRadius: 1,
+                                              offset: Offset(0, 3),
+                                              blurRadius: 3),
+                                        ],
+                                        borderRadius:
+                                            BorderRadius.circular(30)),
                                     height: 50,
                                     child: ElevatedButton(
                                       style: ButtonStyle(
@@ -198,7 +206,16 @@ class _VenueDetailsPageState extends State<VenueDetailsPage> {
                                   ),
                                 ),
                               ),
-                              const Padding(
+                              ElevatedButton(
+                                  onPressed: () {
+                                    Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) =>
+                                                CheckpointDetailPage()));
+                                  },
+                                  child: Text('Checkpoint')),
+                              Padding(
                                 padding: EdgeInsets.only(top: 15.0),
                                 child: AppTextHeading(
                                   textHeading: 'Description',
@@ -261,7 +278,6 @@ class _VenueDetailsPageState extends State<VenueDetailsPage> {
           padding: const EdgeInsets.only(left: 20.0, right: 20, bottom: 20),
           child: SizedBox(
             height: 50,
-            // decoration: BoxDecoration(color: Colors.amber),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [

@@ -84,50 +84,62 @@ class _PlanTripPageState extends State<PlanTripPage> {
         'AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvWwXxYyZz1234567890';
     String doc_id = String.fromCharCodes(Iterable.generate(
         7, (_) => _chars.codeUnitAt(Random().nextInt(_chars.length))));
-    FirebaseFirestore.instance
-        .collection('Groups')
-        .doc(doc_id)
-        .set({'Name': gname, 'Members': selected,'Trail' : widget.id,'Time': selectedDate}).then((value) async {
+    FirebaseFirestore.instance.collection('Groups').doc(doc_id).set({
+      'Name': gname,
+      'Members': selected,
+      'Trail': widget.id,
+      'Time': selectedDate
+    }).then((value) async {
       for (var element in selected) {
-        DocumentSnapshot data = await FirebaseFirestore.instance.collection('Users').doc(element).get();
+        DocumentSnapshot data = await FirebaseFirestore.instance
+            .collection('Users')
+            .doc(element)
+            .get();
         FirebaseFirestore.instance
             .collection('Users')
             .doc(element)
             .collection('MyGroup')
             .doc(doc_id)
-            .set({'GroupName': gname, 'GroupID': doc_id,'Trail' : widget.id,'Time': selectedDate}).then((value) {
-          try{
+            .set({
+          'GroupName': gname,
+          'GroupID': doc_id,
+          'Trail': widget.id,
+          'Time': selectedDate
+        }).then((value) {
+          try {
             http.post(Uri.parse('https://fcm.googleapis.com/fcm/send'),
-                headers: <String,String>{
-                  'Content-Type':'application/json',
-                  'Authorization':'key=AAAAmBUmFv8:APA91bHyUqeVPNp2YUQx4J3S4nJMupqms0CprTzq1RD-aQqJaJcZwb7QhvK-GWuj-qPzc1vKXVvJKFyUT4bFYlRGxLREnbD-amKaWWeVuaxUvMsOdYNK4aEcJnUjIWRJRQm-bbv-3kTA'
+                headers: <String, String>{
+                  'Content-Type': 'application/json',
+                  'Authorization':
+                      'key=AAAAmBUmFv8:APA91bHyUqeVPNp2YUQx4J3S4nJMupqms0CprTzq1RD-aQqJaJcZwb7QhvK-GWuj-qPzc1vKXVvJKFyUT4bFYlRGxLREnbD-amKaWWeVuaxUvMsOdYNK4aEcJnUjIWRJRQm-bbv-3kTA'
                 },
-                body: jsonEncode(<String,dynamic>{
-                  'priority':'high',
-                  'data':<String,dynamic>{
-                    'click_action':'FLUTTER_NOTIFICATION_CLICK',
-                    'status':'done',
-                    'body': 'Group Created for the hike of ${gname} at ${selectedDate.year}-${selectedDate.month}-${selectedDate.day}. Best Wishes for the Hike',
-                    'title' : 'Time for Hike'
+                body: jsonEncode(<String, dynamic>{
+                  'priority': 'high',
+                  'data': <String, dynamic>{
+                    'click_action': 'FLUTTER_NOTIFICATION_CLICK',
+                    'status': 'done',
+                    'body':
+                        'Group Created for the hike of ${gname} at ${selectedDate.year}-${selectedDate.month}-${selectedDate.day}. Best Wishes for the Hike',
+                    'title': 'Time for Hike'
                   },
-                  "notification":<String,dynamic>{
-                    "title":"Time For Hike",
-                    "body": "Group Created for the hike of ${gname} at ${selectedDate}. Best Wishes for the Hike",
-                    "android_channel_id" : 'db'
+                  "notification": <String, dynamic>{
+                    "title": "Time For Hike",
+                    "body":
+                        "Group Created for the hike of ${gname} at ${selectedDate}. Best Wishes for the Hike",
+                    "android_channel_id": 'db'
                   },
-                  "to" : data['TokenId']
+                  "to": data['TokenId']
                 }));
-          } catch(e){
+          } catch (e) {
             print(e);
           }
           Navigator.push(
             context,
-            MaterialPageRoute(builder: (context) => Dashboard(page: HomePage())),
-          ).then((value) {
-          });
+            MaterialPageRoute(
+                builder: (context) => Dashboard(page: HomePage())),
+          ).then((value) {});
         });
       }
-
     });
   }
 
@@ -139,7 +151,9 @@ class _PlanTripPageState extends State<PlanTripPage> {
         initialDate: selectedDate,
         firstDate: DateTime(2015, 8),
         lastDate: DateTime(2101));
-    if (picked != null && picked != selectedDate && picked.isAfter(DateTime.now())) {
+    if (picked != null &&
+        picked != selectedDate &&
+        picked.isAfter(DateTime.now())) {
       setState(() {
         selectedDate = picked;
       });
@@ -174,10 +188,9 @@ class _PlanTripPageState extends State<PlanTripPage> {
                           .doc(widget.id)
                           .get(),
                       builder: (_, snapshot) {
-                        if(!snapshot.hasData){
+                        if (!snapshot.hasData) {
                           return const Text('....................');
-                        }
-                        else{
+                        } else {
                           return Text(snapshot.data!.data()!['Name']);
                         }
                       })),
@@ -264,71 +277,69 @@ class _PlanTripPageState extends State<PlanTripPage> {
                   ? Padding(
                       padding: const EdgeInsets.symmetric(
                           horizontal: 8.0, vertical: 5),
-                      child: SizedBox(
-                        height: 50,
-                        child: ListView.builder(
-                          itemCount: _Selected.length,
-                          scrollDirection: Axis.horizontal,
-                          itemBuilder: (context, index) {
-                            return Padding(
-                              padding:
-                                  const EdgeInsets.symmetric(horizontal: 5),
-                              child: FutureBuilder<DocumentSnapshot?>(
-                                  future: getDocumentByUID(_Selected[index]),
-                                  builder: (BuildContext context,
-                                      AsyncSnapshot<DocumentSnapshot?>
-                                          snapshot) {
-                                    if (snapshot.connectionState ==
-                                        ConnectionState.waiting) {
-                                      return const CircularProgressIndicator();
-                                    } else if (snapshot.hasError) {
-                                      return Text('Error: ${snapshot.error}');
-                                    } else if (snapshot.hasData) {
-                                      Map<String, dynamic> data2 =
-                                          snapshot.data!.data()
-                                              as Map<String, dynamic>;
-                                      return Container(
-                                        width: 200,
-                                        decoration: const BoxDecoration(
-                                            color: AppColor.primaryColor,
-                                            borderRadius: BorderRadius.all(
-                                                Radius.circular(30))),
-                                        child: Center(
-                                          child: Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.spaceEvenly,
-                                            children: [
-                                              CircleAvatar(
-                                                backgroundImage: data2[
-                                                            'pfpUrl'] !=
-                                                        ' '
-                                                    ? NetworkImage(
-                                                        data2['pfpUrl'])
-                                                    : const AssetImage(
-                                                            'assets/images/profile.png')
-                                                        as ImageProvider,
-                                              ),
-                                              Text(data2['UserName']),
-                                              IconButton(
-                                                  onPressed: () {
-                                                    setState(() {
-                                                      _Selected.removeAt(index);
-                                                    });
-                                                  },
-                                                  icon:
-                                                      const Icon(Icons.remove))
-                                            ],
-                                          ),
+                      child: ListView.builder(
+                        shrinkWrap: true,
+                        itemCount: _Selected.length,
+                        scrollDirection: Axis.horizontal,
+                        itemBuilder: (context, index) {
+                          return Padding(
+                            padding:
+                                const EdgeInsets.symmetric(horizontal: 5),
+                            child: FutureBuilder<DocumentSnapshot?>(
+                                future: getDocumentByUID(_Selected[index]),
+                                builder: (BuildContext context,
+                                    AsyncSnapshot<DocumentSnapshot?>
+                                        snapshot) {
+                                  if (snapshot.connectionState ==
+                                      ConnectionState.waiting) {
+                                    return const CircularProgressIndicator();
+                                  } else if (snapshot.hasError) {
+                                    return Text('Error: ${snapshot.error}');
+                                  } else if (snapshot.hasData) {
+                                    Map<String, dynamic> data2 =
+                                        snapshot.data!.data()
+                                            as Map<String, dynamic>;
+                                    return Container(
+                                      width: 200,
+                                      decoration: const BoxDecoration(
+                                          color: AppColor.primaryColor,
+                                          borderRadius: BorderRadius.all(
+                                              Radius.circular(30))),
+                                      child: Center(
+                                        child: Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceEvenly,
+                                          children: [
+                                            CircleAvatar(
+                                              backgroundImage: data2[
+                                                          'pfpUrl'] !=
+                                                      ' '
+                                                  ? NetworkImage(
+                                                      data2['pfpUrl'])
+                                                  : const AssetImage(
+                                                          'assets/images/profile.png')
+                                                      as ImageProvider,
+                                            ),
+                                            Text(data2['UserName']),
+                                            IconButton(
+                                                onPressed: () {
+                                                  setState(() {
+                                                    _Selected.removeAt(index);
+                                                  });
+                                                },
+                                                icon:
+                                                    const Icon(Icons.remove))
+                                          ],
                                         ),
-                                      );
-                                    }
-                                    return const SizedBox(
-                                      height: 50,
+                                      ),
                                     );
-                                  }),
-                            );
-                          },
-                        ),
+                                  }
+                                  return const SizedBox(
+                                    height: 50,
+                                  );
+                                }),
+                          );
+                        },
                       ),
                     )
                   : const Center(

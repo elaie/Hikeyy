@@ -6,9 +6,16 @@ class AppButtons extends StatelessWidget {
   final Color? color;
   final Widget child;
   final Function onPressed;
+  final double? height;
+  final double? width;
 
   const AppButtons(
-      {super.key, required this.onPressed, required this.child, this.color});
+      {super.key,
+      required this.onPressed,
+      required this.child,
+      this.color,
+      this.height,
+      this.width});
 
   @override
   Widget build(BuildContext context) {
@@ -20,7 +27,8 @@ class AppButtons extends StatelessWidget {
             spreadRadius: 1,
             blurRadius: 3),
       ], borderRadius: BorderRadius.circular(30)),
-      height: 40,
+      height: height ?? 40,
+      width: width,
       child: ElevatedButton(
         style: ButtonStyle(
           backgroundColor:

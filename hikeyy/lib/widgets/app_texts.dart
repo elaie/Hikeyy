@@ -4,15 +4,19 @@ class AppTextHeading extends StatelessWidget {
   final String textHeading;
   final double? fontSize;
   final Color? color;
+  final int? maxLines;
   const AppTextHeading(
-      {Key? key, required this.textHeading, this.fontSize, this.color})
+      {Key? key, required this.textHeading, this.fontSize, this.color, this.maxLines})
       : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Text(
       textHeading,
+       maxLines:maxLines,
+       overflow: TextOverflow.ellipsis,
       style: TextStyle(
+       
         color: color,
         fontWeight: FontWeight.w800,
         fontSize: fontSize,
@@ -28,7 +32,12 @@ class AppText extends StatelessWidget {
   final int? maxLines;
   final TextOverflow? textOverflow;
   const AppText(
-      {Key? key, required this.text, this.fontSize, this.color, this.maxLines, this.textOverflow})
+      {Key? key,
+      required this.text,
+      this.fontSize,
+      this.color,
+      this.maxLines,
+      this.textOverflow})
       : super(key: key);
 
   @override

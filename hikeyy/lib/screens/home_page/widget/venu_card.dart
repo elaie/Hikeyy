@@ -32,9 +32,8 @@ class VenuCard extends StatelessWidget {
                 offset: Offset(0, 3), // Offset in the x and y direction
               ),
             ],
-            image:  DecorationImage(
-                image: NetworkImage(photourl),
-                fit: BoxFit.cover),
+            image: DecorationImage(
+                image: NetworkImage(photourl), fit: BoxFit.cover),
             borderRadius: const BorderRadius.all(Radius.circular(30))),
         child: Padding(
           padding:
@@ -48,9 +47,14 @@ class VenuCard extends StatelessWidget {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Text(
-                  venue,
-                  style: TextStyle(fontWeight: FontWeight.w600, fontSize: 18),
+                Padding(
+                  padding: const EdgeInsets.only(left: 8.0, right: 8),
+                  child: Text(
+                    venue,
+                    style: TextStyle(fontWeight: FontWeight.w600, fontSize: 18),
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                  ),
                 ),
                 LocationMonthIconRow(location: location, date: date)
               ],
