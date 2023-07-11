@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class Bio extends StatelessWidget {
@@ -7,7 +6,7 @@ class Bio extends StatelessWidget {
     required this.bio,
   });
 
-  final bio;
+  final String bio;
 
   @override
   Widget build(BuildContext context) {
@@ -17,7 +16,7 @@ class Bio extends StatelessWidget {
         children: [
           Text(
             bio,
-            style: TextStyle(fontSize: 16, color: Colors.black45),
+            style: const TextStyle(fontSize: 16, color: Colors.black45),
           ),
         ],
       ),

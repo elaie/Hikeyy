@@ -1,9 +1,7 @@
 import 'dart:async';
-import 'dart:ffi';
-
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:hikeyy/screens/login_signup/IsInTrip.dart';
+import 'package:hikeyy/screens/login_signup/is_in_trip.dart';
 import 'package:hikeyy/screens/login_signup/login.dart';
 
 class VerifyMailPage extends StatefulWidget {

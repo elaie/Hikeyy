@@ -1,7 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:hikeyy/screens/login_signup/VerifyMail.dart';
 import 'package:hikeyy/screens/login_signup/login.dart';
+import 'package:hikeyy/screens/login_signup/verify_mail.dart';
 
 class IsLogged extends StatelessWidget {
   const IsLogged({super.key});

@@ -1,6 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import '../../login_signup/login.dart';
@@ -24,7 +23,7 @@ class LogoutButton extends StatelessWidget {
             }).then((value){
               FirebaseAuth.instance.signOut().then((value) {
                 Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => LoginPage()));
+                    MaterialPageRoute(builder: (context) => const LoginPage()));
               });
             });
 

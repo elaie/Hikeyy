@@ -11,7 +11,7 @@ class CheckpointDetailPage extends StatefulWidget {
 }
 
 class _CheckpointDetailPageState extends State<CheckpointDetailPage> {
-  int _rating = 0;
+  final int _rating = 0;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -26,12 +26,12 @@ class _CheckpointDetailPageState extends State<CheckpointDetailPage> {
                     Padding(
                         padding: const EdgeInsets.only(left: 5.0),
                         child: IconButton(
-                          icon: Icon(Icons.arrow_back_ios),
+                          icon:  const  Icon(Icons.arrow_back_ios),
                           onPressed: () {
                             Navigator.of(context).pop();
                           },
                         )),
-                    AppText(
+                    const AppText(
                       text: 'Chommrung',
                       fontSize: 20,
                       color: AppColor.primaryDarkColor,
@@ -76,7 +76,7 @@ class _CheckpointDetailPageState extends State<CheckpointDetailPage> {
                       Column(
                         children: [
                           Padding(
-                            padding: const EdgeInsets.only(bottom: 10.0),
+                            padding:  EdgeInsets.only(bottom: 10.0),
                             child: AppText(
                               text: 'Lodges',
                               fontSize: 17,
@@ -92,7 +92,7 @@ class _CheckpointDetailPageState extends State<CheckpointDetailPage> {
                       Column(
                         children: [
                           Padding(
-                            padding: const EdgeInsets.only(bottom: 10.0),
+                            padding: EdgeInsets.only(bottom: 10.0),
                             child: AppText(
                               text: 'Network',
                               fontSize: 17,
@@ -113,19 +113,19 @@ class _CheckpointDetailPageState extends State<CheckpointDetailPage> {
                   child: AppButtons(
                       width: 200,
                       onPressed: () {},
-                      child: AppText(
+                      child: const AppText(
                         text: 'Weather',
                       )),
                 ),
-                Padding(
+                const Padding(
                   padding:
-                      const EdgeInsets.only(top: 10.0, left: 20, right: 20),
+                      EdgeInsets.only(top: 10.0, left: 20, right: 20),
                   child: Divider(
                     thickness: 2,
                     color: Colors.grey,
                   ),
                 ),
-                Center(
+                const Center(
                   child: AppText(
                     text: 'Lodges',
                     color: AppColor.primaryDarkColor,
@@ -175,11 +175,11 @@ class _CheckpointDetailPageState extends State<CheckpointDetailPage> {
                                   mainAxisAlignment: MainAxisAlignment.end,
                                   crossAxisAlignment: CrossAxisAlignment.center,
                                   children: [
-                                    AppText(
+                                    const AppText(
                                       text: 'Hamro Logde',
                                       color: Colors.white,
                                     ),
-                                    Padding(
+                                    const Padding(
                                       padding: EdgeInsets.only(
                                           left: 10.0, right: 10),
                                       child: Divider(
@@ -187,7 +187,7 @@ class _CheckpointDetailPageState extends State<CheckpointDetailPage> {
                                         color: Colors.white,
                                       ),
                                     ),
-                                    Row(
+                                    const Row(
                                       mainAxisAlignment:
                                           MainAxisAlignment.center,
                                       children: [
@@ -208,22 +208,22 @@ class _CheckpointDetailPageState extends State<CheckpointDetailPage> {
                                       padding: const EdgeInsets.only(
                                           bottom: 20.0, right: 15),
                                       child: AnimatedPositioned(
-                                        duration: Duration(milliseconds: 300),
+                                        duration: const Duration(milliseconds: 300),
                                         child: Row(
                                             mainAxisAlignment:
                                                 MainAxisAlignment.spaceEvenly,
                                             children: List.generate(
                                               5,
-                                              (index) => Container(
+                                              (index) => SizedBox(
                                                 height: 15,
                                                 width: 20,
                                                 child: IconButton(
                                                   icon: index < _rating
-                                                      ? Icon(Icons.star,
+                                                      ? const Icon(Icons.star,
                                                           size: 22)
-                                                      : Icon(Icons.star_border,
+                                                      : const Icon(Icons.star_border,
                                                           size: 22),
-                                                  color: Color.fromARGB(
+                                                  color: const Color.fromARGB(
                                                       255, 223, 170, 10),
                                                   onPressed: () {},
                                                 ),

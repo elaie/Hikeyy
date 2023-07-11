@@ -58,7 +58,7 @@ class AppText extends StatelessWidget {
 class AppTextSubHeading extends StatelessWidget {
   final String text;
   final double? fontSize;
-  AppTextSubHeading({Key? key, required this.text, this.fontSize})
+  const AppTextSubHeading({Key? key, required this.text, this.fontSize})
       : super(key: key);
 
   @override

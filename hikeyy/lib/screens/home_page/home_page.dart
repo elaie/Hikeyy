@@ -4,7 +4,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:hikeyy/screens/home_page/widget/venu_card.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:hikeyy/screens/profile_page/MyFriendRequest.dart';
+import 'package:hikeyy/screens/profile_page/my_friend_request.dart';
 import 'package:hikeyy/screens/profile_page/widgets/group_list.dart';
 import 'package:hikeyy/screens/venue_details/venue_details_page.dart';
 import 'package:image_picker/image_picker.dart';
@@ -24,17 +24,15 @@ class HomePage extends StatefulWidget {
 Future<List<File>> pickImages() async {
   List<File> images = [];
 
-  final ImagePicker _picker = ImagePicker();
+  final ImagePicker picker = ImagePicker();
 
   // Pick multiple images
   final List<XFile> pickedFiles =
-      await _picker.pickMultiImage(imageQuality: 80);
+      await picker.pickMultiImage(imageQuality: 80);
 
-  if (pickedFiles != null) {
-    for (var i = 0; i < pickedFiles.length; i++) {
-      File image = File(pickedFiles[i].path);
-      images.add(image);
-    }
+  for (var i = 0; i < pickedFiles.length; i++) {
+    File image = File(pickedFiles[i].path);
+    images.add(image);
   }
 
   return images;
@@ -67,25 +65,24 @@ void uploadImages(List<File> images) async {
 class _HomePageState extends State<HomePage> {
   FirebaseAuth auth = FirebaseAuth.instance;
   final _scaffoldkey = GlobalKey<ScaffoldState>();
-  String UserName = '';
+  String userName = '';
   bool showfilter = false;
   RangeValues _currentRangeValues = const RangeValues(0, 100000);
   RangeValues _currentTimeRangeValues = const RangeValues(0, 30);
 
-  @override
   Future<void> getUserName() async {
     DocumentSnapshot data = await FirebaseFirestore.instance
         .collection('Users')
         .doc(auth.currentUser!.uid)
         .get();
     setState(() {
-      UserName = data['UserName'];
+      userName = data['UserName'];
     });
   }
 
   @override
   void initState() {
-    // TODO: implement initState
+    
     getUserName();
     super.initState();
   }
@@ -127,14 +124,14 @@ class _HomePageState extends State<HomePage> {
                                             color: Colors.grey.withOpacity(0.5),
                                             spreadRadius: 3,
                                             blurRadius: 9,
-                                            offset: Offset(0, 3),
+                                            offset: const Offset(0, 3),
                                           ),
                                         ],
                                         shape: BoxShape.circle,
                                         color: Colors.white),
-                                    child: Padding(
-                                      padding: const EdgeInsets.all(10.0),
-                                      child: const Image(
+                                    child: const Padding(
+                                      padding: EdgeInsets.all(10.0),
+                                      child: Image(
                                           image: AssetImage(
                                               'assets/icons/menu.png')),
                                     )),
@@ -143,7 +140,7 @@ class _HomePageState extends State<HomePage> {
                             Padding(
                               padding: const EdgeInsets.only(left: 20.0),
                               child: Text(
-                                'WELCOME! $UserName',
+                                'WELCOME! $userName',
                                 style: const TextStyle(fontSize: 20),
                               ),
                             ),
@@ -202,7 +199,7 @@ class _HomePageState extends State<HomePage> {
                                   mainAxisAlignment:
                                       MainAxisAlignment.spaceBetween,
                                   children: [
-                                    Text(
+                                    const Text(
                                       'Explore\nNew Places',
                                       style: TextStyle(
                                           fontWeight: FontWeight.w800,
@@ -219,7 +216,7 @@ class _HomePageState extends State<HomePage> {
                                 ),
                               ),
                               if (showfilter)
-                                Container(
+                                SizedBox(
                                   height: 200,
                                   width: double.infinity,
                                   //color: Colors.green,
@@ -512,7 +509,7 @@ class _HomePageState extends State<HomePage> {
                                         //     builder: (context) => see_all_recommended(),
                                         //   ),
                                         // );
-                                        print('Text clicked');
+                                       // print('Text clicked');
                                       },
                                       child: const Text(
                                         'See all',

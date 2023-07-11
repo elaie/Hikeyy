@@ -29,7 +29,6 @@ class _CreateGroupState extends State<CreateGroup> {
       }
     } catch (e) {
       // Error occurred while fetching the document
-      print('Error: $e');
       return null;
     }
   }
@@ -37,11 +36,11 @@ class _CreateGroupState extends State<CreateGroup> {
   final _gName = GlobalKey<FormState>();
   FirebaseAuth auth = FirebaseAuth.instance;
   String _name = '';
-  List _Selected = [];
+  final List _selected = [];
   final TextEditingController _gNameController = TextEditingController();
 
   bool checklist(var data) {
-    if (_Selected.contains(data)) {
+    if (_selected.contains(data)) {
       return true;
     } else {
       return false;
@@ -73,27 +72,27 @@ class _CreateGroupState extends State<CreateGroup> {
   }
 
   createGroup(var gname, List selected) {
-    const _chars =
+    const chars =
         'AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvWwXxYyZz1234567890';
-    String doc_id = String.fromCharCodes(Iterable.generate(
-        7, (_) => _chars.codeUnitAt(Random().nextInt(_chars.length))));
+    String docId = String.fromCharCodes(Iterable.generate(
+        7, (_) => chars.codeUnitAt(Random().nextInt(chars.length))));
     FirebaseFirestore.instance
         .collection('Groups')
-        .doc(doc_id)
+        .doc(docId)
         .set({'Name': gname, 'Members': selected}).then((value) {
-      selected.forEach((element) {
+      for (var element in selected) {
         FirebaseFirestore.instance
             .collection('Users')
             .doc(element)
             .collection('MyGroup')
-            .doc(doc_id)
-            .set({'GroupName': gname, 'GroupID': doc_id}).then((value) {
+            .doc(docId)
+            .set({'GroupName': gname, 'GroupID': docId}).then((value) {
           Navigator.push(
             context,
-            MaterialPageRoute(builder: (context) => Dashboard(page: HomePage())),
+            MaterialPageRoute(builder: (context) => const Dashboard(page: HomePage())),
           );
         });
-      });
+      }
     });
   }
 
@@ -120,7 +119,7 @@ class _CreateGroupState extends State<CreateGroup> {
                       }
                       return null;
                     },
-                    decoration: InputDecoration(
+                    decoration: const InputDecoration(
                       hintText: 'Group Name',
                       enabledBorder: UnderlineInputBorder(
                         borderSide: BorderSide(
@@ -130,31 +129,31 @@ class _CreateGroupState extends State<CreateGroup> {
                   ),
                 ),
               ),
-              Text('Selected Friends:'),
-              Divider(
+              const Text('Selected Friends:'),
+              const Divider(
                 height: 30,
               ),
-              _Selected.isNotEmpty
+              _selected.isNotEmpty
                   ? Padding(
                       padding: const EdgeInsets.symmetric(
                           horizontal: 8.0, vertical: 5),
                       child: SizedBox(
                         height: 50,
                         child: ListView.builder(
-                          itemCount: _Selected.length,
+                          itemCount: _selected.length,
                           scrollDirection: Axis.horizontal,
                           itemBuilder: (context, index) {
                             return Padding(
                               padding:
                                   const EdgeInsets.symmetric(horizontal: 5),
                               child: FutureBuilder<DocumentSnapshot?>(
-                                  future: getDocumentByUID(_Selected[index]),
+                                  future: getDocumentByUID(_selected[index]),
                                   builder: (BuildContext context,
                                       AsyncSnapshot<DocumentSnapshot?>
                                           snapshot) {
                                     if (snapshot.connectionState ==
                                         ConnectionState.waiting) {
-                                      return CircularProgressIndicator();
+                                      return const CircularProgressIndicator();
                                     } else if (snapshot.hasError) {
                                       return Text('Error: ${snapshot.error}');
                                     } else if (snapshot.hasData) {
@@ -163,7 +162,7 @@ class _CreateGroupState extends State<CreateGroup> {
                                               as Map<String, dynamic>;
                                       return Container(
                                         width: 150,
-                                        decoration: BoxDecoration(
+                                        decoration: const BoxDecoration(
                                             color: Colors.lightBlueAccent,
                                             borderRadius: BorderRadius.all(
                                                 Radius.circular(30))),
@@ -186,10 +185,10 @@ class _CreateGroupState extends State<CreateGroup> {
                                               IconButton(
                                                   onPressed: () {
                                                     setState(() {
-                                                      _Selected.removeAt(index);
+                                                      _selected.removeAt(index);
                                                     });
                                                   },
-                                                  icon: Icon(Icons.remove))
+                                                  icon: const Icon(Icons.remove))
                                             ],
                                           ),
                                         ),
@@ -202,7 +201,7 @@ class _CreateGroupState extends State<CreateGroup> {
                         ),
                       ),
                     )
-                  : Center(
+                  : const Center(
                       child: Text('No Friends Added'),
                     ),
               TextField(
@@ -227,7 +226,7 @@ class _CreateGroupState extends State<CreateGroup> {
                     .snapshots(),
                 builder: (context, snapshots) {
                   if (snapshots.connectionState == ConnectionState.waiting) {
-                    return Center(
+                    return const Center(
                       child: CircularProgressIndicator(),
                     );
                   }
@@ -236,8 +235,6 @@ class _CreateGroupState extends State<CreateGroup> {
                     child: ListView.builder(
                         itemCount: snapshots.data!.docs.length,
                         itemBuilder: (context, index) {
-                          var data = snapshots.data!.docs[index].data()
-                              as Map<String, dynamic>;
                           var id = snapshots.data!.docs[index].id;
                           if (_name == '') {
                             return Container();
@@ -276,10 +273,10 @@ class _CreateGroupState extends State<CreateGroup> {
                                           onChanged: (bool? value) {
                                             value == true
                                                 ? setState(() {
-                                                    _Selected.add(id);
+                                                    _selected.add(id);
                                                   })
                                                 : setState(() {
-                                                    _Selected.remove(id);
+                                                    _selected.remove(id);
                                                   });
                                             //print(_Selected);
                                             //print("***********************");
@@ -291,7 +288,6 @@ class _CreateGroupState extends State<CreateGroup> {
                               },
                             );
                           }
-                          return Container();
                         }),
                   );
                 },
@@ -306,8 +302,8 @@ class _CreateGroupState extends State<CreateGroup> {
                       onPressed: () {
                         if (_gName.currentState!.validate()) {
                           _gName.currentState!.save();
-                          _Selected.add(auth.currentUser!.uid);
-                          createGroup(_gNameController.text.trim(), _Selected);
+                          _selected.add(auth.currentUser!.uid);
+                          createGroup(_gNameController.text.trim(), _selected);
                         }
                       },
                       style: ButtonStyle(
@@ -320,7 +316,7 @@ class _CreateGroupState extends State<CreateGroup> {
                           ),
                         ),
                       ),
-                      child: Text(
+                      child: const Text(
                         'Create',
                       ),
                     ),

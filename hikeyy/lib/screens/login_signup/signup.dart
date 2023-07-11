@@ -1,11 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:hikeyy/screens/login_signup/VerifyMail.dart';
+import 'package:hikeyy/screens/login_signup/verify_mail.dart';
 
 import '../../widgets/app_texts.dart';
-import '../dashboard/dashboard.dart';
 
 class Signup extends StatefulWidget {
   const Signup({super.key});
@@ -21,9 +19,8 @@ class _SignupState extends State<Signup> {
   final TextEditingController _passwordController = TextEditingController();
   final TextEditingController _confirmpasswordController =
       TextEditingController();
-  CollectionReference Users = FirebaseFirestore.instance.collection('Users');
+  CollectionReference users = FirebaseFirestore.instance.collection('Users');
 
-  final ValueNotifier<bool> _iAgreeCheckboxValue = ValueNotifier<bool>(false);
 
   @override
   Widget build(BuildContext context) {
@@ -38,10 +35,10 @@ class _SignupState extends State<Signup> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Center(
-                      child: Container(
+                      child: SizedBox(
                           height: 200,
                           child: Image.asset('assets/images/logo.png'))),
-                  AppTextHeading(
+                  const AppTextHeading(
                     textHeading: 'Sign Up',
                     fontSize: 35,
                   ),
@@ -55,7 +52,7 @@ class _SignupState extends State<Signup> {
                   const SizedBox(
                     height: 20,
                   ),
-                  AppText(text: 'User Name'),
+                  const AppText(text: 'User Name'),
                   SizedBox(
                     height: 30,
                     child: TextFormField(
@@ -71,13 +68,13 @@ class _SignupState extends State<Signup> {
                   const SizedBox(
                     height: 10,
                   ),
-                  AppText(text: 'Email'),
+                  const AppText(text: 'Email'),
                   SizedBox(
                     height: 30,
                     child: TextFormField(
                       controller: _emailController,
-                      decoration: InputDecoration(
-                        enabledBorder: const UnderlineInputBorder(
+                      decoration: const InputDecoration(
+                        enabledBorder: UnderlineInputBorder(
                           borderSide: BorderSide(
                               color: Color.fromARGB(255, 209, 207, 207)),
                         ),
@@ -87,13 +84,13 @@ class _SignupState extends State<Signup> {
                   const SizedBox(
                     height: 10,
                   ),
-                  AppText(text: 'Password'),
+                  const AppText(text: 'Password'),
                   SizedBox(
                     height: 30,
                     child: TextFormField(
                       controller: _passwordController,
-                      decoration: InputDecoration(
-                        enabledBorder: const UnderlineInputBorder(
+                      decoration: const InputDecoration(
+                        enabledBorder: UnderlineInputBorder(
                           borderSide: BorderSide(
                               color: Color.fromARGB(255, 209, 207, 207)),
                         ),
@@ -103,7 +100,7 @@ class _SignupState extends State<Signup> {
                   const SizedBox(
                     height: 10,
                   ),
-                  AppText(text: 'Confirm Password'),
+                  const AppText(text: 'Confirm Password'),
                   SizedBox(
                     height: 30,
                     child: TextFormField(
@@ -117,8 +114,8 @@ class _SignupState extends State<Signup> {
                         }
                         return null;
                       },
-                      decoration: InputDecoration(
-                        enabledBorder: const UnderlineInputBorder(
+                      decoration: const InputDecoration(
+                        enabledBorder: UnderlineInputBorder(
                           borderSide: BorderSide(
                               color: Color.fromARGB(255, 209, 207, 207)),
                         ),
@@ -142,7 +139,7 @@ class _SignupState extends State<Signup> {
                                         password:
                                             _passwordController.text.trim())
                                     .then((value) {
-                                  Users.doc(value.user!.uid).set({
+                                  users.doc(value.user!.uid).set({
                                     'Bio': '',
                                     'pfpUrl': 'https://firebasestorage.googleapis.com/v0/b/hikeyyy.appspot.com/o/Pfp%2Fprofile.png?alt=media&token=69ba79e5-7f39-41bd-9bd1-b4b509e5e0f3',
                                     'UserName': _nameController.text.trim(),
@@ -183,7 +180,7 @@ class _SignupState extends State<Signup> {
                                 ),
                               ),
                             ),
-                            child: Text(
+                            child: const Text(
                               'Login',
                             ),
                           ),

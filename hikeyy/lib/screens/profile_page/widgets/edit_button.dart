@@ -1,7 +1,6 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-import '../EditProfile.dart';
+import '../edit_profile.dart';
 
 class EditButton extends StatelessWidget {
   const EditButton({
@@ -18,7 +17,7 @@ class EditButton extends StatelessWidget {
           Navigator.push(context,
               MaterialPageRoute(builder: (context) => const EditProfile()));
         },
-        icon: Icon(Icons.edit),
+        icon: const Icon(Icons.edit),
         color: Colors.green,
       ),
     );

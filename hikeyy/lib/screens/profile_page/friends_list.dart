@@ -26,7 +26,7 @@ class _FriendsListState extends State<FriendsList> {
         }
       } catch (e) {
         // Error occurred while fetching the document
-        print('Error: $e');
+        //print('Error: $e');
         return null;
       }
     }

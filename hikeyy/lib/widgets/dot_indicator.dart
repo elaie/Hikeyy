@@ -1,6 +1,3 @@
-import 'dart:ui';
-
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class CustomDotIndicator extends StatelessWidget {
@@ -9,7 +6,7 @@ class CustomDotIndicator extends StatelessWidget {
   final Color dotColor;
   final Color activeDotColor;
 
-  const CustomDotIndicator({
+  const CustomDotIndicator({super.key, 
     required this.itemCount,
     required this.currentIndex,
     this.dotColor = Colors.grey,

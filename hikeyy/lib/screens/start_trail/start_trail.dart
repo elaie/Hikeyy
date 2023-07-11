@@ -8,7 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:hikeyy/screens/expenses/Expenses.dart';
+import 'package:hikeyy/screens/expenses/expense.dart';
 import 'package:hikeyy/screens/group_details/friendslocation.dart';
 import 'package:hikeyy/screens/group_details/widgets/collapseable_options.dart';
 import 'package:hikeyy/screens/start_trail/widgets/timeline_collapsable.dart';
@@ -73,7 +73,7 @@ class _StartTrailState extends State<StartTrail> {
     List<LatLng>? points;
     GeoPoint? mypos;
     int? posdetail;
-    String? Status;
+    String? status;
     await FirebaseFirestore.instance
         .collection('Groups')
         .doc(widget.id)
@@ -83,7 +83,7 @@ class _StartTrailState extends State<StartTrail> {
         .then((DocumentSnapshot<Map<String, dynamic>> snapshots) async {
       mypos = snapshots.data()!['Position'];
       posdetail = snapshots.data()?['pos'];
-      Status = snapshots.data()?['Status'];
+      status = snapshots.data()?['Status'];
     });
     //TrailID
     // DocumentSnapshot group= await FirebaseFirestore.instance.collection('Group').doc(widget.id).get();
@@ -107,7 +107,7 @@ class _StartTrailState extends State<StartTrail> {
         points![pos] = LatLng(double.parse(lat), double.parse(lon));
       }
     });
-    if (posdetail == null && Status == 'Going') {
+    if (posdetail == null && status == 'Going') {
       for (int i = 0; i <= points!.length - 1; i++) {
         var distance = Geolocator.distanceBetween(points![i].latitude,
             points![i].longitude, mypos!.latitude, mypos!.longitude);
@@ -134,7 +134,7 @@ class _StartTrailState extends State<StartTrail> {
         // print(points);
         //   print('####################');
       }
-    } else if (posdetail! != points!.length - 1 && Status == 'Going') {
+    } else if (posdetail! != points!.length - 1 && status == 'Going') {
       for (int i = posdetail! + 1; i <= points!.length - 1; i++) {
         var distance = Geolocator.distanceBetween(points![i].latitude,
             points![i].longitude, mypos!.latitude, mypos!.longitude);
@@ -159,14 +159,14 @@ class _StartTrailState extends State<StartTrail> {
           break;
         }
       }
-    } else if (posdetail! == points!.length - 1 && Status == 'Going') {
+    } else if (posdetail! == points!.length - 1 && status == 'Going') {
       await FirebaseFirestore.instance
           .collection('Group')
           .doc(widget.id)
           .collection('Locations')
           .doc(FirebaseAuth.instance.currentUser!.uid)
           .update({'Status': 'Returning'});
-    } else if (Status == 'Returning' && posdetail! != 0) {
+    } else if (status == 'Returning' && posdetail! != 0) {
       for (int i = posdetail! - 1; i >= 0; i--) {
         var distance = Geolocator.distanceBetween(points![i].latitude,
             points![i].longitude, mypos!.latitude, mypos!.longitude);
@@ -191,7 +191,7 @@ class _StartTrailState extends State<StartTrail> {
           break;
         }
       }
-    } else if (Status == 'Returning' && posdetail! == 0) {
+    } else if (status == 'Returning' && posdetail! == 0) {
       await FirebaseFirestore.instance
           .collection('Group')
           .doc(widget.id)
@@ -289,14 +289,13 @@ class _StartTrailState extends State<StartTrail> {
               "to": data['TokenId']
             }));
       } catch (e) {
-        print(e);
+        //print(e);
       }
     }
   }
 
   @override
   void initState() {
-    // TODO: implement initState
     //LocationPermission permission = await Geolocator.checkPermission();
     //print(permission);
     getTokenId();
@@ -344,7 +343,7 @@ class _StartTrailState extends State<StartTrail> {
                           var data = snapshot.data!.data();
                           List<dynamic> members = data!['Members'];
                           var name = data['Name'];
-                          print(data['Trail']);
+                         // print(data['Trail']);
                           return SingleChildScrollView(
                             child: Padding(
                               padding: const EdgeInsets.all(20.0),
@@ -638,12 +637,12 @@ class _StartTrailState extends State<StartTrail> {
                                               top: 25.0, bottom: 25),
                                           child: Builder(builder: (context) {
                                             return AppButtons(
-                                                color: Color.fromARGB(
+                                                color: const Color.fromARGB(
                                                     255, 183, 49, 39),
                                                 onPressed: () {
                                                   emergencycall();
                                                   ScaffoldMessenger.of(context)
-                                                      .showSnackBar(SnackBar(
+                                                      .showSnackBar(const SnackBar(
                                                           content: AppText(
                                                     text:
                                                         'Emergency signal sent!',
@@ -662,7 +661,7 @@ class _StartTrailState extends State<StartTrail> {
                                             const EdgeInsets.only(top: 25.0),
                                         child: Builder(builder: (context) {
                                           return AppButtons(
-                                              color: Color.fromARGB(
+                                              color: const Color.fromARGB(
                                                   255, 183, 49, 39),
                                               onPressed: () {},
                                               child: const AppText(

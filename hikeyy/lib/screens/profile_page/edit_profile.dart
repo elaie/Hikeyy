@@ -20,9 +20,9 @@ class EditProfile extends StatefulWidget {
 class _EditProfileState extends State<EditProfile> {
   final FirebaseAuth auth = FirebaseAuth.instance;
   final _editform = GlobalKey<FormState>();
-  TextEditingController _UserNameController = TextEditingController();
-  TextEditingController _BioController = TextEditingController();
-  TextEditingController _PhoneNoController = TextEditingController();
+  TextEditingController _userNameController = TextEditingController();
+  TextEditingController _bioController = TextEditingController();
+  TextEditingController _phoneNumberController = TextEditingController();
   String pfpUrl = " ";
   String pdfUrl = " ";
   void picUploadImage(name) async {
@@ -38,8 +38,7 @@ class _EditProfileState extends State<EditProfile> {
       setState(() {
         pfpUrl= value;
       });
-       print(pfpUrl);
-       print("**********");
+      //  print("**********");
     });
   }
   @override
@@ -64,14 +63,14 @@ class _EditProfileState extends State<EditProfile> {
                 var bio = data['Bio'];
                 var number = data['PhoneNo'];
                 var pfp = data['pfpUrl'].toString();
-                _UserNameController = TextEditingController(text: name);
-                _BioController = TextEditingController(text: bio);
-                _PhoneNoController = TextEditingController(text: number);
+                _userNameController = TextEditingController(text: name);
+                _bioController = TextEditingController(text: bio);
+                _phoneNumberController = TextEditingController(text: number);
                  //pfp!=' '? pfpUrl=pfp:null;
                // cvUrl!=' '? pdfUrl=cvUrl:null;
 
-                print(pfpUrl);
-                print("@@@@@@@@@@@@");
+                // print(pfpUrl);
+                // print("@@@@@@@@@@@@");
 
                 return SafeArea(
                   child: Padding(
@@ -89,7 +88,7 @@ class _EditProfileState extends State<EditProfile> {
                                 decoration: BoxDecoration(
                                     color: Colors.blueAccent,
                                     borderRadius: BorderRadius.circular(200),
-                                    image:  pfp==' '? DecorationImage(
+                                    image:  pfp==' '? const DecorationImage(
                                         fit: BoxFit.fill,
                                         image:
                                         AssetImage('assets/images/profile.png')
@@ -138,7 +137,7 @@ class _EditProfileState extends State<EditProfile> {
                                 const EdgeInsets.only(left: 25, right: 25),
                                 child: TextFormField(
                                   // initialValue: name,
-                                  controller: _UserNameController,
+                                  controller: _userNameController,
                                   validator: (value) {
                                     if (value!.isEmpty) {
                                       return 'This field cant be empty';
@@ -165,7 +164,7 @@ class _EditProfileState extends State<EditProfile> {
                                 padding:
                                 const EdgeInsets.only(left: 25, right: 25),
                                 child: TextFormField(
-                                  controller: _PhoneNoController,
+                                  controller: _phoneNumberController,
                                   // initialValue: number,
                                   decoration: InputDecoration(
                                     filled: true,
@@ -188,7 +187,7 @@ class _EditProfileState extends State<EditProfile> {
                                 const EdgeInsets.only(left: 25, right: 25),
                                 child: TextFormField(
                                   // initialValue: bio,
-                                  controller: _BioController,
+                                  controller: _bioController,
                                   decoration: InputDecoration(
                                     filled: true,
                                     fillColor: Colors.grey[200],
@@ -211,9 +210,9 @@ class _EditProfileState extends State<EditProfile> {
                                       .collection('Users')
                                       .doc(auth.currentUser!.uid)
                                       .update({
-                                    'UserName': _UserNameController.text,
-                                    'PhoneNo': _PhoneNoController.text,
-                                    'Bio': _BioController.text,
+                                    'UserName': _userNameController.text,
+                                    'PhoneNo': _phoneNumberController.text,
+                                    'Bio': _bioController.text,
                                     'Email': auth.currentUser!.email,
                                     'pfpUrl': pfpUrl!=' '?pfpUrl:pfp,
                                   }).then((value) {

@@ -2,7 +2,6 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:hikeyy/screens/checkpoint_detail_page/checkpoint_detail_page.dart';
-import 'package:hikeyy/screens/group_details/widgets/collapseable_options.dart';
 import 'package:hikeyy/screens/plan_trip_page/plan_trip_page.dart';
 import 'package:hikeyy/widgets/app_colors.dart';
 import 'package:hikeyy/widgets/app_texts.dart';
@@ -40,19 +39,19 @@ class _VenueDetailsPageState extends State<VenueDetailsPage> {
                 }
                 if (snapshot.connectionState == ConnectionState.done) {
                   var data = snapshot.data!.data();
-                  List<dynamic> Photos = data!['PhotoURLs'];
-                  List<dynamic> BestMonths = data['BestMonths'];
+                  List<dynamic> photos = data!['PhotoURLs'];
+                  List<dynamic> bestMonths = data['BestMonths'];
                   // print(BestMonths);
                   //  print('****************');\
                   return Column(
                     children: [
                       Stack(
                         children: [
-                          Photos.isEmpty
+                          photos.isEmpty
                               ? const CircularProgressIndicator()
                               : Padding(
                                   padding: const EdgeInsets.all(8.0),
-                                  child: ShowPhotos(Photos),
+                                  child: showPhotos(photos),
                                 ),
                           Positioned(
                             top: 30,
@@ -65,13 +64,13 @@ class _VenueDetailsPageState extends State<VenueDetailsPage> {
                                     color: Colors.grey.withOpacity(0.5),
                                     spreadRadius: 3,
                                     blurRadius: 6,
-                                    offset: Offset(0, 2),
+                                    offset: const Offset(0, 2),
                                   ),
                                 ], shape: BoxShape.circle, color: Colors.white),
                                 child: Padding(
                                     padding: const EdgeInsets.only(left: 5.0),
                                     child: IconButton(
-                                      icon: Icon(Icons.arrow_back_ios),
+                                      icon: const Icon(Icons.arrow_back_ios),
                                       onPressed: () {
                                         Navigator.of(context).pop();
                                       },
@@ -94,17 +93,17 @@ class _VenueDetailsPageState extends State<VenueDetailsPage> {
                                     crossAxisAlignment:
                                         CrossAxisAlignment.start,
                                     children: [
-                                      Container(
+                                      SizedBox(
                                         width: 170,
                                         child: AppTextHeading(
                                           maxLines: 2,
                                           fontSize: 20,
-                                          textHeading: data!['Name'],
+                                          textHeading: data['Name'],
                                         ),
                                       ),
                                       Row(
                                         children: [
-                                          Icon(Icons.location_on),
+                                          const Icon(Icons.location_on),
                                           AppText(text: data['Location'])
                                         ],
                                       )
@@ -176,10 +175,10 @@ class _VenueDetailsPageState extends State<VenueDetailsPage> {
                                       ],
                                       color: AppColor.primaryLightColor,
                                       borderRadius: BorderRadius.circular(20)),
-                                  child: Padding(
-                                    padding: const EdgeInsets.all(20.0),
+                                  child: const Padding(
+                                    padding: EdgeInsets.all(20.0),
                                     child: Row(children: [
-                                      const Column(
+                                      Column(
                                         children: [
                                           AppText(text: 'Ratings'),
                                           Icon(
@@ -189,14 +188,14 @@ class _VenueDetailsPageState extends State<VenueDetailsPage> {
                                           ),
                                         ],
                                       ),
-                                      Container(
+                                      SizedBox(
                                         height: 70,
-                                        child: const VerticalDivider(
+                                        child: VerticalDivider(
                                           color: Colors.grey,
                                           thickness: 0,
                                         ),
                                       ),
-                                      const Column(
+                                      Column(
                                         children: [
                                           AppText(text: 'Members'),
                                           AppText(text: 'Display Members here')
@@ -212,10 +211,10 @@ class _VenueDetailsPageState extends State<VenueDetailsPage> {
                                         context,
                                         MaterialPageRoute(
                                             builder: (context) =>
-                                                CheckpointDetailPage()));
+                                                const CheckpointDetailPage()));
                                   },
-                                  child: Text('Checkpoint')),
-                              Padding(
+                                  child: const Text('Checkpoint')),
+                              const Padding(
                                 padding: EdgeInsets.only(top: 15.0),
                                 child: AppTextHeading(
                                   textHeading: 'Description',
@@ -234,7 +233,7 @@ class _VenueDetailsPageState extends State<VenueDetailsPage> {
                                 height: 30,
                                 child: ListView.builder(
                                     scrollDirection: Axis.horizontal,
-                                    itemCount: BestMonths.length,
+                                    itemCount: bestMonths.length,
                                     itemBuilder: (context, index) {
                                       // print(BestMonths[index]);
                                       //  print('***************************');
@@ -250,7 +249,7 @@ class _VenueDetailsPageState extends State<VenueDetailsPage> {
                                               borderRadius:
                                                   BorderRadius.circular(10)),
                                           child: Center(
-                                              child: Text(BestMonths[index])),
+                                              child: Text(bestMonths[index])),
                                         ),
                                       );
                                     }),
@@ -267,7 +266,7 @@ class _VenueDetailsPageState extends State<VenueDetailsPage> {
         ),
       ),
       bottomNavigationBar: Container(
-        decoration: BoxDecoration(boxShadow: const <BoxShadow>[
+        decoration: const BoxDecoration(boxShadow: <BoxShadow>[
           BoxShadow(
               color: Colors.white,
               blurRadius: 20,
@@ -281,9 +280,9 @@ class _VenueDetailsPageState extends State<VenueDetailsPage> {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Column(
+                const Column(
                   children: [
-                    const AppText(
+                    AppText(
                       text: 'Estimated cost',
                       fontSize: 17,
                     ),
@@ -313,7 +312,7 @@ class _VenueDetailsPageState extends State<VenueDetailsPage> {
   }
 }
 
-Widget ShowPhotos(List? data) {
+Widget showPhotos(List? data) {
   return data!.isEmpty
       ? const Text('No data')
       : SingleChildScrollView(

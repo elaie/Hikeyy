@@ -21,8 +21,8 @@ class _UpdateLocationState extends State<UpdateLocation> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Padding(
-                padding: const EdgeInsets.only(top: 20, bottom: 20),
+              const Padding(
+                padding: EdgeInsets.only(top: 20, bottom: 20),
                 child: AppText(
                   text: 'Where Have You Reached?',
                   fontSize: 20,
@@ -30,46 +30,45 @@ class _UpdateLocationState extends State<UpdateLocation> {
                 ),
               ),
               Padding(
-                padding: EdgeInsets.only(right: 10),
-                child: Container(
-                    child: ListView.builder(
+                padding: const EdgeInsets.only(right: 10),
+                child: ListView.builder(
                   physics: const NeverScrollableScrollPhysics(),
                   shrinkWrap: true,
                   itemCount: 3,
                   itemBuilder: (BuildContext context, int index) {
-                    return Padding(
-                      padding: const EdgeInsets.only(top: 10.0),
-                      child: Container(
-                        decoration: BoxDecoration(
-                          border: Border(
-                            bottom: BorderSide(
-                              color: Colors.black,
-                              width: 1.0,
-                            ),
-                          ),
+                return Padding(
+                  padding: const EdgeInsets.only(top: 10.0),
+                  child: Container(
+                    decoration: const BoxDecoration(
+                      border: Border(
+                        bottom: BorderSide(
+                          color: Colors.black,
+                          width: 1.0,
                         ),
-                        child: ListTile(
-                            leading: Icon(Icons.location_on),
-                            title: AppText(
-                              text: 'Checkpoint',
-                              fontSize: 20,
-                            ),
-                            trailing: AppButtons(
-                                color: hasReached
-                                    ? AppColor.primaryColor
-                                    : Colors.red,
-                                onPressed: () {
-                                  setState(() {
-                                    hasReached = !hasReached;
-                                  });
-                                },
-                                child: hasReached
-                                    ? Text('Reached!')
-                                    : Text('Not Reached'))),
                       ),
-                    );
+                    ),
+                    child: ListTile(
+                        leading: const Icon(Icons.location_on),
+                        title: const AppText(
+                          text: 'Checkpoint',
+                          fontSize: 20,
+                        ),
+                        trailing: AppButtons(
+                            color: hasReached
+                                ? AppColor.primaryColor
+                                : Colors.red,
+                            onPressed: () {
+                              setState(() {
+                                hasReached = !hasReached;
+                              });
+                            },
+                            child: hasReached
+                                ? const Text('Reached!')
+                                : const Text('Not Reached'))),
+                  ),
+                );
                   },
-                )),
+                ),
               ),
             ],
           ),
