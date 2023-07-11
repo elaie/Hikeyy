@@ -11,6 +11,7 @@ class CheckpointDetailPage extends StatefulWidget {
 }
 
 class _CheckpointDetailPageState extends State<CheckpointDetailPage> {
+  int _rating = 0;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -131,25 +132,113 @@ class _CheckpointDetailPageState extends State<CheckpointDetailPage> {
                     fontSize: 20,
                   ),
                 ),
-                Container(
-                  height: 300,
-                  width: 300,
-                  child: GridView.builder(
-                      shrinkWrap: true,
-                      gridDelegate:
-                          const SliverGridDelegateWithFixedCrossAxisCount(
-                              crossAxisCount: 2, childAspectRatio: 0.8),
-                      itemBuilder: ((context, index) {
-                        return InkWell(
-                          child: Container(
-                            height: 100,
-                            width: 100,
-                            decoration: BoxDecoration(
-                                color: AppColor.primaryLightColor),
-                          ),
-                          onTap: () {},
-                        );
-                      })),
+                Padding(
+                  padding:
+                      const EdgeInsets.only(top: 20.0, left: 10, right: 20),
+                  child: SizedBox(
+                    height: 800,
+                    child: GridView.builder(
+                        physics: const NeverScrollableScrollPhysics(),
+                        itemCount: 6,
+                        shrinkWrap: false,
+                        gridDelegate:
+                            const SliverGridDelegateWithFixedCrossAxisCount(
+                                crossAxisCount: 2,
+                                childAspectRatio: 0.8,
+                                crossAxisSpacing: 10,
+                                mainAxisSpacing: 10),
+                        itemBuilder: ((context, index) {
+                          return InkWell(
+                            child: Container(
+                              height: 165,
+                              width: 159,
+                              decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(15),
+                                  image: const DecorationImage(
+                                      image:
+                                          AssetImage('assets/images/EBC.jpg'),
+                                      fit: BoxFit.cover),
+                                  color: Colors.amber),
+                              child: Container(
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(15),
+                                  gradient: LinearGradient(
+                                    begin: Alignment.topCenter,
+                                    end: Alignment.bottomCenter,
+                                    colors: [
+                                      Colors.transparent,
+                                      Colors.black.withOpacity(0.8),
+                                    ],
+                                  ),
+                                ),
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.end,
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: [
+                                    AppText(
+                                      text: 'Hamro Logde',
+                                      color: Colors.white,
+                                    ),
+                                    Padding(
+                                      padding: EdgeInsets.only(
+                                          left: 10.0, right: 10),
+                                      child: Divider(
+                                        thickness: 1,
+                                        color: Colors.white,
+                                      ),
+                                    ),
+                                    Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: [
+                                        Icon(
+                                          Icons.phone,
+                                          color: Colors.white,
+                                        ),
+                                        Padding(
+                                          padding: EdgeInsets.only(left: 8.0),
+                                          child: AppText(
+                                            text: '9012345678',
+                                            color: Colors.white,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                    Padding(
+                                      padding: const EdgeInsets.only(
+                                          bottom: 20.0, right: 15),
+                                      child: AnimatedPositioned(
+                                        duration: Duration(milliseconds: 300),
+                                        child: Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceEvenly,
+                                            children: List.generate(
+                                              5,
+                                              (index) => Container(
+                                                height: 15,
+                                                width: 20,
+                                                child: IconButton(
+                                                  icon: index < _rating
+                                                      ? Icon(Icons.star,
+                                                          size: 22)
+                                                      : Icon(Icons.star_border,
+                                                          size: 22),
+                                                  color: Color.fromARGB(
+                                                      255, 223, 170, 10),
+                                                  onPressed: () {},
+                                                ),
+                                              ),
+                                            )),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                            onTap: () {},
+                          );
+                        })),
+                  ),
                 )
               ],
             ),
