@@ -12,17 +12,26 @@ class LocationMonthIconRow extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-      children: [
-        const Icon(Icons.location_on),
-        Text(location),
-        const Padding(
-          padding: EdgeInsets.only(left: 20.0),
-          child: Icon(Icons.calendar_month),
-        ),
-        Text(date)
-      ],
+    return Container(
+      color: Colors.grey.withOpacity(0.5),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        children: [
+          Row(
+            children: [
+              const Icon(Icons.location_on,color: Colors.green,),
+              Text(location,style: TextStyle(color: Colors.green,),),
+            ],
+          ),
+
+          Row(
+            children: [
+              Icon(Icons.timer,color: Colors.green,),
+              Text('$date days',style: TextStyle(color: Colors.green,),)
+            ],
+          ),
+        ],
+      ),
     );
   }
 }
