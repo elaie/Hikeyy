@@ -4,7 +4,9 @@ import 'package:hikeyy/widgets/app_colors.dart';
 import 'package:hikeyy/widgets/app_texts.dart';
 
 class CheckpointDetailPage extends StatefulWidget {
-  const CheckpointDetailPage({super.key});
+  final String id;
+  final String trailid;
+  const CheckpointDetailPage({super.key, required this.id, required this.trailid});
 
   @override
   State<CheckpointDetailPage> createState() => _CheckpointDetailPageState();

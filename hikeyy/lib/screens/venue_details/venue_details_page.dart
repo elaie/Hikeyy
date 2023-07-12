@@ -205,15 +205,15 @@ class _VenueDetailsPageState extends State<VenueDetailsPage> {
                                   ),
                                 ),
                               ),
-                              ElevatedButton(
-                                  onPressed: () {
-                                    Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                            builder: (context) =>
-                                                const CheckpointDetailPage()));
-                                  },
-                                  child: const Text('Checkpoint')),
+                              // ElevatedButton(
+                              //     onPressed: () {
+                              //       Navigator.push(
+                              //           context,
+                              //           MaterialPageRoute(
+                              //               builder: (context) =>
+                              //                   const CheckpointDetailPage(id:'app',ta)));
+                              //     },
+                              //     child: const Text('Checkpoint')),
                               const Padding(
                                 padding: EdgeInsets.only(top: 15.0),
                                 child: AppTextHeading(
