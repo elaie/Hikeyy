@@ -11,35 +11,32 @@ class LogoutButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Positioned(
-      bottom: 20,
-      child: SizedBox(
-        height: 45,
-        width: 220,
-        child: ElevatedButton(
-          onPressed: () {
-            FirebaseFirestore.instance.collection('Users').doc(FirebaseAuth.instance.currentUser!.uid).update({
-              'TokenId' : ''
-            }).then((value){
-              FirebaseAuth.instance.signOut().then((value) {
-                Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => const LoginPage()));
-              });
+    return SizedBox(
+      height: 45,
+      width: 220,
+      child: ElevatedButton(
+        onPressed: () {
+          FirebaseFirestore.instance.collection('Users').doc(FirebaseAuth.instance.currentUser!.uid).update({
+            'TokenId' : ''
+          }).then((value){
+            FirebaseAuth.instance.signOut().then((value) {
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => const LoginPage()));
             });
+          });
 
-          },
-          style: ButtonStyle(
-            backgroundColor: MaterialStateProperty.all(
-              (Colors.green),
-            ),
-            shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-              RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(25.0),
-              ),
+        },
+        style: ButtonStyle(
+          backgroundColor: MaterialStateProperty.all(
+            (Colors.green),
+          ),
+          shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+            RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(25.0),
             ),
           ),
-          child: const Text('LogOut'),
         ),
+        child: const Text('LogOut'),
       ),
     );
   }

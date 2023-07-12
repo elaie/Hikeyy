@@ -69,47 +69,58 @@ class _ProfilePageState extends State<ProfilePage> {
                       fit: BoxFit.cover,
                     ),
                   ),
-                  child: SizedBox(
-                    height: 700,
-                    child: Stack(
-                      alignment: AlignmentDirectional.center,
-                      children: [
-                        //for white container
-                        const WhiteContainer(),
-                        //username
-                        UserName(name: name),
-                        //profile picture
-                        ProfilePicture(pfp: pfp),
-                        //bio
-                        Bio(bio: bio),
-                        //frieds list
-                        const FriendsListButton(),
-                        const Positioned(
-                            top: 290,
-                            left: 80,
-                            child: Text(
-                              'My Friends',
-                              style: TextStyle(fontSize: 12),
-                            )),
-                        const Positioned(
-                            top: 290,
-                            right: 80,
-                            child: Text(
-                              'Edit Profile',
-                              style: TextStyle(fontSize: 12),
-                            )),
+                  child: SingleChildScrollView(
+                    child: SizedBox(
+                      child: Stack(
+                        alignment: AlignmentDirectional.center,
+                        children: [
+                          Positioned(
+                            top: 150,
+                            child: Container(
+                              height: 900,
+                              width: 800,
+                              decoration:
+                                  const BoxDecoration(color: Colors.white),
+                            ),
+                          ),
+                          //username
+                          Positioned(top: 10, child: UserName(name: name)),
+                          //profile picture
+                          ProfilePicture(pfp: pfp),
+                          //bio
+                          Bio(bio: bio),
+                          //frieds list
+                          const FriendsListButton(),
+                          const Positioned(
+                              top: 290,
+                              left: 80,
+                              child: Text(
+                                'My Friends',
+                                style: TextStyle(fontSize: 12),
+                              )),
+                          const Positioned(
+                              top: 290,
+                              right: 80,
+                              child: Text(
+                                'Edit Profile',
+                                style: TextStyle(fontSize: 12),
+                              )),
 
-                        //edit button
-                        const EditButton(),
+                          //edit button
+                          const EditButton(),
 
-                        //group list
-                        GroupList(auth: auth),
-                        //logout button
-                        const LogoutButton(),
-                        //create group button
-                       // const CreateGroupButton(),
-                        //Highlights
-                      ],
+                          //group list
+                          Padding(
+                            padding: const EdgeInsets.only(top: 250.0),
+                            child: GroupList(auth: auth),
+                          ),
+                          //logout button
+                          Padding(
+                            padding: const EdgeInsets.only(top: 850.0),
+                            child: const LogoutButton(),
+                          ),
+                        ],
+                      ),
                     ),
                   ),
                 ),
