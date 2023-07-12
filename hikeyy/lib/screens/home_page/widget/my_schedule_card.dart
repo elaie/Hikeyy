@@ -1,17 +1,16 @@
-
 import 'package:flutter/material.dart';
 
 class MyScheduleCard extends StatelessWidget {
   final dynamic groupName;
   final dynamic destination;
-  final  dynamic date;
+  final dynamic date;
   const MyScheduleCard({
     super.key,
     this.groupName,
     this.destination,
     this.date,
   });
- // int Date =date*1000
+  // int Date =date*1000
   @override
   Widget build(BuildContext context) {
     //print(date.toDate());
@@ -41,13 +40,13 @@ class MyScheduleCard extends StatelessWidget {
                         color: Colors.grey.withOpacity(0.5), // Shadow color
                         spreadRadius: 3, // Spread radius
                         blurRadius: 9, // Blur radius
-                        offset: const Offset(0, 3), // Offset in the x and y direction
+                        offset: Offset(0, 3), // Offset in the x and y direction
                       ),
                     ],
-                    image: const DecorationImage(
+                    image: DecorationImage(
                         image: AssetImage('assets/images/camping.png'),
                         fit: BoxFit.cover),
-                    borderRadius: const BorderRadius.all(Radius.circular(15))),
+                    borderRadius: BorderRadius.all(Radius.circular(15))),
               ),
               Padding(
                 padding: const EdgeInsets.only(left: 8.0),
@@ -55,15 +54,16 @@ class MyScheduleCard extends StatelessWidget {
                   children: [
                     Text(
                       groupName,
-                      style: const TextStyle(fontSize: 17),
+                      style: TextStyle(fontSize: 17),
                     ),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
-                        const Icon(Icons.location_on),
+                        Icon(Icons.location_on),
                         Text(destination),
-                        const Icon(Icons.calendar_month_rounded),
-                        Text("${date.toDate().year}-${date.toDate().month}-${date.toDate().day}")
+                        Icon(Icons.calendar_month_rounded),
+                        Text(
+                            "${date.toDate().year}-${date.toDate().month}-${date.toDate().day}")
                       ],
                     )
                   ],
@@ -78,12 +78,12 @@ class MyScheduleCard extends StatelessWidget {
                         color: Colors.grey.withOpacity(0.5), // Shadow color
                         spreadRadius: 2, // Spread radius
                         blurRadius: 6, // Blur radius
-                        offset: const Offset(0, 3), // Offset in the x and y direction
+                        offset: Offset(0, 3), // Offset in the x and y direction
                       ),
                     ],
-                    color: const Color.fromARGB(255, 128, 206, 131),
-                    borderRadius: const BorderRadius.all(Radius.circular(50))),
-                child: const Center(child: Text('Joined')),
+                    color: Color.fromARGB(255, 128, 206, 131),
+                    borderRadius: BorderRadius.all(Radius.circular(50))),
+                child: Center(child: Text('Joined')),
               )
             ],
           ),

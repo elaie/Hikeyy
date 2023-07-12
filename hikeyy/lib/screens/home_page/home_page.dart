@@ -5,7 +5,6 @@ import 'package:flutter/material.dart';
 import 'package:hikeyy/screens/home_page/widget/venu_card.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:hikeyy/screens/profile_page/my_friend_request.dart';
-import 'package:hikeyy/screens/profile_page/widgets/group_list.dart';
 import 'package:hikeyy/screens/venue_details/venue_details_page.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:firebase_storage/firebase_storage.dart';
@@ -27,8 +26,7 @@ Future<List<File>> pickImages() async {
   final ImagePicker picker = ImagePicker();
 
   // Pick multiple images
-  final List<XFile> pickedFiles =
-      await picker.pickMultiImage(imageQuality: 80);
+  final List<XFile> pickedFiles = await picker.pickMultiImage(imageQuality: 80);
 
   for (var i = 0; i < pickedFiles.length; i++) {
     File image = File(pickedFiles[i].path);
@@ -82,11 +80,11 @@ class _HomePageState extends State<HomePage> {
 
   @override
   void initState() {
-    
     getUserName();
     super.initState();
   }
 
+  final double _rating = 4;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -483,49 +481,130 @@ class _HomePageState extends State<HomePage> {
                                   );
                                 },
                               ),
+                              
                               Padding(
-                                padding: const EdgeInsets.only(
-                                    left: 25.0, right: 25),
-                                child: Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    const Text(
-                                      'My Schedule',
-                                      style: TextStyle(
-                                          fontWeight: FontWeight.w800,
-                                          fontSize: 17),
-                                    ),
-                                    GestureDetector(
-                                      onTap: () async {
-                                        List<File> selectedImages =
-                                            await pickImages();
-                                        uploadImages(selectedImages);
-                                        // Handle click event here
-                                        // print("SEE ALL TAPPED");
-                                        // Navigator.push(
-                                        //   context,
-                                        //   MaterialPageRoute(
-                                        //     builder: (context) => see_all_recommended(),
-                                        //   ),
-                                        // );
-                                       // print('Text clicked');
-                                      },
-                                      child: const Text(
-                                        'See all',
-                                        style: TextStyle(
-                                          color: Colors.blue,
-                                          decoration: TextDecoration.underline,
-                                        ),
-                                      ),
-                                    )
-                                  ],
+                                padding: const EdgeInsets.all(8.0),
+                                child: SizedBox(
+                                  child: GridView.builder(
+                                      physics:
+                                          const NeverScrollableScrollPhysics(),
+                                      itemCount: 6,
+                                      shrinkWrap: true,
+                                      gridDelegate:
+                                          const SliverGridDelegateWithFixedCrossAxisCount(
+                                              crossAxisCount: 1,
+                                              childAspectRatio: 2,
+                                              crossAxisSpacing: 10,
+                                              mainAxisSpacing: 10),
+                                      itemBuilder: ((context, index) {
+                                        return InkWell(
+                                          child: Container(
+                                            height: 165,
+                                            width: 159,
+                                            decoration: BoxDecoration(
+                                                borderRadius:
+                                                    BorderRadius.circular(15),
+                                                image: const DecorationImage(
+                                                    image: AssetImage(
+                                                        'assets/images/EBC.jpg'),
+                                                    fit: BoxFit.cover),
+                                                color: Colors.amber),
+                                            child: Container(
+                                              decoration: BoxDecoration(
+                                                borderRadius:
+                                                    BorderRadius.circular(15),
+                                                gradient: LinearGradient(
+                                                  begin: Alignment.topCenter,
+                                                  end: Alignment.bottomCenter,
+                                                  colors: [
+                                                    Colors.transparent,
+                                                    Colors.black
+                                                        .withOpacity(0.8),
+                                                  ],
+                                                ),
+                                              ),
+                                              child: Column(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment.end,
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.center,
+                                                children: [
+                                                  const AppText(
+                                                    text: 'Everest Base Camp',
+                                                    color: Colors.white,
+                                                    fontSize: 20,
+                                                  ),
+                                                  const Padding(
+                                                    padding: EdgeInsets.only(
+                                                        left: 10.0, right: 10),
+                                                    child: Divider(
+                                                      thickness: 1,
+                                                      color: Colors.white,
+                                                    ),
+                                                  ),
+                                                  const Padding(
+                                                    padding: EdgeInsets.only(
+                                                        left: 8.0),
+                                                    child: AppTextSubHeading(
+                                                      maxLines: 2,
+                                                      textOverflow:
+                                                          TextOverflow.ellipsis,
+                                                      text: 'Very nice place',
+                                                    ),
+                                                  ),
+                                                  Padding(
+                                                    padding:
+                                                        const EdgeInsets.only(
+                                                            bottom: 20.0,
+                                                            right: 15),
+                                                    child: AnimatedPositioned(
+                                                      duration: const Duration(
+                                                          milliseconds: 300),
+                                                      child: Row(
+                                                          mainAxisAlignment:
+                                                              MainAxisAlignment
+                                                                  .spaceEvenly,
+                                                          children:
+                                                              List.generate(
+                                                            5,
+                                                            (index) => SizedBox(
+                                                              height: 15,
+                                                              width: 20,
+                                                              child: IconButton(
+                                                                icon: index <
+                                                                        _rating
+                                                                    ? const Icon(
+                                                                        Icons
+                                                                            .star,
+                                                                        size:
+                                                                            22)
+                                                                    : const Icon(
+                                                                        Icons
+                                                                            .star_border,
+                                                                        size:
+                                                                            22),
+                                                                color: const Color
+                                                                        .fromARGB(
+                                                                    255,
+                                                                    223,
+                                                                    170,
+                                                                    10),
+                                                                onPressed:
+                                                                    () {},
+                                                              ),
+                                                            ),
+                                                          )),
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
+                                            ),
+                                          ),
+                                          onTap: () {},
+                                        );
+                                      })),
                                 ),
                               ),
-                              Container(
-                                  constraints:
-                                      const BoxConstraints(minHeight: 550),
-                                  child: GroupList(auth: auth)),
                             ],
                           ),
                         ),

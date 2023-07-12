@@ -15,60 +15,48 @@ class GroupList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Positioned(
-      top: 310,
-      child: Scrollbar(
-        radius: const Radius.circular(20),
-        thumbVisibility: true,
-        child: StreamBuilder<QuerySnapshot>(
-            stream: FirebaseFirestore.instance
-                .collection('Users')
-                .doc(auth.currentUser!.uid)
-                .collection('MyGroup')
-                .snapshots(),
-            builder: (context, snapshots) {
-              if (snapshots.connectionState == ConnectionState.waiting) {
-                return const Center(
-                  child: CircularProgressIndicator(),
-                );
-              } else if (snapshots.hasError) {
-                return Text('Error: ${snapshots.error}');
-              } else if (snapshots.hasData) {
-                // Document exists, access the data
+    return StreamBuilder<QuerySnapshot>(
+        stream: FirebaseFirestore.instance
+            .collection('Users')
+            .doc(auth.currentUser!.uid)
+            .collection('MyGroup')
+            .snapshots(),
+        builder: (context, snapshots) {
+          if (snapshots.connectionState == ConnectionState.waiting) {
+            return const Center(
+              child: CircularProgressIndicator(),
+            );
+          } else if (snapshots.hasError) {
+            return Text('Error: ${snapshots.error}');
+          } else if (snapshots.hasData) {
+            // Document exists, access the data
 
-                return SizedBox(
-                  height: 200,
-                  width: double.infinity,
-                  child: ListView.builder(
-                      scrollDirection: Axis.vertical,
-                      shrinkWrap: true,
-                      physics: const NeverScrollableScrollPhysics(),
-                      itemCount: snapshots.data!.docs.length,
-                      itemBuilder: (context, index) {
-                        var dataG = snapshots.data!.docs[index].data()
-                            as Map<String, dynamic>;
-                        var id = snapshots.data!.docs[index].id;
-                        // return Text(dataG['GroupName']);
-                        return GestureDetector(
-                          onTap: () {
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) =>
-                                        GroupDetails(id: id)));
-                          },
-                          child: MyScheduleCard(
-                            groupName: dataG['GroupName'],
-                            destination: 'Nepal',
-                            date: dataG['Time'],
-                          ),
-                        );
-                      }),
-                );
-              }
-              return const Text('No Group');
-            }),
-      ),
-    );
+            return ListView.builder(
+                scrollDirection: Axis.vertical,
+                shrinkWrap: true,
+                physics: const NeverScrollableScrollPhysics(),
+                itemCount: snapshots.data!.docs.length,
+                itemBuilder: (context, index) {
+                  var dataG = snapshots.data!.docs[index].data()
+                      as Map<String, dynamic>;
+                  var id = snapshots.data!.docs[index].id;
+                  // return Text(dataG['GroupName']);
+                  return GestureDetector(
+                    onTap: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => GroupDetails(id: id)));
+                    },
+                    child: MyScheduleCard(
+                      groupName: dataG['GroupName'],
+                      destination: 'Nepal',
+                      date: dataG['Time'],
+                    ),
+                  );
+                });
+          }
+          return const Text('No Group');
+        });
   }
 }
