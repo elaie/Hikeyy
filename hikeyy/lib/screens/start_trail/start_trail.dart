@@ -30,6 +30,7 @@ class StartTrail extends StatefulWidget {
 
 class _StartTrailState extends State<StartTrail> {
   List<String> positions = [];
+  final _scaffoldkey = GlobalKey<ScaffoldState>();
 
   Future<bool> _onWillPop() async {
     return (await showDialog(
@@ -320,6 +321,10 @@ class _StartTrailState extends State<StartTrail> {
     return WillPopScope(
       onWillPop: _onWillPop,
       child: Scaffold(
+          key: _scaffoldkey,
+          drawer: const Drawer(
+            child: Icon(Icons.abc_rounded),
+          ),
           body: FutureBuilder<void>(
               future: getLocations(),
               builder: (context, snapshot) {
@@ -343,7 +348,7 @@ class _StartTrailState extends State<StartTrail> {
                           var data = snapshot.data!.data();
                           List<dynamic> members = data!['Members'];
                           var name = data['Name'];
-                         // print(data['Trail']);
+                          // print(data['Trail']);
                           return SingleChildScrollView(
                             child: Padding(
                               padding: const EdgeInsets.all(20.0),
@@ -355,31 +360,34 @@ class _StartTrailState extends State<StartTrail> {
                                       mainAxisAlignment:
                                           MainAxisAlignment.start,
                                       children: [
-                                        Container(
-                                            height: 40,
-                                            width: 40,
-                                            decoration: BoxDecoration(
-                                                boxShadow: [
-                                                  BoxShadow(
-                                                    color: Colors.grey
-                                                        .withOpacity(0.5),
-                                                    spreadRadius: 3,
-                                                    blurRadius: 6,
-                                                    offset: const Offset(0, 2),
-                                                  ),
-                                                ],
-                                                shape: BoxShape.circle,
-                                                color: Colors.white),
-                                            child: Padding(
-                                                padding: const EdgeInsets.only(
-                                                    left: 5.0),
-                                                child: IconButton(
-                                                  icon: const Icon(
-                                                      Icons.arrow_back_ios),
-                                                  onPressed: () {
-                                                    _onWillPop();
-                                                  },
-                                                ))),
+                                        GestureDetector(
+                                          onTap: () => _scaffoldkey
+                                              .currentState!
+                                              .openDrawer(),
+                                          child: Container(
+                                              height: 40,
+                                              width: 40,
+                                              decoration: BoxDecoration(
+                                                  boxShadow: [
+                                                    BoxShadow(
+                                                      color: Colors.grey
+                                                          .withOpacity(0.5),
+                                                      spreadRadius: 3,
+                                                      blurRadius: 6,
+                                                      offset:
+                                                          const Offset(0, 2),
+                                                    ),
+                                                  ],
+                                                  shape: BoxShape.circle,
+                                                  color: Colors.white),
+                                              child: Padding(
+                                                  padding:
+                                                      const EdgeInsets.only(
+                                                          left: 5.0),
+                                                  child: Image(
+                                                      image: AssetImage(
+                                                          'assets/icons/menu.png')))),
+                                        ),
                                         Padding(
                                           padding:
                                               const EdgeInsets.only(left: 40.0),
@@ -642,8 +650,9 @@ class _StartTrailState extends State<StartTrail> {
                                                 onPressed: () {
                                                   emergencycall();
                                                   ScaffoldMessenger.of(context)
-                                                      .showSnackBar(const SnackBar(
-                                                          content: AppText(
+                                                      .showSnackBar(
+                                                          const SnackBar(
+                                                              content: AppText(
                                                     text:
                                                         'Emergency signal sent!',
                                                   )));
