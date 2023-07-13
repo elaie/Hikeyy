@@ -4,6 +4,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:hikeyy/screens/about_us/about_us.dart';
 import 'package:hikeyy/screens/helpline_page/helpline_page.dart';
+import 'package:hikeyy/screens/home_page/widget/Drawer.dart';
 import 'package:hikeyy/screens/home_page/widget/venu_card.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:hikeyy/screens/profile_page/my_friend_request.dart';
@@ -69,6 +70,7 @@ class _HomePageState extends State<HomePage> {
   FirebaseAuth auth = FirebaseAuth.instance;
   final _scaffoldkey = GlobalKey<ScaffoldState>();
   String userName = '';
+  String pfp = '';
   bool showfilter = false;
   RangeValues _currentRangeValues = const RangeValues(0, 100000);
   RangeValues _currentTimeRangeValues = const RangeValues(0, 30);
@@ -80,6 +82,7 @@ class _HomePageState extends State<HomePage> {
         .get();
     setState(() {
       userName = data['UserName'];
+      pfp=data['pfpUrl'];
     });
   }
 
@@ -93,122 +96,7 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
         key: _scaffoldkey,
-        drawer: Drawer(
-            width: 250,
-            child: Column(
-              children: [
-                Padding(
-                  padding: const EdgeInsets.only(top: 20.0),
-                  child: Container(
-                    constraints: const BoxConstraints(maxHeight: 150),
-                    child: const Image(
-                        image: AssetImage('assets/images/logo.png')),
-                  ),
-                ),
-                AppText(
-                  text: 'Hi! $userName',
-                  fontSize: 20,
-                  maxLines: 1,
-                ),
-                const Padding(
-                  padding: EdgeInsets.only(top: 20.0),
-                  child: Stack(
-                    children: [
-                      Padding(
-                        padding: EdgeInsets.only(
-                            top: 20.0, left: 20, right: 20, bottom: 50),
-                        child: Divider(
-                          thickness: 1,
-                          color: Colors.grey,
-                        ),
-                      ),
-                      Center(
-                        child: CircleAvatar(
-                          radius: 30,
-                          backgroundColor: Colors.green,
-                          child: Image(
-                              image: AssetImage('assets/icons/profile.png')),
-                        ),
-                      )
-                    ],
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.only(top: 30.0),
-                  child: GestureDetector(
-                    onTap: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => const ProfilePage()));
-                    },
-                    child: const AppText(
-                      text: 'Profile',
-                      fontSize: 15,
-                    ),
-                  ),
-                ),
-                GestureDetector(
-                  onTap: () {
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => const SafetyGuidelines()));
-                  },
-                  child: const Padding(
-                    padding: EdgeInsets.only(top: 30.0),
-                    child: AppText(
-                      text: 'Safety Guidelines',
-                      fontSize: 15,
-                    ),
-                  ),
-                ),
-                GestureDetector(
-                  onTap: () {
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => HelpLinePage()));
-                  },
-                  child: const Padding(
-                    padding: EdgeInsets.only(top: 30.0),
-                    child: AppText(
-                      text: 'Helpline numbers',
-                      fontSize: 15,
-                    ),
-                  ),
-                ),
-                GestureDetector(
-                  onTap: () {
-                    Navigator.push(context,
-                        MaterialPageRoute(builder: (context) => AboutUs()));
-                  },
-                  child: const Padding(
-                    padding: EdgeInsets.only(top: 30.0),
-                    child: AppText(
-                      text: 'About us',
-                      fontSize: 15,
-                    ),
-                  ),
-                ),
-                const Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Padding(
-                      padding: EdgeInsets.only(top: 100),
-                      child: AppText(
-                        text: 'Logout',
-                        fontSize: 15,
-                      ),
-                    ),
-                    Padding(
-                      padding: EdgeInsets.only(left: 10.0, top: 100),
-                      child: Icon(Icons.logout),
-                    )
-                  ],
-                )
-              ],
-            )),
+        drawer:  DrawerApp(userName: userName, PfUrl: pfp),
         extendBodyBehindAppBar: false,
         body: SafeArea(
           child: Container(
@@ -525,69 +413,68 @@ class _HomePageState extends State<HomePage> {
                                     return const Text('No data available');
                                   }
                                   return SingleChildScrollView(
-                                    child: Column(
-                                      mainAxisSize: MainAxisSize.min,
-                                      children: [
-                                        SizedBox(
-                                          child: GridView.builder(
-                                              gridDelegate:
-                                                  const SliverGridDelegateWithFixedCrossAxisCount(
-                                                crossAxisCount: 1,
-                                                childAspectRatio: 1.1,
-                                              ),
-                                              physics:
-                                                  const NeverScrollableScrollPhysics(),
-                                              shrinkWrap: true,
-                                              scrollDirection: Axis.vertical,
-                                              padding: const EdgeInsets.all(10),
-                                              itemCount:
-                                                  snapshots.data!.docs.length,
-                                              itemBuilder: (context, index) {
-                                                var data = snapshots
-                                                        .data!.docs[index]
-                                                        .data()
-                                                    as Map<String, dynamic>;
-                                                String id = snapshots
-                                                    .data!.docs[index].id;
-                                                List<dynamic> photos =
-                                                    data["PhotoURLs"];
-                                                return data['Duration'] >=
-                                                            _currentTimeRangeValues
-                                                                .start &&
-                                                        data['Duration'] <=
-                                                            _currentTimeRangeValues
-                                                                .end
-                                                    ? Row(
-                                                        children: [
-                                                          GestureDetector(
-                                                            child: VenuCard(
-                                                              photourl:
-                                                                  photos.first,
-                                                              venue: data[
-                                                                      'Name']
-                                                                  .toString(),
-                                                              location: 'Nepal',
-                                                              date: 'july',
-                                                            ),
-                                                            onTap: () {
-                                                              Navigator.push(
-                                                                context,
-                                                                MaterialPageRoute(
-                                                                  builder:
-                                                                      (context) =>
-                                                                          VenueDetailsPage(
-                                                                    id: id,
-                                                                  ),
-                                                                ),
-                                                              );
-                                                            },
-                                                          ),
-                                                        ],
-                                                      )
-                                                    : Container();
-                                              }),
-                                        ),
-                                      ],
+                                    child: SizedBox(
+                                      child: GridView.builder(
+                                          gridDelegate:
+                                              const SliverGridDelegateWithFixedCrossAxisCount(
+                                            crossAxisCount: 1,
+                                           childAspectRatio: 1.1,
+                                          ),
+                                          physics:
+                                              const NeverScrollableScrollPhysics(),
+                                          shrinkWrap: true,
+                                          scrollDirection: Axis.vertical,
+                                          padding: const EdgeInsets.all(10),
+                                          itemCount:
+                                              snapshots.data!.docs.length,
+                                          itemBuilder: (context, index) {
+                                            var data = snapshots
+                                                    .data!.docs[index]
+                                                    .data()
+                                                as Map<String, dynamic>;
+                                            String id = snapshots
+                                                .data!.docs[index].id;
+                                            List<dynamic> photos =
+                                                data["PhotoURLs"];
+                                            return data['Duration'] >=
+                                                        _currentTimeRangeValues
+                                                            .start &&
+                                                    data['Duration'] <=
+                                                        _currentTimeRangeValues
+                                                            .end
+                                                ? GestureDetector(
+                                                  child: Padding(
+                                                    padding: const EdgeInsets.all(8.0),
+                                                    child: SizedBox(
+                                                      height: 50,
+                                                      width: MediaQuery.of(context).size.width*0.95,
+                                                      child: VenuCard(
+                                                        photourl:
+                                                            photos.first,
+                                                        venue: data[
+                                                                'Name']
+                                                            .toString(),
+                                                        location: data['Location'],
+                                                        date: data['Duration'].toString(),
+                                                        description: data['Description'],
+                                                      ),
+                                                    ),
+                                                  ),
+                                                  onTap: () {
+                                                    Navigator.push(
+                                                      context,
+                                                      MaterialPageRoute(
+                                                        builder:
+                                                            (context) =>
+                                                                VenueDetailsPage(
+                                                          id: id,
+                                                        ),
+                                                      ),
+                                                    );
+                                                  },
+                                                )
+                                                : Container();
+                                          }),
                                     ),
                                   );
                                 },

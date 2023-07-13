@@ -36,10 +36,10 @@ class _IsBusyState extends State<IsBusy> {
               var groupid = data['Trail'];
               //var bio = data['Bio'];
               if (status == 'Busy'){
-                return widget.index!=null?Dashboard(page: StartTrail(id: groupid),index: widget.index,):Dashboard(page: StartTrail(id: groupid));
+                return widget.index!=null?Dashboard(page: StartTrail(id: groupid),index: widget.index):Dashboard(page: StartTrail(id: groupid));
               }
               else {
-                return widget.index!=null?Dashboard(page: HomePage(),index: widget.index,):Dashboard(page: HomePage());
+                return widget.index!=null?Dashboard(page: HomePage(),index: widget.index):Dashboard(page: HomePage());
               }
             }
 

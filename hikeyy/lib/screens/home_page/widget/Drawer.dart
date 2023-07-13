@@ -3,6 +3,9 @@ import 'package:hikeyy/screens/dashboard/dashboard.dart';
 import 'package:hikeyy/screens/login_signup/is_in_trip.dart';
 
 import '../../../widgets/app_texts.dart';
+import '../../about_us/about_us.dart';
+import '../../helpline_page/helpline_page.dart';
+import '../../safety_guidelines/safety_guidelines.dart';
 
 class DrawerApp extends StatelessWidget {
   final String userName;
@@ -84,25 +87,47 @@ class DrawerApp extends StatelessWidget {
                 ),
               ),
             ),
-            const Padding(
+             Padding(
               padding: EdgeInsets.only(top: 30.0),
-              child: AppText(
-                text: 'Safety Guidelines',
-                fontSize: 15,
+              child: GestureDetector(
+                onTap: (){
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => const SafetyGuidelines()));
+                },
+                child: AppText(
+                  text: 'Safety Guidelines',
+                  fontSize: 15,
+                ),
               ),
             ),
-            const Padding(
+            Padding(
               padding: EdgeInsets.only(top: 30.0),
-              child: AppText(
-                text: 'Helpline numbers',
-                fontSize: 15,
+              child: GestureDetector(
+                onTap: (){
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => HelpLinePage()));
+                },
+                child: AppText(
+                  text: 'Helpline numbers',
+                  fontSize: 15,
+                ),
               ),
             ),
-            const Padding(
+             Padding(
               padding: EdgeInsets.only(top: 30.0),
-              child: AppText(
-                text: 'About us',
-                fontSize: 15,
+              child: GestureDetector(
+                onTap: (){
+                  Navigator.push(context,
+                      MaterialPageRoute(builder: (context) => AboutUs()));
+                },
+                child: AppText(
+                  text: 'About us',
+                  fontSize: 15,
+                ),
               ),
             ),
             const Row(

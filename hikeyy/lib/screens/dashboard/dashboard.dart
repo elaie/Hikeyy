@@ -18,7 +18,7 @@ class Dashboard extends StatefulWidget {
 
 class _DashboardState extends State<Dashboard> {
   Widget pageA=const CircularProgressIndicator();
-  int _selectedPageIndex = 0;
+  late int _selectedPageIndex ;
   List<Widget> _pages=[];
 
 
@@ -68,7 +68,7 @@ class _DashboardState extends State<Dashboard> {
   void initState() {
     super.initState();
     getTokenId();
-    widget.index!=null?_selectedPageIndex=widget.index!:0;
+    widget.index != null?_selectedPageIndex=widget.index!:_selectedPageIndex=0;
     pageA=widget.page;
     _pages = [
       pageA,

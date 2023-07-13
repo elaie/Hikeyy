@@ -8,19 +8,20 @@ class VenuCard extends StatelessWidget {
   final String location;
   final String date;
   final String photourl;
+  final String description;
   const VenuCard(
       {Key? key,
       required this.venue,
       required this.location,
       required this.date,
-      required this.photourl})
+      required this.photourl, required this.description})
       : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 300,
-      width: 340,
+      height: 50,
+      //width: 340,
       decoration: BoxDecoration(
           boxShadow: [
             BoxShadow(
@@ -64,12 +65,12 @@ class VenuCard extends StatelessWidget {
                   thickness: 1,
                 ),
               ),
-              const SizedBox(
+               SizedBox(
                 width: 250,
                 child: AppText(
                   alignment: TextAlign.center,
                   text:
-                      'add discriptionnnn very loong longgg discriptionnnnnn hellooooooooooooooooooooooo',
+                      description,
                   maxLines: 2,
                   textOverflow: TextOverflow.ellipsis,
                   color: Color.fromARGB(255, 58, 58, 58),
