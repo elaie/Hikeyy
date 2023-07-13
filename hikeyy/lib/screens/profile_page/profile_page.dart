@@ -82,15 +82,15 @@ class _ProfilePageState extends State<ProfilePage> {
                                   const BoxDecoration(color: Colors.white),
                             ),
                           ),
-                          Positioned(
-                              top: 10,
-                              left: 10,
-                              child: IconButton(
-                                icon: const Icon(Icons.arrow_back_ios),
-                                onPressed: () {
-                                  Navigator.of(context).pop();
-                                },
-                              )),
+                          // Positioned(
+                          //     top: 10,
+                          //     left: 10,
+                          //     child: IconButton(
+                          //       icon: const Icon(Icons.arrow_back_ios),
+                          //       onPressed: () {
+                          //         Navigator.of(context).pop();
+                          //       },
+                          //     )),
                           //username
                           Positioned(top: 10, child: UserName(name: name)),
                           //profile picture
