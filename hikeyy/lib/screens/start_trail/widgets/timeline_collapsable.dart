@@ -1,8 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:hikeyy/screens/update_location/update_location.dart';
-import 'package:hikeyy/widgets/app_buttons.dart';
-import 'package:hikeyy/widgets/app_texts.dart';
 import 'package:timeline_tile/timeline_tile.dart';
 
 import '../../../widgets/app_colors.dart';
@@ -131,21 +128,6 @@ class _TimelineCollapsableState extends State<TimelineCollapsable> {
                                 return Container();
                               });
                         }),
-                    Padding(
-                      padding: const EdgeInsets.only(top: 25.0),
-                      child: Builder(builder: (context) {
-                        return AppButtons(
-                            onPressed: () {
-                              Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) => const UpdateLocation()));
-                            },
-                            child: const AppText(
-                              text: 'Update My Location',
-                            ));
-                      }),
-                    ),
                   ],
                 );
               }),

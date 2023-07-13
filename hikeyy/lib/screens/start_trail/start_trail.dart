@@ -604,24 +604,7 @@ class _StartTrailState extends State<StartTrail> {
                                           return Container();
                                         }),
 
-                                    // group members
-                                    // Padding(
-                                    //   padding: const EdgeInsets.only(top: 25.0),
-                                    //   child: AppButtons(
-                                    //       onPressed: () {
-                                    //         Navigator.push(
-                                    //             context,
-                                    //             MaterialPageRoute(
-                                    //                 builder: (context) =>
-                                    //                     TimeLine(
-                                    //                         id: widget.id,
-                                    //                         checkpoints:
-                                    //                             positions)));
-                                    //       },
-                                    //       child: const AppText(
-                                    //         text: 'TimeLine',
-                                    //       )),
-                                    // ),
+                                  
                                     //timeline
                                     TimelineCollapsable(
                                       id: widget.id,
