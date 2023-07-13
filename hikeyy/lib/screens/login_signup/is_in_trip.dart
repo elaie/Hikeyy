@@ -6,7 +6,8 @@ import 'package:hikeyy/screens/home_page/home_page.dart';
 import 'package:hikeyy/screens/start_trail/start_trail.dart';
 
 class IsBusy extends StatefulWidget {
-  const IsBusy({Key? key}) : super(key: key);
+  final int? index;
+  const IsBusy({Key? key, this.index}) : super(key: key);
 
   @override
   State<IsBusy> createState() => _IsBusyState();
@@ -35,10 +36,10 @@ class _IsBusyState extends State<IsBusy> {
               var groupid = data['Trail'];
               //var bio = data['Bio'];
               if (status == 'Busy'){
-                return Dashboard(page: StartTrail(id: groupid));
+                return widget.index!=null?Dashboard(page: StartTrail(id: groupid),index: widget.index,):Dashboard(page: StartTrail(id: groupid));
               }
               else {
-                return const Dashboard(page: HomePage());
+                return widget.index!=null?Dashboard(page: HomePage(),index: widget.index,):Dashboard(page: HomePage());
               }
             }
 

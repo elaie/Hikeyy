@@ -11,6 +11,7 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:hikeyy/screens/expenses/expense.dart';
 import 'package:hikeyy/screens/group_details/friendslocation.dart';
 import 'package:hikeyy/screens/group_details/widgets/collapseable_options.dart';
+import 'package:hikeyy/screens/home_page/widget/Drawer.dart';
 import 'package:hikeyy/screens/start_trail/widgets/timeline_collapsable.dart';
 
 import 'package:hikeyy/widgets/app_colors.dart';
@@ -294,7 +295,19 @@ class _StartTrailState extends State<StartTrail> {
       }
     }
   }
+  String userName = '';
+  String PfUrl='';
 
+  Future<void> getUserName() async {
+    DocumentSnapshot data = await FirebaseFirestore.instance
+        .collection('Users')
+        .doc(auth.currentUser!.uid)
+        .get();
+    setState(() {
+      userName = data['UserName'];
+      PfUrl = data['pfpUrl'];
+    });
+  }
   @override
   void initState() {
     //LocationPermission permission = await Geolocator.checkPermission();
@@ -302,6 +315,7 @@ class _StartTrailState extends State<StartTrail> {
     getTokenId();
     UpdateLocation();
     getDistance();
+    getUserName();
     super.initState();
 
     timer = Timer.periodic(const Duration(seconds: 30), (timer) {
@@ -322,9 +336,7 @@ class _StartTrailState extends State<StartTrail> {
       onWillPop: _onWillPop,
       child: Scaffold(
           key: _scaffoldkey,
-          drawer: const Drawer(
-            child: Icon(Icons.abc_rounded),
-          ),
+          drawer: DrawerApp(userName: userName,PfUrl: PfUrl,),
           body: FutureBuilder<void>(
               future: getLocations(),
               builder: (context, snapshot) {

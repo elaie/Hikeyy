@@ -2,6 +2,7 @@
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:hikeyy/screens/home_page/widget/Drawer.dart';
 import 'package:hikeyy/screens/home_page/widget/venu_card.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:hikeyy/screens/profile_page/my_friend_request.dart';
@@ -67,6 +68,7 @@ class _HomePageState extends State<HomePage> {
   FirebaseAuth auth = FirebaseAuth.instance;
   final _scaffoldkey = GlobalKey<ScaffoldState>();
   String userName = '';
+  String PfUrl='';
   bool showfilter = false;
   RangeValues _currentRangeValues = const RangeValues(0, 100000);
   RangeValues _currentTimeRangeValues = const RangeValues(0, 30);
@@ -78,6 +80,7 @@ class _HomePageState extends State<HomePage> {
         .get();
     setState(() {
       userName = data['UserName'];
+      PfUrl = data['pfpUrl'];
     });
   }
 
@@ -90,92 +93,7 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
         key: _scaffoldkey,
-        drawer: Drawer(
-            width: 250,
-            child: Column(
-              children: [
-                Padding(
-                  padding: const EdgeInsets.only(top: 20.0),
-                  child: Container(
-                    constraints: const BoxConstraints(maxHeight: 150),
-                    child: const Image(
-                        image: AssetImage('assets/images/logo.png')),
-                  ),
-                ),
-                AppText(
-                  text: 'Hi! $userName',
-                  fontSize: 20,
-                  maxLines: 1,
-                ),
-                const Padding(
-                  padding: EdgeInsets.only(top: 20.0),
-                  child: Stack(
-                    children: [
-                      Padding(
-                        padding: EdgeInsets.only(
-                            top: 20.0, left: 20, right: 20, bottom: 50),
-                        child: Divider(
-                          thickness: 1,
-                          color: Colors.grey,
-                        ),
-                      ),
-                      Center(
-                        child: CircleAvatar(
-                          radius: 30,
-                          backgroundColor: Colors.green,
-                          child: Image(
-                              image: AssetImage('assets/icons/profile.png')),
-                        ),
-                      )
-                    ],
-                  ),
-                ),
-                const Padding(
-                  padding: EdgeInsets.only(top: 30.0),
-                  child: AppText(
-                    text: 'Profile',
-                    fontSize: 15,
-                  ),
-                ),
-                const Padding(
-                  padding: EdgeInsets.only(top: 30.0),
-                  child: AppText(
-                    text: 'Safety Guidelines',
-                    fontSize: 15,
-                  ),
-                ),
-                const Padding(
-                  padding: EdgeInsets.only(top: 30.0),
-                  child: AppText(
-                    text: 'Helpline numbers',
-                    fontSize: 15,
-                  ),
-                ),
-                const Padding(
-                  padding: EdgeInsets.only(top: 30.0),
-                  child: AppText(
-                    text: 'About us',
-                    fontSize: 15,
-                  ),
-                ),
-                const Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Padding(
-                      padding: EdgeInsets.only(top: 100),
-                      child: AppText(
-                        text: 'Logout',
-                        fontSize: 15,
-                      ),
-                    ),
-                    Padding(
-                      padding: EdgeInsets.only(left: 10.0, top: 100),
-                      child: Icon(Icons.logout),
-                    )
-                  ],
-                )
-              ],
-            )),
+        drawer: DrawerApp(userName: userName,PfUrl: PfUrl,),
         extendBodyBehindAppBar: false,
         body: SafeArea(
           child: Container(
@@ -569,18 +487,18 @@ class _HomePageState extends State<HomePage> {
                                                                 Colors.black
                                                                     .withOpacity(0.8),
                                                               ],
-                                                            ),
+                                                            )),
 
-                                                            onTap: () {
-                                                              Navigator.push(
-                                                                context,
-                                                                MaterialPageRoute(
-                                                                  builder:
-                                                                      (context) =>
-                                                                          VenueDetailsPage(
-                                                                    id: id,
-                                                                  ),
-                                                          ),
+                                                          //   onTap: () {
+                                                          //     Navigator.push(
+                                                          //       context,
+                                                          //       MaterialPageRoute(
+                                                          //         builder:
+                                                          //             (context) =>
+                                                          //                 VenueDetailsPage(
+                                                          //           id: id,
+                                                          //         ),
+                                                          // ),
                                                           child: Column(
                                                             mainAxisAlignment:
                                                             MainAxisAlignment.end,
@@ -601,7 +519,7 @@ class _HomePageState extends State<HomePage> {
                                                                 ),
                                                               ),
                                                               Padding(
-                                                                padding: EdgeInsets.only(
+                                                                padding: const EdgeInsets.only(
                                                                     left: 8.0),
                                                                 child: AppTextSubHeading(
                                                                   maxLines: 2,
@@ -622,7 +540,7 @@ class _HomePageState extends State<HomePage> {
                                                                 padding: const EdgeInsets.all(8.0),
                                                                 child: LocationMonthIconRow(location:data['Location'].toString(),date:data['Duration'].toString() ,)
                                                               ),
-                                                              SizedBox(height: 20,)
+                                                              const SizedBox(height: 20,)
                                                               // Padding(
                                                               //   padding:
                                                               //   const EdgeInsets.only(
@@ -673,8 +591,8 @@ class _HomePageState extends State<HomePage> {
                                                       ),
                                                     ),
                                                   ),
-                                                  onTap: () {},
-                                                ):Container();
+                                                  //onTap: () {},
+                                                  ):Container();
                                               })),
                                           // ListView.builder(
                                           //     physics:
@@ -717,7 +635,6 @@ class _HomePageState extends State<HomePage> {
                                           //             )
                                           //           : Container();
                                           //     }),
-                                        ),
                                       ],
                                     ),
                                   );
