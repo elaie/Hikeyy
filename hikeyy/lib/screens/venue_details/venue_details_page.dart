@@ -21,293 +21,287 @@ class _VenueDetailsPageState extends State<VenueDetailsPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: SingleChildScrollView(
-        child: SafeArea(
-          child: FutureBuilder<DocumentSnapshot<Map<String, dynamic>>>(
-              future: FirebaseFirestore.instance
-                  .collection('Trails')
-                  .doc(widget.id)
-                  .get(),
-              builder: (_, snapshot) {
-                if (snapshot.connectionState == ConnectionState.waiting) {
-                  return const SizedBox(
-                    height: 300,
-                    child: Center(
-                      child: CircularProgressIndicator(),
-                    ),
-                  );
-                }
-                if (snapshot.connectionState == ConnectionState.done) {
-                  var data = snapshot.data!.data();
-                  List<dynamic> photos = data!['PhotoURLs'];
-                  List<dynamic> bestMonths = data['BestMonths'];
-                  // print(BestMonths);
-                  //  print('****************');\
-                  return Column(
-                    children: [
-                      Stack(
-                        children: [
-                          photos.isEmpty
-                              ? const CircularProgressIndicator()
-                              : Padding(
-                                  padding: const EdgeInsets.all(8.0),
-                                  child: showPhotos(photos),
-                                ),
-                          Positioned(
-                            top: 30,
-                            left: 30,
-                            child: Container(
-                                height: 40,
-                                width: 40,
-                                decoration: BoxDecoration(boxShadow: [
-                                  BoxShadow(
-                                    color: Colors.grey.withOpacity(0.5),
-                                    spreadRadius: 3,
-                                    blurRadius: 6,
-                                    offset: const Offset(0, 2),
+      body: SafeArea(
+        child: FutureBuilder<DocumentSnapshot<Map<String, dynamic>>>(
+            future: FirebaseFirestore.instance
+                .collection('Trails')
+                .doc(widget.id)
+                .get(),
+            builder: (_, snapshot) {
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return const SizedBox(
+                  height: 300,
+                  child: Center(
+                    child: CircularProgressIndicator(),
+                  ),
+                );
+              }
+              if (snapshot.connectionState == ConnectionState.done) {
+                var data = snapshot.data!.data();
+                List<dynamic> photos = data!['PhotoURLs'];
+                List<dynamic> bestMonths = data['BestMonths'];
+                // print(BestMonths);
+                //  print('****************');\
+                return Scaffold(
+                  body: SingleChildScrollView(
+                    child: Column(
+                      children: [
+                        Stack(
+                          children: [
+                            photos.isEmpty
+                                ? const CircularProgressIndicator()
+                                : Padding(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: showPhotos(photos),
                                   ),
-                                ], shape: BoxShape.circle, color: Colors.white),
-                                child: Padding(
-                                    padding: const EdgeInsets.only(left: 5.0),
-                                    child: IconButton(
-                                      icon: const Icon(Icons.arrow_back_ios),
-                                      onPressed: () {
-                                        Navigator.of(context).pop();
-                                      },
-                                    ))),
-                          ),
-                        ],
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.all(25),
-                        child: SingleChildScrollView(
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      SizedBox(
-                                        width: 170,
-                                        child: AppTextHeading(
-                                          maxLines: 2,
-                                          fontSize: 20,
-                                          textHeading: data['Name'],
-                                        ),
-                                      ),
-                                      Row(
-                                        children: [
-                                          const Icon(Icons.location_on),
-                                          AppText(text: data['Location'])
-                                        ],
-                                      )
-                                    ],
-                                  ),
-                                  Container(
-                                    decoration: BoxDecoration(
-                                        boxShadow: const <BoxShadow>[
-                                          BoxShadow(
-                                              color: Colors.grey,
-                                              spreadRadius: 1,
-                                              offset: Offset(0, 3),
-                                              blurRadius: 3),
-                                        ],
-                                        borderRadius:
-                                            BorderRadius.circular(30)),
-                                    height: 50,
-                                    child: ElevatedButton(
-                                      style: ButtonStyle(
-                                        backgroundColor:
-                                            MaterialStateProperty.all(
-                                                AppColor.primaryColor),
-                                        shape: MaterialStateProperty.all<
-                                            RoundedRectangleBorder>(
-                                          RoundedRectangleBorder(
-                                            borderRadius:
-                                                BorderRadius.circular(30),
+                            Positioned(
+                              top: 30,
+                              left: 30,
+                              child: Container(
+                                  height: 40,
+                                  width: 40,
+                                  decoration: BoxDecoration(boxShadow: [
+                                    BoxShadow(
+                                      color: Colors.grey.withOpacity(0.5),
+                                      spreadRadius: 3,
+                                      blurRadius: 6,
+                                      offset: const Offset(0, 2),
+                                    ),
+                                  ], shape: BoxShape.circle, color: Colors.white),
+                                  child: Padding(
+                                      padding: const EdgeInsets.only(left: 5.0),
+                                      child: IconButton(
+                                        icon: const Icon(Icons.arrow_back_ios),
+                                        onPressed: () {
+                                          Navigator.of(context).pop();
+                                        },
+                                      ))),
+                            ),
+                          ],
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.all(25),
+                          child: SingleChildScrollView(
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        SizedBox(
+                                          width: 170,
+                                          child: AppTextHeading(
+                                            maxLines: 2,
+                                            fontSize: 20,
+                                            textHeading: data['Name'],
                                           ),
                                         ),
-                                      ),
-                                      onPressed: () {
-                                        Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                              builder: (context) =>
-                                                  Trails(id: widget.id)),
-                                        );
-                                      },
-                                      child: const Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
-                                        children: [
-                                          Icon(Icons.directions),
-                                          Padding(
-                                            padding: EdgeInsets.only(left: 2.0),
-                                            child: AppText(
-                                              text: 'View in Map',
-                                              color: Colors.white,
+                                        Row(
+                                          children: [
+                                            const Icon(Icons.location_on),
+                                            AppText(text: data['Location'])
+                                          ],
+                                        )
+                                      ],
+                                    ),
+                                    Container(
+                                      decoration: BoxDecoration(
+                                          boxShadow: const <BoxShadow>[
+                                            BoxShadow(
+                                                color: Colors.grey,
+                                                spreadRadius: 1,
+                                                offset: Offset(0, 3),
+                                                blurRadius: 3),
+                                          ],
+                                          borderRadius:
+                                              BorderRadius.circular(30)),
+                                      height: 50,
+                                      child: ElevatedButton(
+                                        style: ButtonStyle(
+                                          backgroundColor:
+                                              MaterialStateProperty.all(
+                                                  AppColor.primaryColor),
+                                          shape: MaterialStateProperty.all<
+                                              RoundedRectangleBorder>(
+                                            RoundedRectangleBorder(
+                                              borderRadius:
+                                                  BorderRadius.circular(30),
                                             ),
                                           ),
-                                        ],
+                                        ),
+                                        onPressed: () {
+                                          Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                                builder: (context) =>
+                                                    Trails(id: widget.id)),
+                                          );
+                                        },
+                                        child: const Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceBetween,
+                                          children: [
+                                            Icon(Icons.directions),
+                                            Padding(
+                                              padding: EdgeInsets.only(left: 2.0),
+                                              child: AppText(
+                                                text: 'View in Map',
+                                                color: Colors.white,
+                                              ),
+                                            ),
+                                          ],
+                                        ),
                                       ),
                                     ),
-                                  ),
-                                ],
-                              ),
-                              Padding(
-                                padding: const EdgeInsets.only(
-                                    top: 20.0, left: 5, right: 5),
-                                child: Container(
-                                  constraints:
-                                      const BoxConstraints(minHeight: 100),
-                                  decoration: BoxDecoration(
-                                      boxShadow: const [
-                                        BoxShadow(
+                                  ],
+                                ),
+                                Padding(
+                                  padding: const EdgeInsets.only(
+                                      top: 20.0, left: 5, right: 5),
+                                  child: Container(
+                                    constraints:
+                                        const BoxConstraints(minHeight: 100),
+                                    decoration: BoxDecoration(
+                                        boxShadow: const [
+                                          BoxShadow(
+                                              color: Colors.grey,
+                                              blurRadius: 3,
+                                              offset: Offset(0, 3))
+                                        ],
+                                        color: AppColor.primaryLightColor,
+                                        borderRadius: BorderRadius.circular(20)),
+                                    child: const Padding(
+                                      padding: EdgeInsets.all(20.0),
+                                      child: Row(children: [
+                                        Column(
+                                          children: [
+                                            AppText(text: 'Ratings'),
+                                            Icon(
+                                              Icons.star,
+                                              color: Color.fromARGB(
+                                                  255, 233, 217, 74),
+                                            ),
+                                          ],
+                                        ),
+                                        SizedBox(
+                                          height: 70,
+                                          child: VerticalDivider(
                                             color: Colors.grey,
-                                            blurRadius: 3,
-                                            offset: Offset(0, 3))
-                                      ],
-                                      color: AppColor.primaryLightColor,
-                                      borderRadius: BorderRadius.circular(20)),
-                                  child: const Padding(
-                                    padding: EdgeInsets.all(20.0),
-                                    child: Row(children: [
-                                      Column(
-                                        children: [
-                                          AppText(text: 'Ratings'),
-                                          Icon(
-                                            Icons.star,
-                                            color: Color.fromARGB(
-                                                255, 233, 217, 74),
+                                            thickness: 0,
                                           ),
-                                        ],
-                                      ),
-                                      SizedBox(
-                                        height: 70,
-                                        child: VerticalDivider(
-                                          color: Colors.grey,
-                                          thickness: 0,
                                         ),
-                                      ),
-                                      Column(
-                                        children: [
-                                          AppText(text: 'Members'),
-                                          AppText(text: 'Display Members here')
-                                        ],
-                                      )
-                                    ]),
+                                        Column(
+                                          children: [
+                                            AppText(text: 'Members'),
+                                            AppText(text: 'Display Members here')
+                                          ],
+                                        )
+                                      ]),
+                                    ),
                                   ),
                                 ),
-                              ),
-                              ElevatedButton(
-                                  onPressed: () {
-                                    Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                            builder: (context) =>
-                                                const CheckpointDetailPage()));
-                                  },
-                                  child: const Text('Checkpoint')),
-                              const Padding(
-                                padding: EdgeInsets.only(top: 15.0),
-                                child: AppTextHeading(
-                                  textHeading: 'Description',
-                                  fontSize: 20,
+                                const Padding(
+                                  padding: EdgeInsets.only(top: 15.0),
+                                  child: AppTextHeading(
+                                    textHeading: 'Description',
+                                    fontSize: 20,
+                                  ),
                                 ),
-                              ),
-                              AppTextSubHeading(text: data['Description']),
-                              const Padding(
-                                padding: EdgeInsets.only(top: 15.0, bottom: 15),
-                                child: AppTextHeading(
-                                  textHeading: 'Best Months',
-                                  fontSize: 20,
+                                Text(data['Description'],style: const TextStyle(color: Colors.grey),),
+                                const Padding(
+                                  padding: EdgeInsets.only(top: 15.0, bottom: 15),
+                                  child: AppTextHeading(
+                                    textHeading: 'Best Months',
+                                    fontSize: 20,
+                                  ),
                                 ),
-                              ),
-                              SizedBox(
-                                height: 30,
-                                child: ListView.builder(
-                                    scrollDirection: Axis.horizontal,
-                                    itemCount: bestMonths.length,
-                                    itemBuilder: (context, index) {
-                                      // print(BestMonths[index]);
-                                      //  print('***************************');
-                                      return Padding(
-                                        padding:
-                                            const EdgeInsets.only(right: 10.0),
-                                        child: Container(
-                                          width: 50,
-                                          constraints: const BoxConstraints(
-                                              minHeight: 100),
-                                          decoration: BoxDecoration(
-                                              color: AppColor.primaryLightColor,
-                                              borderRadius:
-                                                  BorderRadius.circular(10)),
-                                          child: Center(
-                                              child: Text(bestMonths[index])),
-                                        ),
-                                      );
-                                    }),
-                              ),
-                            ],
+                                SizedBox(
+                                  height: 30,
+                                  child: ListView.builder(
+                                      scrollDirection: Axis.horizontal,
+                                      itemCount: bestMonths.length,
+                                      itemBuilder: (context, index) {
+                                        // print(BestMonths[index]);
+                                        //  print('***************************');
+                                        return Padding(
+                                          padding:
+                                              const EdgeInsets.only(right: 10.0),
+                                          child: Container(
+                                            width: 100,
+                                            constraints: const BoxConstraints(
+                                                minHeight: 100),
+                                            decoration: BoxDecoration(
+                                                color: AppColor.primaryLightColor,
+                                                borderRadius:
+                                                    BorderRadius.circular(10)),
+                                            child: Center(
+                                                child: Text(bestMonths[index])),
+                                          ),
+                                        );
+                                      }),
+                                ),
+                              ],
+                            ),
                           ),
                         ),
-                      ),
-                    ],
-                  );
-                }
-                return Container();
-              }),
-        ),
-      ),
-      bottomNavigationBar: Container(
-        decoration: const BoxDecoration(boxShadow: <BoxShadow>[
-          BoxShadow(
-              color: Colors.white,
-              blurRadius: 20,
-              spreadRadius: 20,
-              offset: Offset(0, -5)),
-        ], color: Colors.transparent),
-        child: Padding(
-          padding: const EdgeInsets.only(left: 20.0, right: 20, bottom: 20),
-          child: SizedBox(
-            height: 50,
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                const Column(
-                  children: [
-                    AppText(
-                      text: 'Estimated cost',
-                      fontSize: 17,
+                      ],
                     ),
-                    AppTextSubHeading(text: '')
-                  ],
-                ),
-                AppButtons(
-                  onPressed: () {
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => PlanTripPage(id: widget.id)));
-                  },
-                  child: const Row(
-                    children: [
-                      AppText(text: 'Plan Trip', color: Colors.white),
-                      Icon(Icons.arrow_forward_ios)
-                    ],
                   ),
-                )
-              ],
-            ),
-          ),
-        ),
+                  bottomNavigationBar: Container(
+                    decoration: const BoxDecoration(boxShadow: <BoxShadow>[
+                      BoxShadow(
+                          color: Colors.white,
+                          blurRadius: 20,
+                          spreadRadius: 20,
+                          offset: Offset(0, -5)),
+                    ], color: Colors.transparent),
+                    child: Padding(
+                      padding: const EdgeInsets.only(left: 20.0, right: 20, bottom: 20),
+                      child: SizedBox(
+                        height: 50,
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                             Column(
+                              children: [
+                                const AppText(
+                                  text: 'Estimated cost',
+                                  fontSize: 17,
+                                ),
+                                AppTextSubHeading(text: '    Rs.${data['Budget']} per person')
+                              ],
+                            ),
+                            AppButtons(
+                              onPressed: () {
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => PlanTripPage(id: widget.id)));
+                              },
+                              child: const Row(
+                                children: [
+                                  AppText(text: 'Plan Trip', color: Colors.white),
+                                  Icon(Icons.arrow_forward_ios)
+                                ],
+                              ),
+                            )
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+                );
+              }
+              return Container();
+            }),
       ),
+
     );
   }
 }

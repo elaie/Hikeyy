@@ -9,7 +9,8 @@ import '../search_page/search_page.dart';
 
 class Dashboard extends StatefulWidget {
   final Widget page;
-  const Dashboard({super.key, required this.page});
+  final int? index;
+  const Dashboard({super.key, required this.page, this.index});
 
   @override
   State<Dashboard> createState() => _DashboardState();
@@ -67,6 +68,7 @@ class _DashboardState extends State<Dashboard> {
   void initState() {
     super.initState();
     getTokenId();
+    widget.index!=null?_selectedPageIndex=widget.index!:0;
     pageA=widget.page;
     _pages = [
       pageA,
