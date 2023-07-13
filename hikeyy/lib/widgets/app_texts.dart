@@ -32,6 +32,7 @@ class AppTextHeading extends StatelessWidget {
 }
 
 class AppText extends StatelessWidget {
+  final TextAlign? alignment;
   final String text;
   final double? fontSize;
   final Color? color;
@@ -43,13 +44,15 @@ class AppText extends StatelessWidget {
       this.fontSize,
       this.color,
       this.maxLines,
-      this.textOverflow})
+      this.textOverflow,
+      this.alignment})
       : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Text(
       text,
+      textAlign: alignment,
       maxLines: maxLines,
       overflow: TextOverflow.ellipsis,
       style: TextStyle(

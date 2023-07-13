@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:hikeyy/widgets/app_texts.dart';
 
 import '../../../widgets/location_month_icon_row.dart';
 
@@ -17,47 +18,65 @@ class VenuCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(10.0),
-      child: Container(
-        height: 230,
-        width: 200,
-        decoration: BoxDecoration(
-            boxShadow: [
-              BoxShadow(
-                color: Colors.grey.withOpacity(0.5), // Shadow color
-                spreadRadius: 3, // Spread radius
-                blurRadius: 9, // Blur radius
-                offset: const Offset(0, 3), // Offset in the x and y direction
-              ),
-            ],
-            image: DecorationImage(
-                image: NetworkImage(photourl), fit: BoxFit.cover),
-            borderRadius: const BorderRadius.all(Radius.circular(30))),
-        child: Padding(
-          padding:
-              const EdgeInsets.only(top: 90.0, right: 10, left: 10, bottom: 10),
-          child: Container(
-            decoration: const BoxDecoration(
-                borderRadius: BorderRadius.all(
-                  Radius.circular(20),
-                ),
-                color: Color.fromRGBO(255, 255, 255, 100)),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Padding(
-                  padding: const EdgeInsets.only(left: 8.0, right: 8),
-                  child: Text(
-                    venue,
-                    style: const TextStyle(fontWeight: FontWeight.w600, fontSize: 18),
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
-                  ),
-                ),
-                LocationMonthIconRow(location: location, date: date)
-              ],
+    return Container(
+      height: 300,
+      width: 340,
+      decoration: BoxDecoration(
+          boxShadow: [
+            BoxShadow(
+              color: Colors.grey.withOpacity(0.5), // Shadow color
+              spreadRadius: 3, // Spread radius
+              blurRadius: 9, // Blur radius
+              offset: const Offset(0, 3), // Offset in the x and y direction
             ),
+          ],
+          image:
+              DecorationImage(image: NetworkImage(photourl), fit: BoxFit.cover),
+          borderRadius: const BorderRadius.all(Radius.circular(30))),
+      child: Padding(
+        padding:
+            const EdgeInsets.only(top: 150.0, right: 10, left: 10, bottom: 10),
+        child: Container(
+          decoration: const BoxDecoration(
+              borderRadius: BorderRadius.all(
+                Radius.circular(20),
+              ),
+              color: Color.fromRGBO(255, 255, 255, 100)),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Padding(
+                padding: const EdgeInsets.only(left: 8.0, right: 8),
+                child: Text(
+                  venue,
+                  style: const TextStyle(
+                      fontWeight: FontWeight.w600, fontSize: 18),
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                ),
+              ),
+              LocationMonthIconRow(location: location, date: date),
+              const Padding(
+                padding: EdgeInsets.only(left: 15, right: 15),
+                child: Divider(
+                  color: Colors.black,
+                  thickness: 1,
+                ),
+              ),
+              const SizedBox(
+                width: 250,
+                child: AppText(
+                  alignment: TextAlign.center,
+                  text:
+                      'add discriptionnnn very loong longgg discriptionnnnnn hellooooooooooooooooooooooo',
+                  maxLines: 2,
+                  textOverflow: TextOverflow.ellipsis,
+                  color: Color.fromARGB(255, 58, 58, 58),
+                  fontSize: 13,
+                ),
+              )
+            ],
           ),
         ),
       ),
