@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:hikeyy/screens/home_page/widget/venu_card.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:hikeyy/screens/profile_page/my_friend_request.dart';
+import 'package:hikeyy/screens/profile_page/profile_page.dart';
 import 'package:hikeyy/screens/venue_details/venue_details_page.dart';
 import 'package:hikeyy/widgets/app_colors.dart';
 import 'package:image_picker/image_picker.dart';
@@ -13,6 +14,7 @@ import 'dart:io';
 
 import '../../widgets/app_buttons.dart';
 import '../../widgets/app_texts.dart';
+import '../safety_guidelines/safety_guidelines.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -129,18 +131,34 @@ class _HomePageState extends State<HomePage> {
                     ],
                   ),
                 ),
-                const Padding(
-                  padding: EdgeInsets.only(top: 30.0),
-                  child: AppText(
-                    text: 'Profile',
-                    fontSize: 15,
+                Padding(
+                  padding: const EdgeInsets.only(top: 30.0),
+                  child: GestureDetector(
+                    onTap: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => const ProfilePage()));
+                    },
+                    child: const AppText(
+                      text: 'Profile',
+                      fontSize: 15,
+                    ),
                   ),
                 ),
-                const Padding(
-                  padding: EdgeInsets.only(top: 30.0),
-                  child: AppText(
-                    text: 'Safety Guidelines',
-                    fontSize: 15,
+                GestureDetector(
+                  onTap: () {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => const SafetyGuidelines()));
+                  },
+                  child: const Padding(
+                    padding: EdgeInsets.only(top: 30.0),
+                    child: AppText(
+                      text: 'Safety Guidelines',
+                      fontSize: 15,
+                    ),
                   ),
                 ),
                 const Padding(
@@ -289,7 +307,10 @@ class _HomePageState extends State<HomePage> {
                                             showfilter = true;
                                           });
                                         },
-                                        child: const Text('Filters'))
+                                        child: const AppText(
+                                          text: 'Filter',
+                                          color: AppColor.primaryDarkColor,
+                                        ))
                                   ],
                                 ),
                               ),
@@ -399,83 +420,75 @@ class _HomePageState extends State<HomePage> {
                               !showfilter
                                   ? Padding(
                                       padding: const EdgeInsets.only(
-                                          left: 45.0, top: 8),
-                                      child: Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.start,
-                                        children: [
-                                          (_currentRangeValues !=
-                                                  const RangeValues(0, 100000))
-                                              ? Container(
-                                                  width: 190,
-                                                  height: 50,
-                                                  decoration:
-                                                      const BoxDecoration(
-                                                          color:
-                                                              Color.fromARGB(
-                                                                  255,
-                                                                  128,
-                                                                  206,
-                                                                  131),
-                                                          borderRadius:
-                                                              BorderRadius.all(
-                                                                  Radius
-                                                                      .circular(
-                                                                          30))),
-                                                  child: Center(
-                                                      child: Column(
-                                                    children: [
-                                                      const Text('Budget'),
-                                                      Text('Rs.' +
-                                                          _currentRangeValues
-                                                              .start
-                                                              .toString() +
-                                                          "- Rs." +
-                                                          _currentRangeValues
-                                                              .end
-                                                              .toString()),
-                                                    ],
-                                                  )),
-                                                )
-                                              : Container(),
-                                          const SizedBox(
-                                            width: 10,
-                                          ),
-                                          (_currentTimeRangeValues !=
-                                                  const RangeValues(0, 30))
-                                              ? Container(
-                                                  width: 190,
-                                                  height: 50,
-                                                  decoration:
-                                                      const BoxDecoration(
-                                                          color:
-                                                              Color.fromARGB(
-                                                                  255,
-                                                                  128,
-                                                                  206,
-                                                                  131),
-                                                          borderRadius:
-                                                              BorderRadius.all(
-                                                                  Radius
-                                                                      .circular(
-                                                                          30))),
-                                                  child: Center(
-                                                      child: Column(
-                                                    children: [
-                                                      const Text('Time'),
-                                                      Text(_currentTimeRangeValues
-                                                              .start
-                                                              .toString() +
-                                                          "-" +
-                                                          _currentTimeRangeValues
-                                                              .end
-                                                              .toString() +
-                                                          'Days'),
-                                                    ],
-                                                  )),
-                                                )
-                                              : Container(),
-                                        ],
+                                          left: 20.0, top: 8),
+                                      child: SingleChildScrollView(
+                                        scrollDirection: Axis.horizontal,
+                                        child: Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.start,
+                                          children: [
+                                            (_currentRangeValues !=
+                                                    const RangeValues(
+                                                        0, 100000))
+                                                ? Container(
+                                                    width: 190,
+                                                    height: 60,
+                                                    decoration: const BoxDecoration(
+                                                        color: Color.fromARGB(
+                                                            255, 128, 206, 131),
+                                                        borderRadius:
+                                                            BorderRadius.all(
+                                                                Radius.circular(
+                                                                    30))),
+                                                    child: Center(
+                                                        child: Column(
+                                                      children: [
+                                                        const Text('Budget'),
+                                                        Text('Rs.' +
+                                                            _currentRangeValues
+                                                                .start
+                                                                .toString() +
+                                                            "- Rs." +
+                                                            _currentRangeValues
+                                                                .end
+                                                                .toString()),
+                                                      ],
+                                                    )),
+                                                  )
+                                                : Container(),
+                                            const SizedBox(
+                                              width: 10,
+                                            ),
+                                            (_currentTimeRangeValues !=
+                                                    const RangeValues(0, 30))
+                                                ? Container(
+                                                    width: 190,
+                                                    height: 60,
+                                                    decoration: const BoxDecoration(
+                                                        color: Color.fromARGB(
+                                                            255, 128, 206, 131),
+                                                        borderRadius:
+                                                            BorderRadius.all(
+                                                                Radius.circular(
+                                                                    30))),
+                                                    child: Center(
+                                                        child: Column(
+                                                      children: [
+                                                        const Text('Time'),
+                                                        Text(_currentTimeRangeValues
+                                                                .start
+                                                                .toString() +
+                                                            "-" +
+                                                            _currentTimeRangeValues
+                                                                .end
+                                                                .toString() +
+                                                            'Days'),
+                                                      ],
+                                                    )),
+                                                  )
+                                                : Container(),
+                                          ],
+                                        ),
                                       ),
                                     )
                                   : Container(),

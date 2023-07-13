@@ -4,13 +4,14 @@ import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:hikeyy/screens/dashboard/dashboard.dart';
 import 'package:hikeyy/screens/home_page/home_page.dart';
+import 'package:hikeyy/widgets/app_colors.dart';
+import 'package:hikeyy/widgets/app_texts.dart';
 import 'dart:io';
 
 import 'package:image_picker/image_picker.dart';
 
-
 class EditProfile extends StatefulWidget {
- // final String UserType;
+  // final String UserType;
   const EditProfile({Key? key}) : super(key: key);
 
   @override
@@ -32,15 +33,16 @@ class _EditProfileState extends State<EditProfile> {
         maxWidth: 512,
         imageQuality: 75);
     Reference ref =
-    FirebaseStorage.instance.ref().child('Pfp').child(name+'.png');
+        FirebaseStorage.instance.ref().child('Pfp').child(name + '.png');
     await ref.putFile(File(image!.path));
     ref.getDownloadURL().then((value) {
       setState(() {
-        pfpUrl= value;
+        pfpUrl = value;
       });
       //  print("**********");
     });
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -66,8 +68,8 @@ class _EditProfileState extends State<EditProfile> {
                 _userNameController = TextEditingController(text: name);
                 _bioController = TextEditingController(text: bio);
                 _phoneNumberController = TextEditingController(text: number);
-                 //pfp!=' '? pfpUrl=pfp:null;
-               // cvUrl!=' '? pdfUrl=cvUrl:null;
+                //pfp!=' '? pfpUrl=pfp:null;
+                // cvUrl!=' '? pdfUrl=cvUrl:null;
 
                 // print(pfpUrl);
                 // print("@@@@@@@@@@@@");
@@ -82,35 +84,56 @@ class _EditProfileState extends State<EditProfile> {
                           child: Column(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
-                              pfpUrl==' '? Container(
-                                height: 150,
-                                width: 150,
-                                decoration: BoxDecoration(
-                                    color: Colors.blueAccent,
-                                    borderRadius: BorderRadius.circular(200),
-                                    image:  pfp==' '? const DecorationImage(
-                                        fit: BoxFit.fill,
-                                        image:
-                                        AssetImage('assets/images/profile.png')
-                                    ):DecorationImage(
-                                      fit: BoxFit.fill,
-                                      image:
-                                      NetworkImage(pfp),
-                                    )),
-
-                              ):Container(
-                                height: 150,
-                                width: 150,
-                                decoration: BoxDecoration(
-                                    color: Colors.blueAccent,
-                                    borderRadius: BorderRadius.circular(200),
-                                    image: DecorationImage(
-                                      fit: BoxFit.fill,
-                                      image:
-                                      NetworkImage(pfpUrl),
-                                    )),
-
-                              ),
+                              Padding(
+                                  padding: const EdgeInsets.only(
+                                      bottom: 50.0,
+                                      top: 20,
+                                      right: 50,
+                                      left: 20),
+                                  child: Row(
+                                    children: [
+                                      IconButton(
+                                          onPressed: () {
+                                            Navigator.of(context).pop();
+                                          },
+                                          icon: Icon(Icons.arrow_back_ios)),
+                                      const AppText(
+                                        text: 'Edit Profile',
+                                        color: AppColor.primaryDarkColor,
+                                        fontSize: 20,
+                                      )
+                                    ],
+                                  )),
+                              pfpUrl == ' '
+                                  ? Container(
+                                      height: 150,
+                                      width: 150,
+                                      decoration: BoxDecoration(
+                                          color: Colors.blueAccent,
+                                          borderRadius:
+                                              BorderRadius.circular(200),
+                                          image: pfp == ' '
+                                              ? const DecorationImage(
+                                                  fit: BoxFit.fill,
+                                                  image: AssetImage(
+                                                      'assets/images/profile.png'))
+                                              : DecorationImage(
+                                                  fit: BoxFit.fill,
+                                                  image: NetworkImage(pfp),
+                                                )),
+                                    )
+                                  : Container(
+                                      height: 150,
+                                      width: 150,
+                                      decoration: BoxDecoration(
+                                          color: Colors.blueAccent,
+                                          borderRadius:
+                                              BorderRadius.circular(200),
+                                          image: DecorationImage(
+                                            fit: BoxFit.fill,
+                                            image: NetworkImage(pfpUrl),
+                                          )),
+                                    ),
                               const SizedBox(
                                 height: 10,
                               ),
@@ -121,20 +144,19 @@ class _EditProfileState extends State<EditProfile> {
                                   // print('@@@@@@@@@@@@@@@@');
                                 },
                                 child: const Text(
-                                  'Change Pic',
+                                  'Change Profile Picture',
                                   style: TextStyle(
-                                      color: Colors.blueAccent,
                                       fontWeight: FontWeight.bold,
-                                      fontFamily: 'OpenSans',
+                                      color: AppColor.primaryDarkColor,
                                       fontSize: 15),
                                 ),
                               ),
                               const SizedBox(
-                                height: 10,
+                                height: 50,
                               ),
                               Padding(
                                 padding:
-                                const EdgeInsets.only(left: 25, right: 25),
+                                    const EdgeInsets.only(left: 25, right: 25),
                                 child: TextFormField(
                                   // initialValue: name,
                                   controller: _userNameController,
@@ -150,7 +172,7 @@ class _EditProfileState extends State<EditProfile> {
                                     label: const Text('UserName'),
                                     hintText: 'User Name',
                                     hintStyle:
-                                    const TextStyle(fontFamily: 'OpenSans'),
+                                        const TextStyle(fontFamily: 'OpenSans'),
                                     border: OutlineInputBorder(
                                       borderRadius: BorderRadius.circular(20),
                                     ),
@@ -162,7 +184,7 @@ class _EditProfileState extends State<EditProfile> {
                               ),
                               Padding(
                                 padding:
-                                const EdgeInsets.only(left: 25, right: 25),
+                                    const EdgeInsets.only(left: 25, right: 25),
                                 child: TextFormField(
                                   controller: _phoneNumberController,
                                   // initialValue: number,
@@ -172,7 +194,7 @@ class _EditProfileState extends State<EditProfile> {
                                     label: const Text("Phone Number"),
                                     hintText: 'Phone Number',
                                     hintStyle:
-                                    const TextStyle(fontFamily: 'OpenSans'),
+                                        const TextStyle(fontFamily: 'OpenSans'),
                                     border: OutlineInputBorder(
                                       borderRadius: BorderRadius.circular(20),
                                     ),
@@ -184,7 +206,7 @@ class _EditProfileState extends State<EditProfile> {
                               ),
                               Padding(
                                 padding:
-                                const EdgeInsets.only(left: 25, right: 25),
+                                    const EdgeInsets.only(left: 25, right: 25),
                                 child: TextFormField(
                                   // initialValue: bio,
                                   controller: _bioController,
@@ -194,7 +216,7 @@ class _EditProfileState extends State<EditProfile> {
                                     label: const Text('About Me:'),
                                     hintText: 'About Me',
                                     hintStyle:
-                                    const TextStyle(fontFamily: 'OpenSans'),
+                                        const TextStyle(fontFamily: 'OpenSans'),
                                     border: OutlineInputBorder(
                                       borderRadius: BorderRadius.circular(20),
                                     ),
@@ -202,7 +224,7 @@ class _EditProfileState extends State<EditProfile> {
                                 ),
                               ),
                               const SizedBox(
-                                height: 10,
+                                height: 50,
                               ),
                               GestureDetector(
                                 onTap: () async {
@@ -214,12 +236,13 @@ class _EditProfileState extends State<EditProfile> {
                                     'PhoneNo': _phoneNumberController.text,
                                     'Bio': _bioController.text,
                                     'Email': auth.currentUser!.email,
-                                    'pfpUrl': pfpUrl!=' '?pfpUrl:pfp,
+                                    'pfpUrl': pfpUrl != ' ' ? pfpUrl : pfp,
                                   }).then((value) {
                                     Navigator.push(
                                       context,
                                       MaterialPageRoute(
-                                          builder: (context) => const Dashboard(page: HomePage())),
+                                          builder: (context) => const Dashboard(
+                                              page: HomePage())),
                                     );
                                   }).onError((error, stackTrace) async {
                                     showDialog<String>(
@@ -230,8 +253,9 @@ class _EditProfileState extends State<EditProfile> {
                                               content: Text(error.toString()),
                                               actions: <Widget>[
                                                 TextButton(
-                                                  onPressed: () => Navigator.pop(
-                                                      context, 'OK'),
+                                                  onPressed: () =>
+                                                      Navigator.pop(
+                                                          context, 'OK'),
                                                   child: const Text('OK'),
                                                 ),
                                               ],
@@ -239,20 +263,18 @@ class _EditProfileState extends State<EditProfile> {
                                   });
                                 },
                                 child: Container(
-                                  height: 50,
-                                  width: 300,
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(25),
-                                    color: Colors.lightBlueAccent,
-                                  ),
-                                  child: const Center(
-                                      child: Text(
-                                        'Confirm',
-                                        style: TextStyle(
-                                            fontFamily: 'OpenSans',
-                                            fontWeight: FontWeight.bold),
-                                      )),
-                                ),
+                                    height: 50,
+                                    width: 300,
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(25),
+                                      color: AppColor.primaryColor,
+                                    ),
+                                    child: const Center(
+                                      child: AppText(
+                                        text: 'Save',
+                                        color: Colors.white,
+                                      ),
+                                    )),
                               ),
                             ],
                           ),
