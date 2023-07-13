@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import '../../../widgets/app_colors.dart';
@@ -13,7 +12,7 @@ class WhileTrekking extends StatelessWidget {
   Widget build(BuildContext context) {
     return Padding(
       padding:
-          const EdgeInsets.only(bottom: 100.0, left: 10, top: 10, right: 10),
+          const EdgeInsets.only(bottom: 40.0, left: 10, top: 10, right: 10),
       child: Container(
           decoration: BoxDecoration(
               color: Colors.grey[200],

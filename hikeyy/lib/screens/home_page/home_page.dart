@@ -2,6 +2,8 @@
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:hikeyy/screens/about_us/about_us.dart';
+import 'package:hikeyy/screens/helpline_page/helpline_page.dart';
 import 'package:hikeyy/screens/home_page/widget/venu_card.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:hikeyy/screens/profile_page/my_friend_request.dart';
@@ -161,18 +163,32 @@ class _HomePageState extends State<HomePage> {
                     ),
                   ),
                 ),
-                const Padding(
-                  padding: EdgeInsets.only(top: 30.0),
-                  child: AppText(
-                    text: 'Helpline numbers',
-                    fontSize: 15,
+                GestureDetector(
+                  onTap: () {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => HelpLinePage()));
+                  },
+                  child: const Padding(
+                    padding: EdgeInsets.only(top: 30.0),
+                    child: AppText(
+                      text: 'Helpline numbers',
+                      fontSize: 15,
+                    ),
                   ),
                 ),
-                const Padding(
-                  padding: EdgeInsets.only(top: 30.0),
-                  child: AppText(
-                    text: 'About us',
-                    fontSize: 15,
+                GestureDetector(
+                  onTap: () {
+                    Navigator.push(context,
+                        MaterialPageRoute(builder: (context) => AboutUs()));
+                  },
+                  child: const Padding(
+                    padding: EdgeInsets.only(top: 30.0),
+                    child: AppText(
+                      text: 'About us',
+                      fontSize: 15,
+                    ),
                   ),
                 ),
                 const Row(
