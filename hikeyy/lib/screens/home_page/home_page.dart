@@ -6,6 +6,7 @@ import 'package:hikeyy/screens/home_page/widget/venu_card.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:hikeyy/screens/profile_page/my_friend_request.dart';
 import 'package:hikeyy/screens/venue_details/venue_details_page.dart';
+import 'package:hikeyy/widgets/app_colors.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'dart:io';
@@ -84,14 +85,96 @@ class _HomePageState extends State<HomePage> {
     super.initState();
   }
 
-  final double _rating = 4;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
         key: _scaffoldkey,
-        drawer: const Drawer(
-          child: Icon(Icons.abc_rounded),
-        ),
+        drawer: Drawer(
+            width: 250,
+            child: Column(
+              children: [
+                Padding(
+                  padding: const EdgeInsets.only(top: 20.0),
+                  child: Container(
+                    constraints: const BoxConstraints(maxHeight: 150),
+                    child: const Image(
+                        image: AssetImage('assets/images/logo.png')),
+                  ),
+                ),
+                AppText(
+                  text: 'Hi! $userName',
+                  fontSize: 20,
+                  maxLines: 1,
+                ),
+                const Padding(
+                  padding: EdgeInsets.only(top: 20.0),
+                  child: Stack(
+                    children: [
+                      Padding(
+                        padding: EdgeInsets.only(
+                            top: 20.0, left: 20, right: 20, bottom: 50),
+                        child: Divider(
+                          thickness: 1,
+                          color: Colors.grey,
+                        ),
+                      ),
+                      Center(
+                        child: CircleAvatar(
+                          radius: 30,
+                          backgroundColor: Colors.green,
+                          child: Image(
+                              image: AssetImage('assets/icons/profile.png')),
+                        ),
+                      )
+                    ],
+                  ),
+                ),
+                const Padding(
+                  padding: EdgeInsets.only(top: 30.0),
+                  child: AppText(
+                    text: 'Profile',
+                    fontSize: 15,
+                  ),
+                ),
+                const Padding(
+                  padding: EdgeInsets.only(top: 30.0),
+                  child: AppText(
+                    text: 'Safety Guidelines',
+                    fontSize: 15,
+                  ),
+                ),
+                const Padding(
+                  padding: EdgeInsets.only(top: 30.0),
+                  child: AppText(
+                    text: 'Helpline numbers',
+                    fontSize: 15,
+                  ),
+                ),
+                const Padding(
+                  padding: EdgeInsets.only(top: 30.0),
+                  child: AppText(
+                    text: 'About us',
+                    fontSize: 15,
+                  ),
+                ),
+                const Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Padding(
+                      padding: EdgeInsets.only(top: 100),
+                      child: AppText(
+                        text: 'Logout',
+                        fontSize: 15,
+                      ),
+                    ),
+                    Padding(
+                      padding: EdgeInsets.only(left: 10.0, top: 100),
+                      child: Icon(Icons.logout),
+                    )
+                  ],
+                )
+              ],
+            )),
         extendBodyBehindAppBar: false,
         body: SafeArea(
           child: Container(
@@ -110,39 +193,30 @@ class _HomePageState extends State<HomePage> {
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Row(
-                          children: [
-                            GestureDetector(
-                                child: Container(
-                                    height: 40,
-                                    width: 40,
-                                    decoration: BoxDecoration(
-                                        boxShadow: [
-                                          BoxShadow(
-                                            color: Colors.grey.withOpacity(0.5),
-                                            spreadRadius: 3,
-                                            blurRadius: 9,
-                                            offset: const Offset(0, 3),
-                                          ),
-                                        ],
-                                        shape: BoxShape.circle,
-                                        color: Colors.white),
-                                    child: const Padding(
-                                      padding: EdgeInsets.all(10.0),
-                                      child: Image(
-                                          image: AssetImage(
-                                              'assets/icons/menu.png')),
-                                    )),
-                                onTap: () =>
-                                    _scaffoldkey.currentState!.openDrawer()),
-                            Padding(
-                              padding: const EdgeInsets.only(left: 20.0),
-                              child: Text(
-                                'WELCOME! $userName',
-                                style: const TextStyle(fontSize: 20),
-                              ),
-                            ),
-                          ],
+                        GestureDetector(
+                            child: Container(
+                                height: 40,
+                                width: 40,
+                                decoration: BoxDecoration(boxShadow: [
+                                  BoxShadow(
+                                    color: Colors.grey.withOpacity(0.5),
+                                    spreadRadius: 3,
+                                    blurRadius: 9,
+                                    offset: const Offset(0, 3),
+                                  ),
+                                ], shape: BoxShape.circle, color: Colors.white),
+                                child: const Padding(
+                                  padding: EdgeInsets.all(10.0),
+                                  child: Image(
+                                      image:
+                                          AssetImage('assets/icons/menu.png')),
+                                )),
+                            onTap: () =>
+                                _scaffoldkey.currentState!.openDrawer()),
+                        const AppText(
+                          text: "Welcome,\nLet's Plan Your Trip!",
+                          fontSize: 20,
+                          alignment: TextAlign.center,
                         ),
                         GestureDetector(
                           child: Container(
@@ -165,19 +239,17 @@ class _HomePageState extends State<HomePage> {
                                         const MyFriendRequest()));
                           },
                         ),
-                        // Icon(Icons.notifications),
                       ],
                     ),
                   ),
                   Padding(
                     padding: const EdgeInsets.only(top: 200.0),
                     child: Container(
-                      //height: 1000,
                       alignment: Alignment.center,
                       decoration: const BoxDecoration(
                           borderRadius: BorderRadius.only(
-                            topLeft: Radius.circular(35),
-                            topRight: Radius.circular(35),
+                            topLeft: Radius.circular(30),
+                            topRight: Radius.circular(30),
                           ),
                           color: Colors.white),
                       child: Padding(
@@ -185,23 +257,31 @@ class _HomePageState extends State<HomePage> {
                           top: 25.0,
                         ),
                         child: SingleChildScrollView(
-                          //  scrollDirection: Axis.vertical,
                           child: Column(
                             mainAxisAlignment: MainAxisAlignment.start,
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Padding(
                                 padding: const EdgeInsets.only(
-                                    left: 25.0, right: 25),
+                                    left: 25.0, right: 23),
                                 child: Row(
                                   mainAxisAlignment:
                                       MainAxisAlignment.spaceBetween,
                                   children: [
-                                    const Text(
-                                      'Explore\nNew Places',
-                                      style: TextStyle(
-                                          fontWeight: FontWeight.w800,
-                                          fontSize: 25),
+                                    const Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        AppText(
+                                          text: 'Explore',
+                                          fontSize: 25,
+                                        ),
+                                        AppText(
+                                          text: 'New Places',
+                                          fontSize: 25,
+                                          color: AppColor.primaryDarkColor,
+                                        ),
+                                      ],
                                     ),
                                     GestureDetector(
                                         onTap: () {
@@ -420,12 +500,16 @@ class _HomePageState extends State<HomePage> {
                                       mainAxisSize: MainAxisSize.min,
                                       children: [
                                         SizedBox(
-                                          height: 200.0,
-                                          child: ListView.builder(
+                                          child: GridView.builder(
+                                              gridDelegate:
+                                                  const SliverGridDelegateWithFixedCrossAxisCount(
+                                                crossAxisCount: 1,
+                                                childAspectRatio: 1.1,
+                                              ),
                                               physics:
-                                                  const ClampingScrollPhysics(),
+                                                  const NeverScrollableScrollPhysics(),
                                               shrinkWrap: true,
-                                              scrollDirection: Axis.horizontal,
+                                              scrollDirection: Axis.vertical,
                                               padding: const EdgeInsets.all(10),
                                               itemCount:
                                                   snapshots.data!.docs.length,
@@ -465,8 +549,6 @@ class _HomePageState extends State<HomePage> {
                                                                           VenueDetailsPage(
                                                                     id: id,
                                                                   ),
-                                                                  // Trails(
-                                                                  //     id: id),
                                                                 ),
                                                               );
                                                             },
@@ -480,130 +562,6 @@ class _HomePageState extends State<HomePage> {
                                     ),
                                   );
                                 },
-                              ),
-                              
-                              Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: SizedBox(
-                                  child: GridView.builder(
-                                      physics:
-                                          const NeverScrollableScrollPhysics(),
-                                      itemCount: 6,
-                                      shrinkWrap: true,
-                                      gridDelegate:
-                                          const SliverGridDelegateWithFixedCrossAxisCount(
-                                              crossAxisCount: 1,
-                                              childAspectRatio: 2,
-                                              crossAxisSpacing: 10,
-                                              mainAxisSpacing: 10),
-                                      itemBuilder: ((context, index) {
-                                        return InkWell(
-                                          child: Container(
-                                            height: 165,
-                                            width: 159,
-                                            decoration: BoxDecoration(
-                                                borderRadius:
-                                                    BorderRadius.circular(15),
-                                                image: const DecorationImage(
-                                                    image: AssetImage(
-                                                        'assets/images/EBC.jpg'),
-                                                    fit: BoxFit.cover),
-                                                color: Colors.amber),
-                                            child: Container(
-                                              decoration: BoxDecoration(
-                                                borderRadius:
-                                                    BorderRadius.circular(15),
-                                                gradient: LinearGradient(
-                                                  begin: Alignment.topCenter,
-                                                  end: Alignment.bottomCenter,
-                                                  colors: [
-                                                    Colors.transparent,
-                                                    Colors.black
-                                                        .withOpacity(0.8),
-                                                  ],
-                                                ),
-                                              ),
-                                              child: Column(
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment.end,
-                                                crossAxisAlignment:
-                                                    CrossAxisAlignment.center,
-                                                children: [
-                                                  const AppText(
-                                                    text: 'Everest Base Camp',
-                                                    color: Colors.white,
-                                                    fontSize: 20,
-                                                  ),
-                                                  const Padding(
-                                                    padding: EdgeInsets.only(
-                                                        left: 10.0, right: 10),
-                                                    child: Divider(
-                                                      thickness: 1,
-                                                      color: Colors.white,
-                                                    ),
-                                                  ),
-                                                  const Padding(
-                                                    padding: EdgeInsets.only(
-                                                        left: 8.0),
-                                                    child: AppTextSubHeading(
-                                                      maxLines: 2,
-                                                      textOverflow:
-                                                          TextOverflow.ellipsis,
-                                                      text: 'Very nice place',
-                                                    ),
-                                                  ),
-                                                  Padding(
-                                                    padding:
-                                                        const EdgeInsets.only(
-                                                            bottom: 20.0,
-                                                            right: 15),
-                                                    child: AnimatedPositioned(
-                                                      duration: const Duration(
-                                                          milliseconds: 300),
-                                                      child: Row(
-                                                          mainAxisAlignment:
-                                                              MainAxisAlignment
-                                                                  .spaceEvenly,
-                                                          children:
-                                                              List.generate(
-                                                            5,
-                                                            (index) => SizedBox(
-                                                              height: 15,
-                                                              width: 20,
-                                                              child: IconButton(
-                                                                icon: index <
-                                                                        _rating
-                                                                    ? const Icon(
-                                                                        Icons
-                                                                            .star,
-                                                                        size:
-                                                                            22)
-                                                                    : const Icon(
-                                                                        Icons
-                                                                            .star_border,
-                                                                        size:
-                                                                            22),
-                                                                color: const Color
-                                                                        .fromARGB(
-                                                                    255,
-                                                                    223,
-                                                                    170,
-                                                                    10),
-                                                                onPressed:
-                                                                    () {},
-                                                              ),
-                                                            ),
-                                                          )),
-                                                    ),
-                                                  ),
-                                                ],
-                                              ),
-                                            ),
-                                          ),
-                                          onTap: () {},
-                                        );
-                                      })),
-                                ),
                               ),
                             ],
                           ),
