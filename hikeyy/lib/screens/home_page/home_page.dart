@@ -6,7 +6,9 @@ import 'package:hikeyy/screens/home_page/widget/venu_card.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:hikeyy/screens/profile_page/my_friend_request.dart';
 import 'package:hikeyy/screens/venue_details/venue_details_page.dart';
+
 import 'package:hikeyy/widgets/app_colors.dart';
+import 'package:hikeyy/widgets/location_month_icon_row.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'dart:io';
@@ -84,7 +86,6 @@ class _HomePageState extends State<HomePage> {
     getUserName();
     super.initState();
   }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -500,6 +501,7 @@ class _HomePageState extends State<HomePage> {
                                       mainAxisSize: MainAxisSize.min,
                                       children: [
                                         SizedBox(
+
                                           child: GridView.builder(
                                               gridDelegate:
                                                   const SliverGridDelegateWithFixedCrossAxisCount(
@@ -514,32 +516,61 @@ class _HomePageState extends State<HomePage> {
                                               itemCount:
                                                   snapshots.data!.docs.length,
                                               itemBuilder: (context, index) {
+
                                                 var data = snapshots
-                                                        .data!.docs[index]
-                                                        .data()
-                                                    as Map<String, dynamic>;
+                                                    .data!.docs[index]
+                                                    .data()
+                                                as Map<String, dynamic>;
                                                 String id = snapshots
                                                     .data!.docs[index].id;
                                                 List<dynamic> photos =
-                                                    data["PhotoURLs"];
+                                                data["PhotoURLs"];
                                                 return data['Duration'] >=
-                                                            _currentTimeRangeValues
-                                                                .start &&
-                                                        data['Duration'] <=
-                                                            _currentTimeRangeValues
-                                                                .end
-                                                    ? Row(
-                                                        children: [
-                                                          GestureDetector(
-                                                            child: VenuCard(
-                                                              photourl:
-                                                                  photos.first,
-                                                              venue: data[
-                                                                      'Name']
-                                                                  .toString(),
-                                                              location: 'Nepal',
-                                                              date: 'july',
+                                                    _currentTimeRangeValues
+                                                        .start &&
+                                                    data['Duration'] <=
+                                                        _currentTimeRangeValues
+                                                            .end?
+                                                InkWell(
+                                                  child: GestureDetector(
+                                                    onTap: (){
+                                                      Navigator.push(
+                                                        context,
+                                                        MaterialPageRoute(
+                                                          builder:
+                                                              (context) =>
+                                                              VenueDetailsPage(
+                                                                id: id,
+                                                              ),
+                                                        ),
+                                                      );
+                                                    },
+                                                    child: Padding(
+                                                      padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                                                      child: Container(
+                                                        height: 300,
+                                                        width: 130,
+                                                        decoration: BoxDecoration(
+                                                            borderRadius:
+                                                            BorderRadius.circular(15),
+                                                            image: DecorationImage(
+                                                                image: NetworkImage(photos.first),
+                                                                fit: BoxFit.cover),
+                                                            color: Colors.amber),
+                                                        child: Container(
+                                                          decoration: BoxDecoration(
+                                                            borderRadius:
+                                                            BorderRadius.circular(15),
+                                                            gradient: LinearGradient(
+                                                              begin: Alignment.topCenter,
+                                                              end: Alignment.bottomCenter,
+                                                              colors: [
+                                                                Colors.transparent,
+                                                                Colors.black
+                                                                    .withOpacity(0.8),
+                                                              ],
                                                             ),
+
                                                             onTap: () {
                                                               Navigator.push(
                                                                 context,
@@ -549,19 +580,154 @@ class _HomePageState extends State<HomePage> {
                                                                           VenueDetailsPage(
                                                                     id: id,
                                                                   ),
-                                                                ),
-                                                              );
-                                                            },
                                                           ),
-                                                        ],
-                                                      )
-                                                    : Container();
-                                              }),
+                                                          child: Column(
+                                                            mainAxisAlignment:
+                                                            MainAxisAlignment.end,
+                                                            crossAxisAlignment:
+                                                            CrossAxisAlignment.center,
+                                                            children: [
+                                                               AppText(
+                                                                text:  data['Name'].toString(),
+                                                                color: Colors.white,
+                                                                fontSize: 20,
+                                                              ),
+                                                              const Padding(
+                                                                padding: EdgeInsets.only(
+                                                                    left: 10.0, right: 10),
+                                                                child: Divider(
+                                                                  thickness: 1,
+                                                                  color: Colors.white,
+                                                                ),
+                                                              ),
+                                                              Padding(
+                                                                padding: EdgeInsets.only(
+                                                                    left: 8.0),
+                                                                child: AppTextSubHeading(
+                                                                  maxLines: 2,
+                                                                  textOverflow:
+                                                                  TextOverflow.ellipsis,
+                                                                  text: data['Description'].toString(),
+                                                                ),
+                                                              ),
+                                                              const Padding(
+                                                                padding: EdgeInsets.only(
+                                                                    left: 10.0, right: 10),
+                                                                child: Divider(
+                                                                  thickness: 1,
+                                                                  color: Colors.white,
+                                                                ),
+                                                              ),
+                                                              Padding(
+                                                                padding: const EdgeInsets.all(8.0),
+                                                                child: LocationMonthIconRow(location:data['Location'].toString(),date:data['Duration'].toString() ,)
+                                                              ),
+                                                              SizedBox(height: 20,)
+                                                              // Padding(
+                                                              //   padding:
+                                                              //   const EdgeInsets.only(
+                                                              //       bottom: 20.0,
+                                                              //       right: 15),
+                                                              //   child: AnimatedPositioned(
+                                                              //     duration: const Duration(
+                                                              //         milliseconds: 300),
+                                                              //     child: Row(
+                                                              //         mainAxisAlignment:
+                                                              //         MainAxisAlignment
+                                                              //             .spaceEvenly,
+                                                              //         children:
+                                                              //         List.generate(
+                                                              //           5,
+                                                              //               (index) => SizedBox(
+                                                              //             height: 15,
+                                                              //             width: 20,
+                                                              //             child: IconButton(
+                                                              //               icon: index <
+                                                              //                   _rating
+                                                              //                   ? const Icon(
+                                                              //                   Icons
+                                                              //                       .star,
+                                                              //                   size:
+                                                              //                   22)
+                                                              //                   : const Icon(
+                                                              //                   Icons
+                                                              //                       .star_border,
+                                                              //                   size:
+                                                              //                   22),
+                                                              //               color: const Color
+                                                              //                   .fromARGB(
+                                                              //                   255,
+                                                              //                   223,
+                                                              //                   170,
+                                                              //                   10),
+                                                              //               onPressed:
+                                                              //                   () {},
+                                                              //             ),
+                                                              //           ),
+                                                              //         )),
+                                                              //   ),
+                                                              // ),
+                                                            ],
+                                                          ),
+                                                        ),
+                                                      ),
+                                                    ),
+                                                  ),
+                                                  onTap: () {},
+                                                ):Container();
+                                              })),
+                                          // ListView.builder(
+                                          //     physics:
+                                          //         const ClampingScrollPhysics(),
+                                          //     shrinkWrap: true,
+                                          //     //scrollDirection: Axis.horizontal,
+                                          //     padding: const EdgeInsets.all(10),
+                                          //     itemCount:
+                                          //         snapshots.data!.docs.length,
+                                          //     itemBuilder: (context, index) {
+                                          //       var data = snapshots
+                                          //               .data!.docs[index]
+                                          //               .data()
+                                          //           as Map<String, dynamic>;
+                                          //       String id = snapshots
+                                          //           .data!.docs[index].id;
+                                          //       List<dynamic> photos =
+                                          //           data["PhotoURLs"];
+                                          //       return data['Duration'] >=
+                                          //                   _currentTimeRangeValues
+                                          //                       .start &&
+                                          //               data['Duration'] <=
+                                          //                   _currentTimeRangeValues
+                                          //                       .end
+                                          //           ? Row(
+                                          //               children: [
+                                          //                 GestureDetector(
+                                          //                   child: VenuCard(
+                                          //                     photourl:
+                                          //                         photos.first,
+                                          //                     venue:
+                                          //                     data['Name'].toString(),
+                                          //                     location: 'Nepal',
+                                          //                     date: 'july',
+                                          //                   ),
+                                          //                   onTap: () {
+                                          //                   },
+                                          //                 ),
+                                          //               ],
+                                          //             )
+                                          //           : Container();
+                                          //     }),
                                         ),
                                       ],
                                     ),
                                   );
                                 },
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: SizedBox(
+                                  child: Container()
+                                ),
                               ),
                             ],
                           ),

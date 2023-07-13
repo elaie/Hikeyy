@@ -8,6 +8,8 @@ import 'package:flutter/services.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
+import '../checkpoint_detail_page/checkpoint_detail_page.dart';
+
 
 class LocationFriends extends StatefulWidget {
   final String id;
@@ -74,7 +76,12 @@ class _LocationFriendsState extends State<LocationFriends> {
           markerId: MarkerId(element['Name']),
           position: LatLng(double.parse(element['Latitude']),
               double.parse(element['Longitude'])),
-          onTap: () {},
+          onTap: () {
+            Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) =>CheckpointDetailPage( id: element.id,trailid: data!['Trail'],)));
+          },
           //  icon: icon
         ));
         polylines.add(Polyline(

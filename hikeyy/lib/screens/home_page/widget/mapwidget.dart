@@ -3,6 +3,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:hikeyy/screens/checkpoint_detail_page/checkpoint_detail_page.dart';
 
 class MapWidget extends StatelessWidget {
   final String id;
@@ -57,7 +58,15 @@ class MapWidget extends StatelessWidget {
                           position: LatLng(
                               double.parse(element['Latitude']),
                               double.parse(element['Longitude'])),
-                          onTap: () {},
+                          onTap: () {
+                            print(id);
+                            print(element.id);
+                            print('**********');
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) =>CheckpointDetailPage( id: element.id,trailid: id,)));
+                          },
                           //  icon: icon
                         ));
                       }
@@ -72,7 +81,7 @@ class MapWidget extends StatelessWidget {
                             target: LatLng(
                                 double.parse(data!['StartLatitude']),
                                 double.parse(data['StartLongitude'])),
-                            zoom: 12),
+                            zoom: 10),
                         markers: Set<Marker>.of(markers),
                         polylines: Set<Polyline>.of(polylines),
                         //onCameraMove: _onCameraMove,
