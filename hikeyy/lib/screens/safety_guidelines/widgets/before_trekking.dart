@@ -62,6 +62,7 @@ class BeforeTrekking extends StatelessWidget {
                     ),
                     title: AppText(
                         fontSize: 14,
+                        color: Color.fromARGB(255, 117, 117, 117),
                         text:
                             'Make sure you have proper clothing for all weather conditions. Please be prepared for adverse weather conditions and apply the mantra “better safe than sorry”.'),
                   ),
@@ -73,6 +74,7 @@ class BeforeTrekking extends StatelessWidget {
                     ),
                     title: AppText(
                         fontSize: 14,
+                        color: Color.fromARGB(255, 117, 117, 117),
                         text:
                             "Have insurance in place so that the expenses for a helicopter emergency evacuation or other emergency situations are covered, if needed. Please bring the insurance details with you."),
                   ),
@@ -84,6 +86,7 @@ class BeforeTrekking extends StatelessWidget {
                     ),
                     title: AppText(
                         fontSize: 14,
+                        color: Color.fromARGB(255, 117, 117, 117),
                         text:
                             "Personal hygiene is important in order not to get sick. Hand sanitizer or disinfection gel will get you far."),
                   ),
@@ -95,6 +98,7 @@ class BeforeTrekking extends StatelessWidget {
                     ),
                     title: AppText(
                         fontSize: 14,
+                        color: Color.fromARGB(255, 117, 117, 117),
                         text:
                             "Bring first aid kit, especially if you are trekking alone. Generally we highly recommend to always bring a guide while trekking in the Himalayas."),
                   ),
@@ -106,6 +110,7 @@ class BeforeTrekking extends StatelessWidget {
                     ),
                     title: AppText(
                         fontSize: 14,
+                        color: Color.fromARGB(255, 117, 117, 117),
                         text:
                             "While trekking may sound cold, during the long days of hiking you may get plenty of sun. Therefore always bring sunscreen, sunglasses and perhaps even a sun hat."),
                   ),
@@ -117,6 +122,7 @@ class BeforeTrekking extends StatelessWidget {
                     ),
                     title: AppText(
                         fontSize: 14,
+                        color: Color.fromARGB(255, 117, 117, 117),
                         text:
                             "Bring a torch. Electricity is scarce when “out there”."),
                   ),
@@ -128,6 +134,7 @@ class BeforeTrekking extends StatelessWidget {
                     ),
                     title: AppText(
                         fontSize: 14,
+                        color: Color.fromARGB(255, 117, 117, 117),
                         text:
                             "If you trekking route ascends higher than 3,000 m, please read carefully about Altitude Sickness. More information can be found below."),
                   ),

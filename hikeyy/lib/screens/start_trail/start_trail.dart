@@ -71,15 +71,15 @@ class _StartTrailState extends State<StartTrail> {
       // print('@@@@@@@@@@@@@@@@@@@@@');
     });
   }
-  endTrip(){
-    FirebaseFirestore.instance.collection('Users').doc(FirebaseAuth.instance.currentUser!.uid).update({
-      'Status':'NotBusy'
-    }).then((value) {
+
+  endTrip() {
+    FirebaseFirestore.instance
+        .collection('Users')
+        .doc(FirebaseAuth.instance.currentUser!.uid)
+        .update({'Status': 'NotBusy'}).then((value) {
       Navigator.push(
         context,
-        MaterialPageRoute(
-            builder: (context) =>
-            const IsBusy()),
+        MaterialPageRoute(builder: (context) => const IsBusy()),
       );
     });
   }
@@ -308,8 +308,9 @@ class _StartTrailState extends State<StartTrail> {
       }
     }
   }
+
   String userName = '';
-  String PfUrl='';
+  String PfUrl = '';
 
   Future<void> getUserName() async {
     DocumentSnapshot data = await FirebaseFirestore.instance
@@ -321,6 +322,7 @@ class _StartTrailState extends State<StartTrail> {
       PfUrl = data['pfpUrl'];
     });
   }
+
   @override
   void initState() {
     //LocationPermission permission = await Geolocator.checkPermission();
@@ -349,7 +351,10 @@ class _StartTrailState extends State<StartTrail> {
       onWillPop: _onWillPop,
       child: Scaffold(
           key: _scaffoldkey,
-          drawer: DrawerApp(userName: userName,PfUrl: PfUrl,),
+          drawer: DrawerApp(
+            userName: userName,
+            PfUrl: PfUrl,
+          ),
           body: FutureBuilder<void>(
               future: getLocations(),
               builder: (context, snapshot) {
@@ -570,9 +575,9 @@ class _StartTrailState extends State<StartTrail> {
                                                       ),
                                                     ),
                                                   ),
-                                                  Positioned(
-                                                    top: 100,
-                                                    left: 20,
+                                                  Padding(
+                                                    padding: EdgeInsets.only(
+                                                        top: 100, left: 20),
                                                     child: AppText(
                                                       text: dataT['Name'],
                                                       fontSize: 20,
@@ -589,9 +594,9 @@ class _StartTrailState extends State<StartTrail> {
                                                       color: Colors.white,
                                                     ),
                                                   ),
-                                                  Positioned(
-                                                    top: 150,
-                                                    left: 20,
+                                                  Padding(
+                                                    padding: EdgeInsets.only(
+                                                        top: 150, left: 20),
                                                     child: Container(
                                                       width: 300,
                                                       constraints:
@@ -617,7 +622,6 @@ class _StartTrailState extends State<StartTrail> {
                                           return Container();
                                         }),
 
-                                  
                                     //timeline
                                     TimelineCollapsable(
                                       id: widget.id,
