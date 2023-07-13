@@ -53,7 +53,7 @@ class AppText extends StatelessWidget {
     return Text(
       text,
       textAlign: alignment,
-      maxLines: maxLines,
+      maxLines: maxLines ?? 100,
       overflow: TextOverflow.ellipsis,
       style: TextStyle(
         overflow: textOverflow ?? TextOverflow.ellipsis,
@@ -83,7 +83,7 @@ class AppTextSubHeading extends StatelessWidget {
   Widget build(BuildContext context) {
     return Text(
       text,
-      maxLines: maxLines,
+      maxLines: maxLines ?? 100,
       style: TextStyle(
           overflow: textOverflow ?? TextOverflow.ellipsis,
           fontSize: fontSize,

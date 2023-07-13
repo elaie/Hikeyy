@@ -8,7 +8,6 @@ import 'package:hikeyy/screens/profile_page/widgets/group_list.dart';
 import 'package:hikeyy/screens/profile_page/widgets/logout_button.dart';
 import 'package:hikeyy/screens/profile_page/widgets/profile_picture.dart';
 import 'package:hikeyy/screens/profile_page/widgets/user_name.dart';
-import 'package:hikeyy/screens/profile_page/widgets/white_container.dart';
 
 class ProfilePage extends StatefulWidget {
   const ProfilePage({super.key});
@@ -83,6 +82,15 @@ class _ProfilePageState extends State<ProfilePage> {
                                   const BoxDecoration(color: Colors.white),
                             ),
                           ),
+                          Positioned(
+                              top: 10,
+                              left: 10,
+                              child: IconButton(
+                                icon: const Icon(Icons.arrow_back_ios),
+                                onPressed: () {
+                                  Navigator.of(context).pop();
+                                },
+                              )),
                           //username
                           Positioned(top: 10, child: UserName(name: name)),
                           //profile picture
