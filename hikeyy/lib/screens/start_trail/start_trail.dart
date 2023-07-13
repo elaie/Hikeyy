@@ -19,6 +19,7 @@ import 'package:hikeyy/widgets/app_texts.dart';
 import 'package:http/http.dart' as http;
 
 import '../../widgets/app_buttons.dart';
+import '../login_signup/is_in_trip.dart';
 
 class StartTrail extends StatefulWidget {
   final String id;
@@ -68,6 +69,18 @@ class _StartTrailState extends State<StartTrail> {
         .update({'TokenId': fcmToken}).then((value) {
       //print(fcmToken);
       // print('@@@@@@@@@@@@@@@@@@@@@');
+    });
+  }
+  endTrip(){
+    FirebaseFirestore.instance.collection('Users').doc(FirebaseAuth.instance.currentUser!.uid).update({
+      'Status':'NotBusy'
+    }).then((value) {
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+            builder: (context) =>
+            const IsBusy()),
+      );
     });
   }
 
@@ -684,7 +697,9 @@ class _StartTrailState extends State<StartTrail> {
                                           return AppButtons(
                                               color: const Color.fromARGB(
                                                   255, 183, 49, 39),
-                                              onPressed: () {},
+                                              onPressed: () {
+                                                endTrip();
+                                              },
                                               child: const AppText(
                                                 text: 'End Trip',
                                               ));
