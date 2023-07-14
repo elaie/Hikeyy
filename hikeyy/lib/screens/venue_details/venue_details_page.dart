@@ -2,6 +2,7 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:hikeyy/screens/plan_trip_page/plan_trip_page.dart';
+import 'package:hikeyy/screens/venue_details/Checkpoint.dart';
 import 'package:hikeyy/widgets/app_colors.dart';
 import 'package:hikeyy/widgets/app_texts.dart';
 
@@ -11,6 +12,7 @@ import '../home_page/widget/trails.dart';
 
 class VenueDetailsPage extends StatefulWidget {
   final String id;
+
   const VenueDetailsPage({super.key, required this.id});
 
   @override
@@ -20,6 +22,8 @@ class VenueDetailsPage extends StatefulWidget {
 class _VenueDetailsPageState extends State<VenueDetailsPage> {
   var _rating = 0;
   ValueNotifier<int> _ratingNotifier = ValueNotifier<int>(0);
+
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -53,9 +57,9 @@ class _VenueDetailsPageState extends State<VenueDetailsPage> {
                             photos.isEmpty
                                 ? const CircularProgressIndicator()
                                 : Padding(
-                                    padding: const EdgeInsets.all(8.0),
-                                    child: showPhotos(photos),
-                                  ),
+                              padding: const EdgeInsets.all(8.0),
+                              child: showPhotos(photos),
+                            ),
                             Padding(
                               padding: const EdgeInsets.only(top: 30, left: 30),
                               child: Container(
@@ -92,11 +96,11 @@ class _VenueDetailsPageState extends State<VenueDetailsPage> {
                               children: [
                                 Row(
                                   mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
+                                  MainAxisAlignment.spaceBetween,
                                   children: [
                                     Column(
                                       crossAxisAlignment:
-                                          CrossAxisAlignment.start,
+                                      CrossAxisAlignment.start,
                                       children: [
                                         SizedBox(
                                           width: 170,
@@ -124,18 +128,18 @@ class _VenueDetailsPageState extends State<VenueDetailsPage> {
                                                 blurRadius: 3),
                                           ],
                                           borderRadius:
-                                              BorderRadius.circular(30)),
+                                          BorderRadius.circular(30)),
                                       height: 50,
                                       child: ElevatedButton(
                                         style: ButtonStyle(
                                           backgroundColor:
-                                              MaterialStateProperty.all(
-                                                  AppColor.primaryColor),
+                                          MaterialStateProperty.all(
+                                              AppColor.primaryColor),
                                           shape: MaterialStateProperty.all<
                                               RoundedRectangleBorder>(
                                             RoundedRectangleBorder(
                                               borderRadius:
-                                                  BorderRadius.circular(30),
+                                              BorderRadius.circular(30),
                                             ),
                                           ),
                                         ),
@@ -149,12 +153,12 @@ class _VenueDetailsPageState extends State<VenueDetailsPage> {
                                         },
                                         child: const Row(
                                           mainAxisAlignment:
-                                              MainAxisAlignment.spaceBetween,
+                                          MainAxisAlignment.spaceBetween,
                                           children: [
                                             Icon(Icons.directions),
                                             Padding(
                                               padding:
-                                                  EdgeInsets.only(left: 2.0),
+                                              EdgeInsets.only(left: 2.0),
                                               child: AppText(
                                                 text: 'View in Map',
                                                 color: Colors.white,
@@ -171,7 +175,7 @@ class _VenueDetailsPageState extends State<VenueDetailsPage> {
                                       top: 20.0, left: 5, right: 5),
                                   child: Container(
                                     constraints:
-                                        const BoxConstraints(minHeight: 100),
+                                    const BoxConstraints(minHeight: 100),
                                     decoration: BoxDecoration(
                                         boxShadow: const [
                                           BoxShadow(
@@ -181,7 +185,7 @@ class _VenueDetailsPageState extends State<VenueDetailsPage> {
                                         ],
                                         color: AppColor.primaryLightColor,
                                         borderRadius:
-                                            BorderRadius.circular(20)),
+                                        BorderRadius.circular(20)),
                                     child: Padding(
                                       padding: const EdgeInsets.all(20.0),
                                       child: Row(children: [
@@ -215,7 +219,7 @@ class _VenueDetailsPageState extends State<VenueDetailsPage> {
                                                   child: ListView.builder(
                                                     shrinkWrap: true,
                                                     scrollDirection:
-                                                        Axis.horizontal,
+                                                    Axis.horizontal,
                                                     itemCount: 5,
                                                     itemBuilder:
                                                         (context, index) {
@@ -224,17 +228,18 @@ class _VenueDetailsPageState extends State<VenueDetailsPage> {
                                                         height: 35,
                                                         child: IconButton(
                                                           icon: index < value
-                                                              ? const Icon(Icons.star,
-                                                                  size: 22,
-                                                                  color: Colors
-                                                                      .yellow)
+                                                              ? const Icon(
+                                                              Icons.star,
+                                                              size: 22,
+                                                              color: Colors
+                                                                  .yellow)
                                                               : const Icon(
-                                                                  Icons
-                                                                      .star_border,
-                                                                  size: 22),
+                                                              Icons
+                                                                  .star_border,
+                                                              size: 22),
                                                           onPressed: () {
                                                             _ratingNotifier
-                                                                    .value =
+                                                                .value =
                                                                 index + 1;
                                                           },
                                                         ),
@@ -245,7 +250,8 @@ class _VenueDetailsPageState extends State<VenueDetailsPage> {
                                               },
                                             ),
                                             GestureDetector(
-                                              child: const AppText(text: 'Submitt'),
+                                              child: const AppText(
+                                                  text: 'Submitt'),
                                               onTap: () {},
                                             )
                                           ],
@@ -254,7 +260,7 @@ class _VenueDetailsPageState extends State<VenueDetailsPage> {
                                     ),
                                   ),
                                 ),
-                                CollapsibleOptions(id: widget.id),
+                                Checkpoint(id: widget.id),
                                 const Padding(
                                   padding: EdgeInsets.only(top: 15.0),
                                   child: AppTextHeading(
@@ -268,7 +274,7 @@ class _VenueDetailsPageState extends State<VenueDetailsPage> {
                                 ),
                                 const Padding(
                                   padding:
-                                      EdgeInsets.only(top: 15.0, bottom: 15),
+                                  EdgeInsets.only(top: 15.0, bottom: 15),
                                   child: AppTextHeading(
                                     textHeading: 'Best Months',
                                     fontSize: 20,
@@ -291,9 +297,9 @@ class _VenueDetailsPageState extends State<VenueDetailsPage> {
                                                 minHeight: 100),
                                             decoration: BoxDecoration(
                                                 color:
-                                                    AppColor.primaryLightColor,
+                                                AppColor.primaryLightColor,
                                                 borderRadius:
-                                                    BorderRadius.circular(10)),
+                                                BorderRadius.circular(10)),
                                             child: Center(
                                                 child: Text(bestMonths[index])),
                                           ),
@@ -367,39 +373,42 @@ Widget showPhotos(List? data) {
   return data!.isEmpty
       ? const Text('No data')
       : SingleChildScrollView(
-          child: CarouselSlider.builder(
-              itemCount: data.length,
-              itemBuilder: (context, index, realIndex) {
-                //final document = data![index];
-                // print(data[index]);
-                //p/rint('*******************');
-                return Center(
-                    child: Container(
-                  decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(40),
-                      boxShadow: const [
-                        BoxShadow(
-                            color: Colors.grey,
-                            offset: Offset(0, 10),
-                            blurRadius: 4)
-                      ]),
-                  child: ClipRRect(
-                    borderRadius: BorderRadius.circular(30),
-                    child: Image.network(
-                      data[index],
-                      fit: BoxFit.fitHeight,
-                      height: 300,
-                      width: MediaQuery.of(context).size.width,
-                    ),
+    child: CarouselSlider.builder(
+        itemCount: data.length,
+        itemBuilder: (context, index, realIndex) {
+          //final document = data![index];
+          // print(data[index]);
+          //p/rint('*******************');
+          return Center(
+              child: Container(
+                decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(40),
+                    boxShadow: const [
+                      BoxShadow(
+                          color: Colors.grey,
+                          offset: Offset(0, 10),
+                          blurRadius: 4)
+                    ]),
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(30),
+                  child: Image.network(
+                    data[index],
+                    fit: BoxFit.fitHeight,
+                    height: 300,
+                    width: MediaQuery
+                        .of(context)
+                        .size
+                        .width,
                   ),
-                ));
-              },
-              options: CarouselOptions(
-                  height: 350,
-                  autoPlay: true,
-                  enlargeCenterPage: true,
-                  aspectRatio: 16 / 9,
-                  viewportFraction: 1,
-                  autoPlayCurve: Curves.fastOutSlowIn)),
-        );
+                ),
+              ));
+        },
+        options: CarouselOptions(
+            height: 350,
+            autoPlay: true,
+            enlargeCenterPage: true,
+            aspectRatio: 16 / 9,
+            viewportFraction: 1,
+            autoPlayCurve: Curves.fastOutSlowIn)),
+  );
 }
