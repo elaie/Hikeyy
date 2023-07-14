@@ -195,7 +195,9 @@ class _GroupDetailsState extends State<GroupDetails> {
                                                         context,
                                                         MaterialPageRoute(
                                                             builder: (context) =>
-                                                                Trails(id:  data['Trail'])),
+                                                                Trails(
+                                                                    id: data[
+                                                                        'Trail'])),
                                                       );
                                                     },
                                                     child: const AppText(
@@ -253,25 +255,63 @@ class _GroupDetailsState extends State<GroupDetails> {
               children: [
                 AppButtons(
                     onPressed: () {
-                      FirebaseFirestore.instance
-                          .collection('Users')
-                          .doc(FirebaseAuth.instance.currentUser!.uid)
-                          .update({'Status': 'Busy', 'Trail': widget.id}).then(
-                              (value) {
-                        FirebaseFirestore.instance
-                            .collection('Groups')
-                            .doc(widget.id)
-                            .collection('Locations')
-                            .doc(FirebaseAuth.instance.currentUser?.uid)
-                            .set({'Position': null, 'Time': DateTime.now(),'Status':'Going'});
-                      });
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => Dashboard(
-                                      page: StartTrail(
-                                    id: widget.id,
-                                  ))));
+                      showDialog(
+                        context: context,
+                        builder: (BuildContext context) {
+                          return AlertDialog(
+                            contentPadding: EdgeInsets.all(20),
+                            title: const Text('Are you sure?'),
+                            content: const Text(
+                                'Once you start a trail, you cannot go back to dashboard until you have finished your trail'),
+                            actions: [
+                              AppButtons(
+                                  onPressed: () {
+                                    Navigator.of(context).pop();
+                                  },
+                                  child: const AppText(text: 'No')),
+                              AppButtons(
+                                  onPressed: () {
+                                    // Perform the desired actions when 'Yes' is pressed
+                                    FirebaseFirestore.instance
+                                        .collection('Users')
+                                        .doc(FirebaseAuth
+                                            .instance.currentUser!.uid)
+                                        .update({
+                                      'Status': 'Busy',
+                                      'Trail': widget.id
+                                    }).then((value) {
+                                      FirebaseFirestore.instance
+                                          .collection('Groups')
+                                          .doc(widget.id)
+                                          .collection('Locations')
+                                          .doc(FirebaseAuth
+                                              .instance.currentUser?.uid)
+                                          .set({
+                                        'Position': null,
+                                        'Time': DateTime.now(),
+                                        'Status': 'Going'
+                                      });
+                                    });
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) => Dashboard(
+                                          page: StartTrail(
+                                            id: widget.id,
+                                          ),
+                                        ),
+                                      ),
+                                    );
+                                    Navigator.of(context)
+                                        .pop(); // Close the dialog box
+                                  },
+                                  child: const AppText(
+                                    text: 'Yes',
+                                  ))
+                            ],
+                          );
+                        },
+                      );
                     },
                     child: const AppText(text: 'Start Trail!')),
                 AppButtons(
