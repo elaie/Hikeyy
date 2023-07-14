@@ -447,6 +447,7 @@ class _PlanTripPageState extends State<PlanTripPage> {
                         height: 50,
                         child: ElevatedButton(
                           onPressed: () {
+                            
                             if (_gName.currentState!.validate()) {
                               _gName.currentState!.save();
                               _selected.add(auth.currentUser!.uid);
