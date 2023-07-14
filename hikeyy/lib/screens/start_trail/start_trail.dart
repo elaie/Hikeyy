@@ -20,8 +20,6 @@ import 'package:http/http.dart' as http;
 
 import '../../widgets/app_buttons.dart';
 import '../end_trip_details/end_trip_details.dart';
-import '../login_signup/is_in_trip.dart';
-
 class StartTrail extends StatefulWidget {
   final String id;
 
@@ -73,17 +71,7 @@ class _StartTrailState extends State<StartTrail> {
     });
   }
 
-  endTrip() {
-    FirebaseFirestore.instance
-        .collection('Users')
-        .doc(FirebaseAuth.instance.currentUser!.uid)
-        .update({'Status': 'NotBusy'}).then((value) {
-      Navigator.push(
-        context,
-        MaterialPageRoute(builder: (context) => const IsBusy()),
-      );
-    });
-  }
+ 
 
   getDistance() async {
     List<LatLng>? points;
@@ -695,7 +683,6 @@ class _StartTrailState extends State<StartTrail> {
                                                     MaterialPageRoute(
                                                         builder: (context) =>
                                                             EndTripDetails()));
-                                                //endTrip();
                                               },
                                               child: const AppText(
                                                 text: 'End Trip',

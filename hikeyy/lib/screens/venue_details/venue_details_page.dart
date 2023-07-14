@@ -18,8 +18,7 @@ class VenueDetailsPage extends StatefulWidget {
 }
 
 class _VenueDetailsPageState extends State<VenueDetailsPage> {
-  var _rating = 0;
-  ValueNotifier<int> _ratingNotifier = ValueNotifier<int>(0);
+  int selectedRating = 3; // Replace with rating value
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -185,12 +184,14 @@ class _VenueDetailsPageState extends State<VenueDetailsPage> {
                                     child: Padding(
                                       padding: const EdgeInsets.all(20.0),
                                       child: Row(children: [
-                                        const Column(
+                                        Column(
                                           children: [
                                             AppText(text: 'Ratings'),
                                             Row(
                                               children: [
-                                                AppText(text: '3.5'),
+                                                AppText(
+                                                    text: selectedRating
+                                                        .toString()),
                                                 Icon(Icons.star,
                                                     color: Colors.yellow)
                                               ],
@@ -206,48 +207,37 @@ class _VenueDetailsPageState extends State<VenueDetailsPage> {
                                         ),
                                         Column(
                                           children: [
-                                            ValueListenableBuilder<int>(
-                                              valueListenable: _ratingNotifier,
-                                              builder: (context, value, child) {
-                                                return SizedBox(
-                                                  width: 190,
-                                                  height: 50,
-                                                  child: ListView.builder(
-                                                    shrinkWrap: true,
-                                                    scrollDirection:
-                                                        Axis.horizontal,
-                                                    itemCount: 5,
-                                                    itemBuilder:
-                                                        (context, index) {
-                                                      return Container(
-                                                        width: 35,
-                                                        height: 35,
-                                                        child: IconButton(
-                                                          icon: index < value
-                                                              ? const Icon(Icons.star,
-                                                                  size: 22,
-                                                                  color: Colors
-                                                                      .yellow)
-                                                              : const Icon(
-                                                                  Icons
-                                                                      .star_border,
-                                                                  size: 22),
-                                                          onPressed: () {
-                                                            _ratingNotifier
-                                                                    .value =
-                                                                index + 1;
-                                                          },
-                                                        ),
-                                                      );
-                                                    },
-                                                  ),
-                                                );
-                                              },
+                                            SizedBox(
+                                              width: 190,
+                                              height: 50,
+                                              child: ListView.builder(
+                                                shrinkWrap: true,
+                                                scrollDirection:
+                                                    Axis.horizontal,
+                                                itemCount: 5,
+                                                itemBuilder: (context, index) {
+                                                  return Container(
+                                                    width: 35,
+                                                    height: 35,
+                                                    child: IconButton(
+                                                      icon: index <
+                                                              selectedRating
+                                                          ? const Icon(
+                                                              Icons.star,
+                                                              size: 22,
+                                                              color:
+                                                                  Colors.yellow)
+                                                          : const Icon(
+                                                              Icons.star_border,
+                                                              size: 22),
+                                                      onPressed: () {
+                                                        // Handle the onPressed event if needed
+                                                      },
+                                                    ),
+                                                  );
+                                                },
+                                              ),
                                             ),
-                                            GestureDetector(
-                                              child: const AppText(text: 'Submitt'),
-                                              onTap: () {},
-                                            )
                                           ],
                                         ),
                                       ]),
