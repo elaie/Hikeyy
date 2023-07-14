@@ -20,9 +20,13 @@ class VenueDetailsPage extends StatefulWidget {
 }
 
 class _VenueDetailsPageState extends State<VenueDetailsPage> {
+
   var _rating = 0;
   ValueNotifier<int> _ratingNotifier = ValueNotifier<int>(0);
 
+
+
+  int selectedRating = 3; // Replace with rating value
 
   @override
   Widget build(BuildContext context) {
@@ -189,12 +193,14 @@ class _VenueDetailsPageState extends State<VenueDetailsPage> {
                                     child: Padding(
                                       padding: const EdgeInsets.all(20.0),
                                       child: Row(children: [
-                                        const Column(
+                                        Column(
                                           children: [
                                             AppText(text: 'Ratings'),
                                             Row(
                                               children: [
-                                                AppText(text: '3.5'),
+                                                AppText(
+                                                    text: selectedRating
+                                                        .toString()),
                                                 Icon(Icons.star,
                                                     color: Colors.yellow)
                                               ],
