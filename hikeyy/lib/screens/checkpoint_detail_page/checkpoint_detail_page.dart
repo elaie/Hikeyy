@@ -164,17 +164,17 @@ class _CheckpointDetailPageState extends State<CheckpointDetailPage> {
                           height: 800,
                           child: StreamBuilder<QuerySnapshot>(
                               stream: FirebaseFirestore.instance
-                                  .collection('Hotels')
+                                  .collection('Hotels').where('Location', isEqualTo: data!['Name'])
                                   .snapshots(),
                               builder: (context, snapshots) {
                                 if (snapshots.connectionState==ConnectionState.waiting) {
-                                  return Center(child: CircularProgressIndicator(),);
+                                  return const Center(child: CircularProgressIndicator(),);
                                 }
                                 if (snapshots.hasError) {
                                   return Text('Error: ${snapshots.error}');
                                 }
                                 if (!snapshots.hasData) {
-                                  return const Text('No data available');
+                                  return const Text('No Hotel available');
                                 }
                                 return GridView.builder(
                                     physics: const NeverScrollableScrollPhysics(),

@@ -386,26 +386,20 @@ class _StartTrailState extends State<StartTrail> {
                                           child: Container(
                                               height: 40,
                                               width: 40,
-                                              decoration: BoxDecoration(
-                                                  boxShadow: [
-                                                    BoxShadow(
-                                                      color: Colors.grey
-                                                          .withOpacity(0.5),
-                                                      spreadRadius: 3,
-                                                      blurRadius: 6,
-                                                      offset:
-                                                          const Offset(0, 2),
-                                                    ),
-                                                  ],
-                                                  shape: BoxShape.circle,
-                                                  color: Colors.white),
-                                              child: Padding(
-                                                  padding:
-                                                      const EdgeInsets.only(
-                                                          left: 5.0),
-                                                  child: Image(
-                                                      image: AssetImage(
-                                                          'assets/icons/menu.png')))),
+                                              decoration: BoxDecoration(boxShadow: [
+                                                BoxShadow(
+                                                  color: Colors.grey.withOpacity(0.5),
+                                                  spreadRadius: 3,
+                                                  blurRadius: 9,
+                                                  offset: const Offset(0, 3),
+                                                ),
+                                              ], shape: BoxShape.circle, color: Colors.white),
+                                              child: const Padding(
+                                                padding: EdgeInsets.all(10.0),
+                                                child: Image(
+                                                    image:
+                                                    AssetImage('assets/icons/menu.png')),
+                                              )),
                                         ),
                                         Padding(
                                           padding:
@@ -682,7 +676,9 @@ class _StartTrailState extends State<StartTrail> {
                                                     context,
                                                     MaterialPageRoute(
                                                         builder: (context) =>
-                                                            EndTripDetails()));
+                                                            EndTripDetails(id: widget.id,)));
+                                                //endTrip();
+
                                               },
                                               child: const AppText(
                                                 text: 'End Trip',
