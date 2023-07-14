@@ -688,7 +688,7 @@ class _StartTrailState extends State<StartTrail> {
                                                     context,
                                                     MaterialPageRoute(
                                                         builder: (context) =>
-                                                            EndTripDetails()));
+                                                            EndTripDetails(id: widget.id,)));
                                                 //endTrip();
                                               },
                                               child: const AppText(
