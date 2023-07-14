@@ -1,12 +1,12 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:hikeyy/screens/checkpoint_detail_page/checkpoint_detail_page.dart';
 import 'package:hikeyy/screens/plan_trip_page/plan_trip_page.dart';
 import 'package:hikeyy/widgets/app_colors.dart';
 import 'package:hikeyy/widgets/app_texts.dart';
 
 import '../../widgets/app_buttons.dart';
+import '../group_details/widgets/collapseable_options.dart';
 import '../home_page/widget/trails.dart';
 
 class VenueDetailsPage extends StatefulWidget {
@@ -18,6 +18,8 @@ class VenueDetailsPage extends StatefulWidget {
 }
 
 class _VenueDetailsPageState extends State<VenueDetailsPage> {
+  var _rating = 0;
+  ValueNotifier<int> _ratingNotifier = ValueNotifier<int>(0);
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -54,20 +56,22 @@ class _VenueDetailsPageState extends State<VenueDetailsPage> {
                                     padding: const EdgeInsets.all(8.0),
                                     child: showPhotos(photos),
                                   ),
-                            Positioned(
-                              top: 30,
-                              left: 30,
+                            Padding(
+                              padding: const EdgeInsets.only(top: 30, left: 30),
                               child: Container(
                                   height: 40,
                                   width: 40,
-                                  decoration: BoxDecoration(boxShadow: [
-                                    BoxShadow(
-                                      color: Colors.grey.withOpacity(0.5),
-                                      spreadRadius: 3,
-                                      blurRadius: 6,
-                                      offset: const Offset(0, 2),
-                                    ),
-                                  ], shape: BoxShape.circle, color: Colors.white),
+                                  decoration: BoxDecoration(
+                                      boxShadow: [
+                                        BoxShadow(
+                                          color: Colors.grey.withOpacity(0.5),
+                                          spreadRadius: 3,
+                                          blurRadius: 6,
+                                          offset: const Offset(0, 2),
+                                        ),
+                                      ],
+                                      shape: BoxShape.circle,
+                                      color: Colors.white),
                                   child: Padding(
                                       padding: const EdgeInsets.only(left: 5.0),
                                       child: IconButton(
@@ -149,7 +153,8 @@ class _VenueDetailsPageState extends State<VenueDetailsPage> {
                                           children: [
                                             Icon(Icons.directions),
                                             Padding(
-                                              padding: EdgeInsets.only(left: 2.0),
+                                              padding:
+                                                  EdgeInsets.only(left: 2.0),
                                               child: AppText(
                                                 text: 'View in Map',
                                                 color: Colors.white,
@@ -175,21 +180,24 @@ class _VenueDetailsPageState extends State<VenueDetailsPage> {
                                               offset: Offset(0, 3))
                                         ],
                                         color: AppColor.primaryLightColor,
-                                        borderRadius: BorderRadius.circular(20)),
-                                    child: const Padding(
-                                      padding: EdgeInsets.all(20.0),
+                                        borderRadius:
+                                            BorderRadius.circular(20)),
+                                    child: Padding(
+                                      padding: const EdgeInsets.all(20.0),
                                       child: Row(children: [
-                                        Column(
+                                        const Column(
                                           children: [
                                             AppText(text: 'Ratings'),
-                                            Icon(
-                                              Icons.star,
-                                              color: Color.fromARGB(
-                                                  255, 233, 217, 74),
+                                            Row(
+                                              children: [
+                                                AppText(text: '3.5'),
+                                                Icon(Icons.star,
+                                                    color: Colors.yellow)
+                                              ],
                                             ),
                                           ],
                                         ),
-                                        SizedBox(
+                                        const SizedBox(
                                           height: 70,
                                           child: VerticalDivider(
                                             color: Colors.grey,
@@ -198,14 +206,55 @@ class _VenueDetailsPageState extends State<VenueDetailsPage> {
                                         ),
                                         Column(
                                           children: [
-                                            AppText(text: 'Members'),
-                                            AppText(text: 'Display Members here')
+                                            ValueListenableBuilder<int>(
+                                              valueListenable: _ratingNotifier,
+                                              builder: (context, value, child) {
+                                                return SizedBox(
+                                                  width: 190,
+                                                  height: 50,
+                                                  child: ListView.builder(
+                                                    shrinkWrap: true,
+                                                    scrollDirection:
+                                                        Axis.horizontal,
+                                                    itemCount: 5,
+                                                    itemBuilder:
+                                                        (context, index) {
+                                                      return Container(
+                                                        width: 35,
+                                                        height: 35,
+                                                        child: IconButton(
+                                                          icon: index < value
+                                                              ? const Icon(Icons.star,
+                                                                  size: 22,
+                                                                  color: Colors
+                                                                      .yellow)
+                                                              : const Icon(
+                                                                  Icons
+                                                                      .star_border,
+                                                                  size: 22),
+                                                          onPressed: () {
+                                                            _ratingNotifier
+                                                                    .value =
+                                                                index + 1;
+                                                          },
+                                                        ),
+                                                      );
+                                                    },
+                                                  ),
+                                                );
+                                              },
+                                            ),
+                                            GestureDetector(
+                                              child: const AppText(text: 'Submitt'),
+                                              onTap: () {},
+                                            )
                                           ],
-                                        )
+                                        ),
                                       ]),
                                     ),
                                   ),
                                 ),
+                                CollapsibleOptions(id: widget.id),
                                 const Padding(
                                   padding: EdgeInsets.only(top: 15.0),
                                   child: AppTextHeading(
@@ -213,9 +262,13 @@ class _VenueDetailsPageState extends State<VenueDetailsPage> {
                                     fontSize: 20,
                                   ),
                                 ),
-                                Text(data['Description'],style: const TextStyle(color: Colors.grey),),
+                                Text(
+                                  data['Description'],
+                                  style: const TextStyle(color: Colors.grey),
+                                ),
                                 const Padding(
-                                  padding: EdgeInsets.only(top: 15.0, bottom: 15),
+                                  padding:
+                                      EdgeInsets.only(top: 15.0, bottom: 15),
                                   child: AppTextHeading(
                                     textHeading: 'Best Months',
                                     fontSize: 20,
@@ -230,14 +283,15 @@ class _VenueDetailsPageState extends State<VenueDetailsPage> {
                                         // print(BestMonths[index]);
                                         //  print('***************************');
                                         return Padding(
-                                          padding:
-                                              const EdgeInsets.only(right: 10.0),
+                                          padding: const EdgeInsets.only(
+                                              right: 10.0),
                                           child: Container(
                                             width: 100,
                                             constraints: const BoxConstraints(
                                                 minHeight: 100),
                                             decoration: BoxDecoration(
-                                                color: AppColor.primaryLightColor,
+                                                color:
+                                                    AppColor.primaryLightColor,
                                                 borderRadius:
                                                     BorderRadius.circular(10)),
                                             child: Center(
@@ -262,19 +316,21 @@ class _VenueDetailsPageState extends State<VenueDetailsPage> {
                           offset: Offset(0, -5)),
                     ], color: Colors.transparent),
                     child: Padding(
-                      padding: const EdgeInsets.only(left: 20.0, right: 20, bottom: 20),
+                      padding: const EdgeInsets.only(
+                          left: 20.0, right: 20, bottom: 20),
                       child: SizedBox(
                         height: 50,
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                             Column(
+                            Column(
                               children: [
                                 const AppText(
                                   text: 'Estimated cost',
                                   fontSize: 17,
                                 ),
-                                AppTextSubHeading(text: '    Rs.${data['Budget']} per person')
+                                AppTextSubHeading(
+                                    text: '    Rs.${data['Budget']} per person')
                               ],
                             ),
                             AppButtons(
@@ -282,11 +338,13 @@ class _VenueDetailsPageState extends State<VenueDetailsPage> {
                                 Navigator.push(
                                     context,
                                     MaterialPageRoute(
-                                        builder: (context) => PlanTripPage(id: widget.id)));
+                                        builder: (context) =>
+                                            PlanTripPage(id: widget.id)));
                               },
                               child: const Row(
                                 children: [
-                                  AppText(text: 'Plan Trip', color: Colors.white),
+                                  AppText(
+                                      text: 'Plan Trip', color: Colors.white),
                                   Icon(Icons.arrow_forward_ios)
                                 ],
                               ),
@@ -301,7 +359,6 @@ class _VenueDetailsPageState extends State<VenueDetailsPage> {
               return Container();
             }),
       ),
-
     );
   }
 }

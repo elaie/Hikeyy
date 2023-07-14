@@ -62,6 +62,7 @@ class WhileTrekking extends StatelessWidget {
                     ),
                     title: AppText(
                         fontSize: 14,
+                        color: Color.fromARGB(255, 117, 117, 117),
                         text:
                             'You will regularly have to pass by mules and yaks while trekking. Always stay on the mountain side while you wait for them to pass and do not get close to any ridges. Mules are yaks often carry heavy and wide loads so they may accidentally kick you off the mountain, if you’re not careful enough.'),
                   ),
@@ -73,6 +74,7 @@ class WhileTrekking extends StatelessWidget {
                     ),
                     title: AppText(
                         fontSize: 14,
+                        color: Color.fromARGB(255, 117, 117, 117),
                         text:
                             'Do not drink alcohol. It dehydrates you and thus increases the risk of altitude sickness if above 3,000 m.'),
                   ),
@@ -84,6 +86,7 @@ class WhileTrekking extends StatelessWidget {
                     ),
                     title: AppText(
                         fontSize: 14,
+                        color: Color.fromARGB(255, 117, 117, 117),
                         text: 'Always trek with a friend, or guide.'),
                   ),
                   ListTile(
@@ -94,6 +97,7 @@ class WhileTrekking extends StatelessWidget {
                     ),
                     title: AppText(
                         fontSize: 14,
+                        color: Color.fromARGB(255, 117, 117, 117),
                         text:
                             'While trekking above 3,000 m do not ascend too fast. Generally it is not recommended to ascend more than 3-500 m per day as doing so will significantly increase the risk of Acute Mountain Sickness (AMS).'),
                   ),
@@ -105,6 +109,7 @@ class WhileTrekking extends StatelessWidget {
                     ),
                     title: AppText(
                         fontSize: 14,
+                        color: Color.fromARGB(255, 117, 117, 117),
                         text:
                             'Always carry warm clothes and rain kit, in case of sudden change in weather.'),
                   ),
@@ -116,6 +121,7 @@ class WhileTrekking extends StatelessWidget {
                     ),
                     title: AppText(
                         fontSize: 14,
+                        color: Color.fromARGB(255, 117, 117, 117),
                         text:
                             'Lots of sun and much walking are factors that will quickly dehydrate and de-energize you. Please therefore always have enough water and snacks nearby. Staying hydrated will help to avoid getting altitude sickness.'),
                   ),
@@ -127,6 +133,7 @@ class WhileTrekking extends StatelessWidget {
                     ),
                     title: AppText(
                         fontSize: 14,
+                        color: Color.fromARGB(255, 117, 117, 117),
                         text:
                             'Bring a map, compass and potentially a GPS so that you always know your location (these items are mostly relevant in the more remote trekking regions of Nepal).'),
                   ),
@@ -138,6 +145,7 @@ class WhileTrekking extends StatelessWidget {
                     ),
                     title: AppText(
                         fontSize: 14,
+                        color: Color.fromARGB(255, 117, 117, 117),
                         text:
                             'Listen to the advice provided by your guide and trekking agency.'),
                   ),
@@ -148,4 +156,3 @@ class WhileTrekking extends StatelessWidget {
     );
   }
 }
-
