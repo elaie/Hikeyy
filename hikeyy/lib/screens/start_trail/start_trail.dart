@@ -19,6 +19,7 @@ import 'package:hikeyy/widgets/app_texts.dart';
 import 'package:http/http.dart' as http;
 
 import '../../widgets/app_buttons.dart';
+import '../end_trip_details/end_trip_details.dart';
 import '../login_signup/is_in_trip.dart';
 
 class StartTrail extends StatefulWidget {
@@ -514,113 +515,117 @@ class _StartTrailState extends State<StartTrail> {
                                         ),
                                       ),
                                     ),
-                                    FutureBuilder<
-                                            DocumentSnapshot<
-                                                Map<String, dynamic>>>(
-                                        future: FirebaseFirestore.instance
-                                            .collection('Trails')
-                                            .doc(data['Trail'])
-                                            .get(),
-                                        builder: (_, snapshots) {
-                                          if (snapshots.connectionState ==
-                                              ConnectionState.waiting) {
-                                            return const Center(
-                                              child:
-                                                  CircularProgressIndicator(),
-                                            );
-                                          }
-                                          if (snapshots.connectionState ==
-                                              ConnectionState.done) {
-                                            var dataT = snapshots.data!.data();
-                                            List<dynamic> photourls =
-                                                dataT!['PhotoURLs'];
-                                            return Padding(
-                                              padding: const EdgeInsets.only(
-                                                  top: 30.0),
-                                              child: Container(
-                                                constraints:
-                                                    const BoxConstraints(
-                                                        maxHeight: 300,
-                                                        maxWidth: 350),
-                                                decoration: BoxDecoration(
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            30)),
-                                                child: Stack(children: [
-                                                  ClipRRect(
+                                    Container(
+                                      height: 300,
+                                      child: FutureBuilder<
+                                              DocumentSnapshot<
+                                                  Map<String, dynamic>>>(
+                                          future: FirebaseFirestore.instance
+                                              .collection('Trails')
+                                              .doc(data['Trail'])
+                                              .get(),
+                                          builder: (_, snapshots) {
+                                            if (snapshots.connectionState ==
+                                                ConnectionState.waiting) {
+                                              return const Center(
+                                                child:
+                                                    CircularProgressIndicator(),
+                                              );
+                                            }
+                                            if (snapshots.connectionState ==
+                                                ConnectionState.done) {
+                                              var dataT =
+                                                  snapshots.data!.data();
+                                              List<dynamic> photourls =
+                                                  dataT!['PhotoURLs'];
+                                              return Padding(
+                                                padding: const EdgeInsets.only(
+                                                    top: 30.0),
+                                                child: Container(
+                                                  constraints:
+                                                      const BoxConstraints(
+                                                          maxHeight: 300,
+                                                          maxWidth: 350),
+                                                  decoration: BoxDecoration(
                                                       borderRadius:
                                                           BorderRadius.circular(
-                                                              30),
-                                                      child: Image(
-                                                        height: 400,
-                                                        image: NetworkImage(
-                                                            photourls.first),
-                                                        fit: BoxFit.fitHeight,
-                                                      )),
-                                                  Container(
-                                                    decoration: BoxDecoration(
-                                                      borderRadius:
-                                                          BorderRadius.circular(
-                                                              30),
-                                                      gradient:
-                                                          const LinearGradient(
-                                                        begin:
-                                                            Alignment.topCenter,
-                                                        end: Alignment
-                                                            .bottomCenter,
-                                                        colors: [
-                                                          Colors.transparent,
-                                                          Colors.grey,
-                                                        ],
+                                                              30)),
+                                                  child: Stack(children: [
+                                                    ClipRRect(
+                                                        borderRadius:
+                                                            BorderRadius
+                                                                .circular(30),
+                                                        child: Image(
+                                                          height: 400,
+                                                          image: NetworkImage(
+                                                              photourls.first),
+                                                          fit: BoxFit.fitHeight,
+                                                        )),
+                                                    Container(
+                                                      decoration: BoxDecoration(
+                                                        borderRadius:
+                                                            BorderRadius
+                                                                .circular(30),
+                                                        gradient:
+                                                            const LinearGradient(
+                                                          begin: Alignment
+                                                              .topCenter,
+                                                          end: Alignment
+                                                              .bottomCenter,
+                                                          colors: [
+                                                            Colors.transparent,
+                                                            Colors.grey,
+                                                          ],
+                                                        ),
                                                       ),
                                                     ),
-                                                  ),
-                                                  Padding(
-                                                    padding: EdgeInsets.only(
-                                                        top: 100, left: 20),
-                                                    child: AppText(
-                                                      text: dataT['Name'],
-                                                      fontSize: 20,
-                                                      color: Colors.white,
-                                                    ),
-                                                  ),
-                                                  const Padding(
-                                                    padding: EdgeInsets.only(
-                                                        top: 130,
-                                                        left: 15,
-                                                        right: 15),
-                                                    child: Divider(
-                                                      thickness: 1,
-                                                      color: Colors.white,
-                                                    ),
-                                                  ),
-                                                  Padding(
-                                                    padding: EdgeInsets.only(
-                                                        top: 150, left: 20),
-                                                    child: Container(
-                                                      width: 300,
-                                                      constraints:
-                                                          const BoxConstraints(
-                                                              maxWidth: 400),
+                                                    Padding(
+                                                      padding: EdgeInsets.only(
+                                                          top: 100, left: 20),
                                                       child: AppText(
-                                                        text: dataT[
-                                                            'Description'],
-                                                        color: const Color
-                                                                .fromARGB(
-                                                            255, 223, 223, 223),
-                                                        maxLines: 6,
-                                                        textOverflow:
-                                                            TextOverflow
-                                                                .ellipsis,
+                                                        text: dataT['Name'],
+                                                        fontSize: 20,
+                                                        color: Colors.white,
                                                       ),
                                                     ),
-                                                  )
-                                                ]),
-                                              ),
-                                            );
-                                          }
-                                          return Container();
-                                        }),
+                                                    const Padding(
+                                                      padding: EdgeInsets.only(
+                                                          top: 130,
+                                                          left: 15,
+                                                          right: 15),
+                                                      child: Divider(
+                                                        thickness: 1,
+                                                        color: Colors.white,
+                                                      ),
+                                                    ),
+                                                    Padding(
+                                                      padding: EdgeInsets.only(
+                                                          top: 150, left: 20),
+                                                      child: Container(
+                                                        width: 300,
+                                                        constraints:
+                                                            const BoxConstraints(
+                                                                maxWidth: 400),
+                                                        child: AppText(
+                                                          text: dataT[
+                                                              'Description'],
+                                                          color: const Color
+                                                                  .fromARGB(255,
+                                                              223, 223, 223),
+                                                          maxLines: 6,
+                                                          textOverflow:
+                                                              TextOverflow
+                                                                  .ellipsis,
+                                                        ),
+                                                      ),
+                                                    )
+                                                  ]),
+                                                ),
+                                              );
+                                            }
+                                            return Container();
+                                          }),
+                                    ),
 
                                     //timeline
                                     TimelineCollapsable(
@@ -685,7 +690,12 @@ class _StartTrailState extends State<StartTrail> {
                                               color: const Color.fromARGB(
                                                   255, 183, 49, 39),
                                               onPressed: () {
-                                                endTrip();
+                                                Navigator.push(
+                                                    context,
+                                                    MaterialPageRoute(
+                                                        builder: (context) =>
+                                                            EndTripDetails()));
+                                                //endTrip();
                                               },
                                               child: const AppText(
                                                 text: 'End Trip',
